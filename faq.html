@@ -1,0 +1,108 @@
+<html>
+<head>
+	<title>BiT FAQ</title>
+<style>
+
+body {
+	font-family: verdana, tahoma, arial;
+	font-size: 13px;
+}
+
+</style>
+</head>
+<body>
+
+<h1>BiT FAQ</h1>
+
+<p>
+	<i>Rafael Jannone (rafael AT jannone DOT org)</i>
+</p>
+
+<hr />
+
+<h2>Table of Contents:</h2>
+
+<ol>
+<li><a href='#about'>What's BiT?</a></li>
+<li><a href='#features'>BiT features</a></li>
+<li><a href='#browsers'>Supported browsers</a></li>
+<li><a href='#security'>Filesystem access and security issues</a></li>
+<li><a href='#onlineAccess'>Enabling file access for online use</a></li>
+</ol>
+
+<hr />
+
+<a name='about'>
+<h3>What's BiT?</h3>
+</a>
+
+<p>
+	BiT is a Z80 ASM Editor <i>and</i> Assembler. <br />
+	It helps you to edit your code, presenting real-time information about labels, instructions, execution time, and so on.<br />
+	BiT is written entirelly in Javascript. It's <b>NOT</b> Java.
+</p>
+
+<hr />
+
+<a name='features'>
+<h3>BiT features</h3>
+</a>
+
+<p>
+	Here's a quick list:
+	<ul>
+		<li>Automatic indentation and code completion</li>
+		<li>Assemble code in .BIN format</li>
+		<li>Instruction table updated as you type, showing all instruction variants/sizes/clocks</li>
+		<li>Label indexing and shortcutting: jump directly to your labels from anywhere</li>
+		<li>Label reference: document your labels and see their parameters in real-time</li>
+		<li>Previews: select a block of code and see the resulting bytes + clock information</li>
+		<li>Block indentation: select a block and press TAB, or Shift+TAB</li>
+	</ul>
+	More to come...
+</p>
+
+<hr />
+
+<a name='browsers'>
+<h3>Supported Browsers</h3>
+</a>
+
+<p>
+	Only <a href='http://getfirefox.com' target='_new'>Firefox</a> 1.5+ is supported at this time. <br />
+	BiT is an open source project. You can help to port it to other platforms.
+</p>
+
+<hr />
+
+<a name='security'>
+<h3>Filesystem access and security issues</h3>
+</a>
+
+Firefox allows local file access for reading/writing, <u>when granted by the user</u>.<br />
+This is a very important detail. Since BiT uses this feature to load and save ASM files on your hard-drive, you'll only be able to that if you grant access.<br />
+Tipically, if you download BiT and run locally, the browser will ask your permission when executing a file operation.<br />
+When running BiT online, however, you'll need to set an extra configuration key.<br />
+Sounds confusing but it is actually quite simple. Read onto the next section.
+
+<hr />
+
+<a name='onlineAccess'>
+<h3>Enabling file access for online use</h3>
+</a>
+
+Follow these simple steps:
+<ul>
+	<li>Open Firefox</li>
+	<li>In the URL box, enter <b>about:config</b></li>
+	<li>Locate the key <b>signed.applets.codebase_principal_support</b></li>
+	<li>Set this key's value to <b>true</b></li>
+	<li>Done!</li>
+</ul>
+This allows online apps to have file access. <u>Firefox will still ask your permission at each file operation.</u><br />
+So as long as you only grant access to legitimate apps, there's nothing to worry about.
+
+<hr />
+
+</body>
+</html>
