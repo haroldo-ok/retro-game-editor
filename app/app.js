@@ -1,12 +1,17 @@
 'use strict';
 
 // Declare app level module which depends on views, and components
-angular.module('myApp', [
-  'ngRoute',
-  'myApp.view1',
-  'myApp.view2',
-  'myApp.version'
+angular.module('retroGameEditor', [
+	'ngRoute',
+	'retroGameEditor.tileset'
 ]).
 config(['$routeProvider', function($routeProvider) {
-  $routeProvider.otherwise({redirectTo: '/view1'});
+	$routeProvider.
+		when('/tiles', {
+			templateUrl: 'tileset/tileset-list.html',
+			controller: 'TilesetListCtrl'
+		}).
+		otherwise({
+			redirectTo: '/tiles'
+		});
 }]);
