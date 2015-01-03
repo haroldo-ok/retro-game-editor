@@ -1,3 +1,13 @@
 ewweewweqewq
+<ul>
+	<li ng-repeat="tileset in tilesets">
+		{{tileset.name}}
+		<ul>
+			<li ng-repeat="tile in tileset.tiles">
+				<canvas rge-tile="tile"></canvas>
+			</li>
+		</ul>
+	</li>
+</ul>
 {{blah}}
 {{tilesets}}
