@@ -1,0 +1,30 @@
+{
+  "name": "retro-game-editor",
+  "version": "0.0.1",
+  "homepage": "https://github.com/haroldo-ok/retro-game-editor",
+  "authors": [
+    "Haroldo de Oliveira Pinheiro <haroldoop@gmail.com>"
+  ],
+  "description": "An editor for making games for retro platforms",
+  "main": "index.js",
+  "moduleType": [
+    "amd"
+  ],
+  "keywords": [
+    "editor",
+    "game",
+    "development"
+  ],
+  "license": "Apache",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.3",
+    "requirejs": "~2.1.17"
+  }
+}
