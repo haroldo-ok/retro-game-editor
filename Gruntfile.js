@@ -9,11 +9,16 @@ module.exports = function(grunt) {
       target: {
         rjsConfig: 'app/scripts/main.js'
       }
+    },
+    bump: {
+      options: {
+        push: false        
+      }
     }
   });
 
-  // Load the plugin that provides the "uglify" task.
   grunt.loadNpmTasks('grunt-bower-requirejs');
+  grunt.loadNpmTasks('grunt-bump');
 
   grunt.registerTask('default', ['bowerRequirejs']);
 
