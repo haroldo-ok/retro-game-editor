@@ -11,18 +11,10 @@ require.config({
     "localforage-backbone": "../../bower_components/localforage-backbone/dist/localforage.backbone.min"
   },
   packages: [
-
+    "model"
   ]
 });
 
-require(["jquery", "backbone", "underscore", "localforage", "localforage-backbone"], function($, Backbone, _) {
-  // Just for a quick-and-dirty test. TODO: Remove this.
-  window.MyModel = Backbone.Model.extend({
-      sync: Backbone.localforage.sync('MyModel')
-  });
-
-  window.MyCollection = Backbone.Collection.extend({
-      model: MyModel,
-      sync: Backbone.localforage.sync('MyCollection')
-  });
+require(["jquery", "model"], function($, model) {
+  window.NewModel = model("NewModel");
 });
