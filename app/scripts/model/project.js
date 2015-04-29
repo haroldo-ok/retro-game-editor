@@ -1,3 +1,6 @@
 define(["model"], function(model){
-  return model("Project");
+  return model("Project", {
+    resources: function(){
+    }
+  });
 });
