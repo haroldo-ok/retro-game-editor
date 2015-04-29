@@ -28,6 +28,7 @@
     "requirejs": "~2.1.17",
     "underscore": "~1.8.3",
     "backbone": "~1.1.2",
-    "localforage": "~1.2.2"
+    "localforage": "~1.2.2",
+    "dock-spawn": "git@github.com:coderespawn/dock-spawn.git#~1.0.2"
   }
 }
