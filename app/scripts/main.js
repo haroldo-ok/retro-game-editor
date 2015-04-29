@@ -15,6 +15,6 @@ require.config({
   ]
 });
 
-require(["jquery", "model"], function($, model) {
-  window.NewModel = model("NewModel");
+require(["jquery", "model/project"], function($, Project) {
+  window.Project = Project;
 });
