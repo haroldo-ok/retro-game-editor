@@ -16,7 +16,8 @@ require.config({
     'requirejs-html': '../../bower_components/requirejs-html/html',
     css: '../../bower_components/require-css/css',
     'css-builder': '../../bower_components/require-css/css-builder',
-    normalize: '../../bower_components/require-css/normalize'
+    normalize: '../../bower_components/require-css/normalize',
+    'requirejs-domready': '../../bower_components/requirejs-domready/domReady'
   },
   packages: [
     'model',
@@ -25,7 +26,8 @@ require.config({
   map: {
     '*': {
       text: 'requirejs-text',
-      html: 'requirejs-html'
+      html: 'requirejs-html',
+      domReady: 'requirejs-domready'
     }
   }
 });
