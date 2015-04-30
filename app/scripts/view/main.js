@@ -1,3 +1,3 @@
-define(["jquery", "dockspawn"], function($, dockspawn){
-
+define(["jquery", "dockspawn", "html!./main"], function($, dockspawn, template){
+  $('body').append(template);
 });
