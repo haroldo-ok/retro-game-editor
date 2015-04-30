@@ -14,10 +14,10 @@ require.config({
     dockspawn: "../../bower_components/dock-spawn/js/out/js/dockspawn"
   },
   packages: [
-    "model"
+    "model", "view"
   ]
 });
 
-require(["jquery", "model/project"], function($, Project) {
+require(["jquery", "model/project", "view"], function($, Project) {
   window.Project = Project;
 });
