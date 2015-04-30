@@ -12,15 +12,19 @@ require.config({
     localforage: '../../bower_components/localforage/dist/localforage',
     'localforage-backbone': '../../bower_components/localforage-backbone/dist/localforage.backbone.min',
     dockspawn: '../../bower_components/dock-spawn/js/out/js/dockspawn',
-    text: '../../bower_components/requirejs-text/text',
-    html: '../../bower_components/requirejs-html/html',
     'requirejs-text': '../../bower_components/requirejs-text/text',
     'requirejs-html': '../../bower_components/requirejs-html/html'
   },
   packages: [
     'model',
     'view'
-  ]
+  ],
+  map: {
+    '*': {
+      'text': 'requirejs-text',
+      'html': 'requirejs-html'
+    }
+  }
 });
 
 require(["jquery", "model/project", "view"], function($, Project) {
