@@ -13,7 +13,10 @@ require.config({
     'localforage-backbone': '../../bower_components/localforage-backbone/dist/localforage.backbone.min',
     dockspawn: '../../bower_components/dock-spawn/js/out/js/dockspawn',
     'requirejs-text': '../../bower_components/requirejs-text/text',
-    'requirejs-html': '../../bower_components/requirejs-html/html'
+    'requirejs-html': '../../bower_components/requirejs-html/html',
+    css: '../../bower_components/require-css/css',
+    'css-builder': '../../bower_components/require-css/css-builder',
+    normalize: '../../bower_components/require-css/normalize'
   },
   packages: [
     'model',
@@ -21,8 +24,8 @@ require.config({
   ],
   map: {
     '*': {
-      'text': 'requirejs-text',
-      'html': 'requirejs-html'
+      text: 'requirejs-text',
+      html: 'requirejs-html'
     }
   }
 });
