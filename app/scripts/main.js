@@ -17,7 +17,8 @@ require.config({
     css: '../../bower_components/require-css/css',
     'css-builder': '../../bower_components/require-css/css-builder',
     normalize: '../../bower_components/require-css/normalize',
-    'requirejs-domready': '../../bower_components/requirejs-domready/domReady'
+    'requirejs-domready': '../../bower_components/requirejs-domready/domReady',
+    q: '../../bower_components/q/q'
   },
   packages: [
     'model',

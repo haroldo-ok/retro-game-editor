@@ -1,9 +1,29 @@
-define(["backbone", "localforage-backbone"], function(Backbone){
+define(["backbone", "underscore", "q", "localforage-backbone"], function(Backbone, _, Q){
   return function(name, options){
     var modelOptions = _.omit(options || {}, 'objects');
     var collectionOptions = options && options.objects || {};
 
+    function injectPromise(options) {
+      var options = options || {};
+      var deferred = Q.defer();
+      var injected = (options, {
+        success: function(){
+          options.success && options.success.apply(this, arguments);
+          deferred.resolve.apply(this, arguments);
+        },
+        error: function(){
+          options.error && options.error.apply(this, arguments);
+          deferred.reject.apply(this, arguments);
+        },
+        promise: deferred.promise
+      });
+
+      return injected;
+    }
+
     var BaseModel = Backbone.Model.extend({
+        entityName: name,
+
         save: function(attributes, options){
           // Adds it to the main collection
           if (this.isNew()) {
@@ -18,6 +38,11 @@ define(["backbone", "localforage-backbone"], function(Backbone){
 
     var BaseCollection = Backbone.Collection.extend({
         model: Model,
+        fetch: function(options) {
+          options = injectPromise(options);
+          Backbone.Collection.prototype.fetch.call(this, options);
+          return options.promise;
+        },
         sync: Backbone.localforage.sync(name)
     });
     var ModelCollection = BaseCollection.extend(collectionOptions);
