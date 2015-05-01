@@ -19,7 +19,9 @@ require.config({
     normalize: '../../bower_components/require-css/normalize',
     'requirejs-domready': '../../bower_components/requirejs-domready/domReady',
     q: '../../bower_components/q/q',
-    jstree: '../../bower_components/jstree/dist/jstree'
+    jstree: '../../bower_components/jstree/dist/jstree',
+    'requirejs-handlebars': '../../bower_components/requirejs-handlebars/hb',
+    handlebars: '../../bower_components/handlebars/handlebars'
   },
   packages: [
     'model',
@@ -29,6 +31,7 @@ require.config({
     '*': {
       text: 'requirejs-text',
       html: 'requirejs-html',
+      hbars: 'requirejs-handlebars',
       domReady: 'requirejs-domready'
     }
   }
