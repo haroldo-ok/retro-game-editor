@@ -23,7 +23,7 @@ define(["backbone", "localforage-backbone"], function(Backbone){
     var ModelCollection = BaseCollection.extend(collectionOptions);
 
     Model.BaseModel = BaseModel;
-    Model.BaseCollection = BaseCollection;    
+    Model.BaseCollection = BaseCollection;
     Model.objects = new ModelCollection();
 
     return Model;
