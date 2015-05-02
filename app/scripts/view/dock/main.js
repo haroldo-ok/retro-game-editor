@@ -1,3 +1,5 @@
+'use strict';
+
 define(["jquery", "dockspawn", "html!./dock", "css!./dock",
     "css!/bower_components/dock-spawn/js/out/css/dock-manager",
     "css!/bower_components/dock-spawn/js/out/css/font-awesome",

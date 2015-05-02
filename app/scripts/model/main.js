@@ -1,3 +1,5 @@
+'use strict';
+
 define(["backbone", "underscore", "q", "localforage-backbone"], function(Backbone, _, Q){
   return function(name, options){
     var modelOptions = _.omit(options || {}, 'objects');

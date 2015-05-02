@@ -1,3 +1,5 @@
+'use strict';
+
 define(["jquery", "backbone", "hbars!./project-tree.hbs", "model/project",
   "jstree", "view/dock/main", "view/util/main",
   "css!/bower_components/jstree/dist/themes/default/style.min.css",

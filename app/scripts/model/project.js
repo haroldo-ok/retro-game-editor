@@ -1,3 +1,5 @@
+'use strict';
+
 define(["model", "model/onetomany", "model/tileset", "q"],
 function(model, OneToMany, TileSet, Q){
   var Project = model("Project", {
