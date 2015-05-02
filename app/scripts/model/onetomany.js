@@ -51,5 +51,11 @@ define(["backbone", "underscore", "q"], function(Backbone, _, Q){
       });
   }
 
+  OneToMany.prototype.toJSON = function() {
+    return this._items.map(function(item){
+      return item.toJSON();
+    });
+  }
+  
   return OneToMany;
 });

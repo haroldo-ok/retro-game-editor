@@ -7,6 +7,11 @@ function(model, OneToMany, TileSet, Q){
       this.resources = new OneToMany(this, [TileSet], 'projectId');
       Project.BaseModel.apply(this, arguments);
     },
+    fullJSON: function() {
+      return _.extend(this.toJSON(), {
+        resources: this.resources.toJSON()
+      });
+    },
 
     objects: {
       fetchAll: function(options) {
@@ -22,6 +27,11 @@ function(model, OneToMany, TileSet, Q){
                 return collection;
               });
           });
+      },
+      fullJSON: function() {
+        return this.map(function(project){
+          return project.fullJSON();
+        });
       }
     }
   });

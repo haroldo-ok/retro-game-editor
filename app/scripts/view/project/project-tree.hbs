@@ -1,7 +1,14 @@
 <div class="project-tree">
   <ul>
     {{#each projects}}
-      <li>{{default name "*unnamed*"}}</li>
+      <li class="jstree-open">
+        {{default name "*unnamed*"}}
+        <ul>
+          {{#each resources}}
+            <li class="jstree-open">{{default name "*unnamed*"}}</li>
+          {{/each}}
+        </ul>
+      </li>
     {{/each}}
   </ul>
 <div>
