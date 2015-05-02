@@ -9,7 +9,7 @@ define(["jquery", "backbone", "hbars!./project-tree.hbs", "model/project",
       initialize: function() {
         _.bindAll(this, "render");
 
-        Project.objects.fetch()
+        Project.objects.fetchAll()
           .then(this.render)
           .done();
       },

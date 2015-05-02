@@ -1,3 +1,5 @@
+'use strict';
+
 define(["backbone", "underscore", "q"], function(Backbone, _, Q){
   function OneToMany(one, many, ref){
     _.extend(this, Backbone.Events);
@@ -29,7 +31,7 @@ define(["backbone", "underscore", "q"], function(Backbone, _, Q){
   }
 
   OneToMany.prototype.fetch = function() {
-    that = this;
+    var that = this;
     this._items = [];
 
     var promises = this._many.map(function(Model){
