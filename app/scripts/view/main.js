@@ -1,1 +1,1 @@
-define(["./dock/main", "./project/main", "domReady!"], function(){})
+define(["./dock/main", "./project/main", "./util/main", "domReady!"]);
