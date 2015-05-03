@@ -24,7 +24,8 @@ require.config({
     jstree: '../../bower_components/jstree/dist/jstree',
     'requirejs-handlebars': '../../bower_components/requirejs-handlebars/hb',
     handlebars: '../../bower_components/handlebars/handlebars',
-    'font-awesome': '../../bower_components/font-awesome/fonts/*'
+    'font-awesome': '../../bower_components/font-awesome/fonts/*',
+    flexnav: '../../bower_components/flexnav/js/jquery.flexnav'
   },
   packages: [
     'model',
