@@ -1,11 +1,11 @@
 <div class="project-tree">
   <ul>
     {{#each projects}}
-      <li class="jstree-open">
+      <li data-jstree='{"icon":"fa fa-folder-open"}' class="jstree-open">
         {{default name "*unnamed*"}}
         <ul>
           {{#each resources}}
-            <li class="jstree-open">{{default name "*unnamed*"}}</li>
+            <li data-jstree='{"icon":"fa fa-file"}'>{{default name "*unnamed*"}}</li>
           {{/each}}
         </ul>
       </li>
