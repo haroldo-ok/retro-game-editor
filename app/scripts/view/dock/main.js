@@ -3,6 +3,7 @@
 define(["jquery", "dockspawn", "html!./dock", "css!./dock",
     "css!/bower_components/dock-spawn/js/out/css/dock-manager",
     "css!/bower_components/dock-spawn/js/out/css/font-awesome",
+    "css!/bower_components/font-awesome/css/font-awesome",
     "domReady!"],
     function($, dockspawn, template){
       $('body').append(template);

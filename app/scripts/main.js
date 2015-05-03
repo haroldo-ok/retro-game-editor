@@ -23,7 +23,8 @@ require.config({
     q: '../../bower_components/q/q',
     jstree: '../../bower_components/jstree/dist/jstree',
     'requirejs-handlebars': '../../bower_components/requirejs-handlebars/hb',
-    handlebars: '../../bower_components/handlebars/handlebars'
+    handlebars: '../../bower_components/handlebars/handlebars',
+    'font-awesome': '../../bower_components/font-awesome/fonts/*'
   },
   packages: [
     'model',
