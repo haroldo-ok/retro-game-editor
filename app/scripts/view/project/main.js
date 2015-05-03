@@ -1,10 +1,11 @@
 'use strict';
 
-define(["jquery", "backbone", "hbars!./project-tree.hbs", "model/project",
+define(["jquery", "backbone", "model/project",
+  "hbars!./project-tree.hbs", "hbars!./project-menubar.hbs",
   "jstree", "view/dock/main", "view/util/main",
   "css!/bower_components/jstree/dist/themes/default/style.min.css",
   "domReady!"],
-function($, BackBone, template, Project){
+function($, BackBone, Project, template, menubarTemplate){
 
   var ProjectTree = Backbone.View.extend({
     initialize: function() {
@@ -16,7 +17,11 @@ function($, BackBone, template, Project){
     },
 
     render: function() {
-      this.$el.html(template({projects: Project.objects.fullJSON()}))
+      this.$el
+        .html(
+          menubarTemplate({}) +
+          template({projects: Project.objects.fullJSON()})
+        )
         .find('.project-tree').jstree();
     }
   });

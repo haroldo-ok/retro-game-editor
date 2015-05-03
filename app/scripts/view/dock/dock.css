@@ -91,4 +91,12 @@ body {
 	overflow: visible;
 }
 
+.panel-toolbar {
+  background-color: #aac;
+  color: #333;
+  padding: 3px;
+  padding-right: 6px;
+  text-align: right;
+}
+
 .activeline {background: #e8f2ff !important;}
