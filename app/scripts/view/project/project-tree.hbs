@@ -1,20 +1,19 @@
-<nav class="project-tree sidebar-nav">
-  <ul>
-    {{#each projects}}
-      <li data-jstree='{"icon":"fa fa-folder-open"}' class="jstree-open">
-        <a href="#">
-          <span class="sidebar-nav-item-icon fa fa-github fa-lg"></span>
-          <span class="sidebar-nav-item">{{default name "*unnamed*"}}</span>
-          <span class="fa arrow"></span>
-        </a>
-        <ul>
-          {{#each resources}}
-            <a href="#">
-              <li data-jstree='{"icon":"fa fa-file"}'>{{default name "*unnamed*"}}</li>
-            </a>
-          {{/each}}
-        </ul>
-      </li>
-    {{/each}}
-  </ul>
-</nav>
+<div class="project-tree-scroller">
+  <nav class="project-tree sidebar-nav">
+    <ul>
+      {{#each projects}}
+        <li>
+          <a href="#">
+            <span class="sidebar-nav-item">{{default name "*unnamed*"}}</span>
+            <span class="fa arrow"></span>
+          </a>
+          <ul>
+            {{#each resources}}
+              <li><a href="#">{{default name "*unnamed*"}}</a></li>
+            {{/each}}
+          </ul>
+        </li>
+      {{/each}}
+    </ul>
+  </nav>
+</div>

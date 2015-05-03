@@ -99,4 +99,46 @@ body {
   text-align: right;
 }
 
+.panel-toolbar > .menu-button {
+  display: inline-block;
+  position: relative;
+  width: 16px;
+  height: 16px;
+}
+
+.panel-toolbar > .menu-button > .popup-menu {
+  position: absolute;
+  top: 0;
+  left: 16px;
+  display: none;
+}
+
+.panel-toolbar > .menu-button:hover > .popup-menu {
+  display: block;
+}
+
+.panel-toolbar > .menu-button > .popup-menu ul {
+  min-width: 12em;
+  text-align: left;
+}
+
+.panel-toolbar > .menu-button > .popup-menu li {
+  position: relative;
+}
+
+.panel-toolbar > .menu-button > .popup-menu li > ul {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  display: none;
+}
+
+.panel-toolbar > .menu-button > .popup-menu li:hover > ul {
+  display: block;
+}
+
+.panel-toolbar > .menu-button > .popup-menu .arrow::before {
+  content: "";
+}
+
 .activeline {background: #e8f2ff !important;}

@@ -11,6 +11,9 @@ define(["jquery", "backbone", "model/project",
 function($, BackBone, Project, template, menubarTemplate){
 
   var ProjectTree = Backbone.View.extend({
+
+    className: "project-tree-container",
+
     initialize: function() {
       _.bindAll(this, "render");
 
@@ -28,7 +31,7 @@ function($, BackBone, Project, template, menubarTemplate){
         .find('.project-tree > ul')
           .metisMenu()
           .end()
-        .find('.project-menubar ul')
+        .find('.project-menubar .popup-menu > ul')
           .end();
     }
   });
