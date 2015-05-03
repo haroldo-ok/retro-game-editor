@@ -14,12 +14,18 @@ function($, BackBone, Project, template, menubarTemplate){
 
     className: "project-tree-container",
 
+    events: {
+      'click .new-project': 'newProject'
+    },
+
     initialize: function() {
-      _.bindAll(this, "render");
+      _.bindAll(this, "render", "newProject");
 
       Project.objects.fetchAll()
         .then(this.render)
         .done();
+
+      Project.objects.on('add', this.render, this);
     },
 
     render: function() {
@@ -33,6 +39,10 @@ function($, BackBone, Project, template, menubarTemplate){
           .end()
         .find('.project-menubar .popup-menu > ul')
           .end();
+    },
+
+    newProject: function() {
+      new Project({name: prompt('Project name?')}).save();
     }
   });
 
