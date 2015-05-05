@@ -13,7 +13,6 @@ require.config({
     underscore: '../../bower_components/underscore/underscore',
     localforage: '../../bower_components/localforage/dist/localforage',
     'localforage-backbone': '../../bower_components/localforage-backbone/dist/localforage.backbone.min',
-    dockspawn: '../../bower_components/dock-spawn/js/out/js/dockspawn',
     'requirejs-text': '../../bower_components/requirejs-text/text',
     'requirejs-html': '../../bower_components/requirejs-html/html',
     css: '../../bower_components/require-css/css',
