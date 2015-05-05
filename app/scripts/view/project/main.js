@@ -46,6 +46,6 @@ function($, BackBone, Project, template, menubarTemplate){
     }
   });
 
-  $("#solution_window").html("").append(new ProjectTree().$el);
+  $("#solution-window").html("").append(new ProjectTree().$el);
 
 });
