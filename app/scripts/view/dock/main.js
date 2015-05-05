@@ -1,11 +1,12 @@
 'use strict';
 
-define(["jquery", "dockspawn", "html!./dock", "css!./dock",
+define(["jquery", "dockspawn", "./view-container", "./static-view",
+    "html!./dock", "css!./dock",
     "css!/bower_components/dock-spawn/js/out/css/dock-manager",
     "css!/bower_components/dock-spawn/js/out/css/font-awesome",
     "css!/bower_components/font-awesome/css/font-awesome",
     "domReady!"],
-    function($, dockspawn, template){
+    function($, dockspawn, ViewContainer, StaticView, template){
       $('body').append(template);
 
       // Convert a div to the dock manager.  Panels can then be docked on to it
@@ -45,4 +46,30 @@ define(["jquery", "dockspawn", "html!./dock", "css!./dock",
       var editor1Node = dockManager.dockFill(documentNode, editor1);
       var editor2Node = dockManager.dockFill(documentNode, editor2);
       var infovisNode = dockManager.dockFill(documentNode, infovis);
+
+      // ***** //
+
+      function prepareView(content) {
+        if (content && content.el && content.render) {
+          // Assumes it's a Backbone.js view
+          return content;
+        } else {
+          return new StaticView.from(content);
+        }
+      }
+
+      // ***** //
+
+      function Dock() {
+      }
+
+      Dock.prototype.createEditor = function(content) {
+        var container = new ViewContainer(prepareView(content), dockManager);
+        var node = dockManager.dockFill(documentNode, container);
+        window.viewContainer = container; // FIXME This line is just for debugging
+      }
+      window.blah = infovis; // FIXME This line is just for debugging
+
+      return new Dock();
+
     });
