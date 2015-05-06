@@ -1,6 +1,6 @@
 'use strict';
 
-define(["jquery", "backbone", "model/project",
+define(["jquery", "backbone", "model/project", "view/dock/main",
   "hbars!./project-tree.hbs", "hbars!./project-menubar.hbs",
   "jstree", "view/dock/main", "view/util/main", "metisMenu",
   "css!/bower_components/bootstrap/dist/css/bootstrap.css",
@@ -8,18 +8,19 @@ define(["jquery", "backbone", "model/project",
   "css!/bower_components/metisMenu/dist/metisMenu.css",
   "css!./menu.css",
   "domReady!"],
-function($, BackBone, Project, template, menubarTemplate){
+function($, BackBone, Project, dock, template, menubarTemplate){
 
   var ProjectTree = Backbone.View.extend({
 
     className: "project-tree-container",
 
     events: {
-      'click .new-project': 'newProject'
+      'click .new-project': 'newProject',
+      'click .resource-link': 'editResource'
     },
 
     initialize: function() {
-      _.bindAll(this, "render", "newProject");
+      _.bindAll(this, "render", "newProject", "editResource");
 
       Project.objects.fetchAll()
         .then(this.render)
@@ -43,6 +44,10 @@ function($, BackBone, Project, template, menubarTemplate){
 
     newProject: function() {
       new Project({name: prompt('Project name?')}).save();
+    },
+
+    editResource: function() {
+      dock.createEditor('<iframe src="internal-apps/tinysprite" style="width: 100%; height: 100%; border: 0">');
     }
   });
 

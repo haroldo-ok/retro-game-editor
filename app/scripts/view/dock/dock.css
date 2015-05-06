@@ -24,6 +24,10 @@ body {
   overflow: hidden;
 }
 
+#editor-window > div {
+  height: 100%;
+}
+
 .panel-toolbar {
   background-color: #aac;
   color: #333;
