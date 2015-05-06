@@ -1,7 +1,9 @@
 'use strict';
 
 define(["backbone", "underscore", "q", "localforage-backbone"], function(Backbone, _, Q){
-  return function(name, options){
+  var registeredEntities = {};
+
+  function entity(name, options){
     var modelOptions = _.omit(options || {}, 'objects');
     var collectionOptions = options && options.objects || {};
 
@@ -53,6 +55,14 @@ define(["backbone", "underscore", "q", "localforage-backbone"], function(Backbon
     Model.BaseCollection = BaseCollection;
     Model.objects = new ModelCollection();
 
+    registeredEntities[name] = Model;
+
     return Model;
   }
+
+  entity.byName = function(name){
+    return registeredEntities[name];
+  }
+
+  return entity;
 });

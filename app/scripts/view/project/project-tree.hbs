@@ -3,13 +3,17 @@
     <ul>
       {{#each projects}}
         <li>
-          <a href="#">
+          <a href="#" data-rge-entity="{{entityName}}" data-rge-id="{{id}}">
             <span class="sidebar-nav-item">{{default name "*unnamed*"}}</span>
             <span class="fa arrow"></span>
           </a>
           <ul>
             {{#each resources}}
-              <li><a href="#">{{default name "*unnamed*"}}</a></li>
+              <li>
+                <a href="#" data-rge-entity="{{entityName}}" data-rge-id="{{id}}">
+                  {{default name "*unnamed*"}}
+                </a>
+              </li>
             {{/each}}
           </ul>
         </li>

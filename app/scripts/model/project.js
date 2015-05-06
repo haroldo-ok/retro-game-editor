@@ -9,6 +9,7 @@ function(model, OneToMany, TileSet, Q){
     },
     fullJSON: function() {
       return _.extend(this.toJSON(), {
+        entityName: this.entityName,
         resources: this.resources.toJSON()
       });
     },
