@@ -1,11 +1,14 @@
 'use strict';
 
-define(["jquery", "./static-view",
+define(["jquery", "./static-view", "./tab-panel",
     "html!./dock", "css!./dock",
     "css!/bower_components/font-awesome/css/font-awesome",
     "domReady!"],
-    function($, StaticView, template){
+    function($, StaticView, TabPanel, template){
       $('body').append(template);
+
+      var tabPanel = new TabPanel();
+      $('#editor-window').html('').append(tabPanel.$el);
 
       // ***** //
 
@@ -25,7 +28,8 @@ define(["jquery", "./static-view",
 
       Dock.prototype.createEditor = function(content) {
         var view = prepareView(content);
-        $('#editor-window').html('').append(view.$el);
+        tabPanel.createTab(view);
+//        $('#editor-window').html('').append(view.$el);
       }
 
       return new Dock();
