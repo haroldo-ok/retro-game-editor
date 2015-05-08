@@ -30,14 +30,14 @@ Also, take a look at the Changelog:
 	<script src='tinysprite.js'></script>
 	<script src='slots.js'></script>
 	<script src='palette.js'></script>
-	<script src='grid.js'></script>	
-	<script src='gridCanvas.js'></script>		
+	<script src='grid.js'></script>
+	<script src='gridCanvas.js'></script>
 	<script src='picker.js'></script>
 	<script src='drawing.js'></script>
 	<script src='colorEditor.js'></script>
 	<script src='undo.js'></script>
-	<script src='table.html'></script>		
-	<script src='sprite.js'></script>	
+	<script src='table.html'></script>
+	<script src='sprite.js'></script>
 <style>
 @import 'tinysprite.css';
 </style>
@@ -69,11 +69,11 @@ Also, take a look at the Changelog:
 	<area shape="polygon" coords="1,1,9,1,14,11,14,13,9,23,1,23" href="#" onclick="return gridRollLeft()" title='Roll Left' />
 	<area shape="polygon" coords="38,1,47,1,47,23,38,23,33,13,33,11" href="#" onclick="return gridRollRight()" title='Roll Right' />
 	<area shape="polygon" coords="17,13,31,13,36,23,11,23" href="#" onclick="return gridRollDown()" title='Roll Down' />
-</map>			
+</map>
 
 <table class='core' cellspacing='0' cellpadding='0'>
 	<tr>
-		<td>		
+		<td>
 			<table style='padding: 10px 0px 10px 0px'>
 				<tr>
 					<td><img src='img/logo.gif' align='top' /></td>
@@ -97,7 +97,7 @@ Also, take a look at the Changelog:
 						</small>
 						<select id='projType' onchange='return onProjTypeChange(this)' >
 							<option value='msx1'>MSX 1</option>
-							<option value='msx2'>MSX 2</option>				
+							<option value='msx2'>MSX 2</option>
 						</select>&nbsp;
 					</td>
 					<td>
@@ -122,14 +122,14 @@ Also, take a look at the Changelog:
 						Saving to a file only works on a local install
 					</td>
 				</tr>
-			</table>	
+			</table>
 		</td>
 	</tr>
 	<tr>
 		<td colspan='2' style='padding-bottom: 4px'>
 			<!-- <a class='help' href='manual.html#tools' target='faq'>?</a> -->
 			<div>
-				<small id='warning' style='color: red'></small>	
+				<small id='warning' style='color: red'></small>
 				<img id='tool_pencil' class='tool' src='img/pencil.gif' onclick='return usePencil()' title='Pencil' />
 				<img id='tool_bucket' class='tool' src='img/bucket.gif' onclick='return useBucket()' title='Bucket' />
 				<img id='tool_picker' class='tool' src='img/picker.gif' onclick='return usePicker()' title='Color Picker' />
@@ -153,14 +153,14 @@ Also, take a look at the Changelog:
 		</td>
 	</tr>
 	<tr>
-		<td style='border-right: dotted 1px silver'>		
+		<td style='border-right: dotted 1px silver'>
 			<h3>Grid</h3>
 			<div id='grid'></div>
-			
+
 			<h3>Palette <small id='paletteTip' class='small'>(double-click to edit color) </small></h3>
 			<div id='palette' style='width: 21.5em'></div>
 			<div id='colorEditor' class='colorEditor'></div>
-		</td>		
+		</td>
 		<td style='padding-left: 1em'>
 			<table>
 				<tr>
@@ -178,7 +178,7 @@ Also, take a look at the Changelog:
 							<td><div id='preview0' class='preview'></div></td>
 							<td><div id='preview1' class='preview'></div></td>
 						</tr>
-						<tr>							
+						<tr>
 							<td><div id='preview2' class='preview'></div></td>
 							<td><div id='preview3' class='preview'></div></td>
 						</tr>
@@ -203,16 +203,16 @@ Also, take a look at the Changelog:
 								</td>
 							</tr>
 						</table>
-						
+
 						<small><br />Background:</small><br />
 						<select id="background" onchange='return selectBackground(this)' />
 					</td>
 				</tr>
 			</table>
 			<br />
-			
+
 			<img id='tool_export' class='action' style='position: absolute' src='img/export.png' align='top' onclick='exportWork()' title='Export' />
-			<ul id='tabs' class='tabs'>				
+			<ul id='tabs' class='tabs'>
 				<li class="tabSelected"><a href='#' onclick='return showTab(this, "tabExpOptions");'>Export</a></li>
 				<li class="tab"><a href='#' onclick='return showTab(this, "tabExpCode");'>Code</a></li>
 			</ul>
@@ -223,9 +223,9 @@ Also, take a look at the Changelog:
 					<select id='expType' onchange='return showExpOptions(this)'>
 						<option value='data'>Data</option>
 						<option value='basic'>Basic</option>
-						<option value='hex'>ASM hexa</option>					
+						<option value='hex'>ASM hexa</option>
 						<option value='bin'>ASM binary</option>
-						<option value='C'>C</option>		
+						<option value='C'>C</option>
 						<option value='pascal'>Pascal</option>
 					</select>
 				</td>
@@ -238,14 +238,14 @@ Also, take a look at the Changelog:
 					<p><b>Basic/DATA options:</b>
 					<table cellpadding="8"><tr>
 					<td valign="top">
-						<input id='basic.useLine' type='checkbox' checked='checked' 
+						<input id='basic.useLine' type='checkbox' checked='checked'
 							onclick='enabler(this.checked, ["basic.startLine", "basic.step"])' />
 						<label for='basic.useLine'>Line numbers</label>
 						<br />
 						<input id='basic.includeLoader' type='checkbox' checked='checked' />
 						<label for='basic.includeLoader'>Include loader</label>
 					</td>
-					<td valign="top">					
+					<td valign="top">
 						<label for='basic.startLine'>Start line</label><br />
 						<input style='width:56px' maxlength='5' id='basic.startLine' value='10' />
 					</td>
@@ -257,15 +257,15 @@ Also, take a look at the Changelog:
 					</p>
 				</div>
 				<div style='text-align: right'>
-					
+
 				</div>
 			</div>
-			
+
 			<div class='tabContents' id='tabExpCode'>
 				<div id='exp' class='exportField'><i>click the Export button <img src='img/export.png' align='top' /></i></div>
 			</div>
 			<br />
-			
+
 			<!--<div style='padding-top: 4px' id='expColor'></div>-->
 		</td>
 	</tr>
@@ -329,7 +329,7 @@ slots.onChange = function() {
 			preview.slot = slot.id;
 			updatePreviewLabel(preview);
 			preview.updateGrid();
-		}			
+		}
 	}
 }
 
@@ -357,7 +357,7 @@ function updatePreviews(force) {
 		p.drawing = (slot) ? slot.drawing : null;
 		if (p.drawing)
 			p.drawing.dirty = false;
-	}	
+	}
 }
 
 function selectTool(toolid) {
@@ -365,25 +365,25 @@ function selectTool(toolid) {
 		tool.className = 'tool';
 	tool = eid(toolid);
 	tool.className = 'toolSelected';
-	
+
 	grid.onMouseDown = null;
 	grid.onMouseUp = null;
-	
+
 	if (toolid == 'tool_pencil') {
 		grid.onMouseDown = function() {
 			var current = grid.drawing;
-			var saved = current.clone();			
+			var saved = current.clone();
 			grid.onMouseUp = function() {
 				var before = saved;
 				var after = current.clone();
-		
+
 				var redoFunc = function() {
 					current.copy(after);
 				}
 				var undoFunc = function() {
-					current.copy(before);			
-				}			
-				Undo.save("Pencil", undoFunc, redoFunc);			
+					current.copy(before);
+				}
+				Undo.save("Pencil", undoFunc, redoFunc);
 			}
 		}
 	}
@@ -423,10 +423,10 @@ function email(el) {
 
 function gridRollUp() {
 	var current = grid.drawing;
-	
+
 	var redoFunc = function() {
 		current.rollUp();
-	}	
+	}
 	var undoFunc = function() {
 		current.rollDown();
 	}
@@ -439,7 +439,7 @@ function gridRollDown() {
 
 	var redoFunc = function() {
 		current.rollDown();
-	}	
+	}
 	var undoFunc = function() {
 		current.rollUp();
 	}
@@ -452,7 +452,7 @@ function gridRollLeft() {
 
 	var redoFunc = function() {
 		current.rollLeft();
-	}	
+	}
 	var undoFunc = function() {
 		current.rollRight();
 	}
@@ -465,7 +465,7 @@ function gridRollRight() {
 
 	var redoFunc = function() {
 		current.rollRight();
-	}	
+	}
 	var undoFunc = function() {
 		current.rollLeft();
 	}
@@ -478,9 +478,9 @@ function flipHorizontal() {
 
 	var func = function() {
 		current.flipHorizontal();
-	}	
+	}
 	Undo.runSave("Flip Horizontal", func, func);
-	return false;	
+	return false;
 }
 
 function flipVertical() {
@@ -488,9 +488,9 @@ function flipVertical() {
 
 	var func = function() {
 		current.flipVertical();
-	}	
+	}
 	Undo.runSave("Flip Vertical", func, func);
-	return false;	
+	return false;
 }
 
 function rotateCW() {
@@ -498,7 +498,7 @@ function rotateCW() {
 
 	var redoFunc = function() {
 		current.rotateCW();
-	}	
+	}
 	var undoFunc = function() {
 		current.rotateACW();
 	}
@@ -511,7 +511,7 @@ function rotateACW() {
 
 	var redoFunc = function() {
 		current.rotateACW();
-	}	
+	}
 	var undoFunc = function() {
 		current.rotateCW();
 	}
@@ -540,13 +540,13 @@ function updateUndo() {
 	if (Undo.canUndo()) {
 		if (iDocID != null) {
 			parent.app.moduleDocumentChanged(iDocID);
-		}	
+		}
 		var next = Undo.getNextUndo();
 		undo_title = next.desc;
 	} else {
 		if (iDocID != null) {
 			parent.app.moduleDocumentChanged(iDocID, true);
-		}	
+		}
 	}
 	if (Undo.canRedo()) {
 		var next = Undo.getNextRedo();
@@ -554,9 +554,9 @@ function updateUndo() {
 	}
 	tool_undo.setAttribute('title', (undo_title) ? ('Undo "' + undo_title + '"') : 'Undo');
 	tool_redo.setAttribute('title', (redo_title) ? ('Redo "' + redo_title + '"') : 'Redo');
-	
+
 	setOpacity(tool_undo, (undo_title) ? 100 : 30);
-	setOpacity(tool_redo, (redo_title) ? 100 : 30);	
+	setOpacity(tool_redo, (redo_title) ? 100 : 30);
 }
 
 function usePencil() {
@@ -568,14 +568,14 @@ function useBucket() {
 	selectTool('tool_bucket');
 	grid.click = function(el, x, y) {
 		this.releaseButton();
-	
+
 		var saved = grid.drawing.clone();
 		var current = grid.drawing;
 		var color = grid.color;
-		
+
 		var redoFunc = function() {
 			var lookfor = current.pixels[y][x];
-			current.paint(x, y, color, lookfor);			
+			current.paint(x, y, color, lookfor);
 		}
 		var undoFunc = function() {
 			// we can't just assign pixels, because a redo would paint over our saved copy
@@ -597,7 +597,7 @@ function useCircle() {
 	selectTool('tool_circle');
 	grid.click = function(el, x, y) {
 		this.releaseButton();
-		
+
 		var rad = prompt("Circle radius?");
 		if (!rad)
 			return;
@@ -606,13 +606,13 @@ function useCircle() {
 		} catch(e) {
 			return;
 		}
-	
+
 		var saved = grid.drawing.clone();
 		var current = grid.drawing;
 		var color = grid.color;
-		
+
 		var redoFunc = function() {
-			current.circle(x, y, rad, color);			
+			current.circle(x, y, rad, color);
 		}
 		var undoFunc = function() {
 			current.copy(saved);
@@ -641,21 +641,21 @@ function useLine() {
 	var lx = null, ly = null;
 	grid.click = function(el, x, y) {
 		this.releaseButton();
-		
+
 		if (lx == null && ly == null) {
 			lx = x;
 			ly = y;
 			return;
 		}
-		
+
 		var saved = grid.drawing.clone();
 		var current = grid.drawing;
 		var color = grid.color;
-		
+
 		var redoFunc = function() {
 			current.line(lx, ly, x, y, color);
 			lx = x; ly = y;
-			
+
 		}
 		var undoFunc = function() {
 			current.copy(saved);
@@ -680,7 +680,7 @@ function selectBackground(el) {
 	var bk = el.value;
 	grid.el.style.backgroundColor = grid.colors[bk];
 	for (var k in previews)
-		previews[k].el.style.backgroundColor = grid.colors[bk];	
+		previews[k].el.style.backgroundColor = grid.colors[bk];
 }
 
 function selectPreview(id) {
@@ -703,7 +703,7 @@ function clearGrid() {
 		var redoFunc = function() {
 			current.clear();
 		}
-		Undo.runSave("Clear Drawing", undoFunc, redoFunc);		
+		Undo.runSave("Clear Drawing", undoFunc, redoFunc);
 	}
 	return true;
 }
@@ -719,7 +719,7 @@ function deleteSlot() {
 		var name = slot.getName();
 		var r = confirm("This can't be undone. Really DELETE the '" + name + "'?");
 		if (r)
-			slots.remove(slot);		
+			slots.remove(slot);
 	}
 }
 
@@ -732,7 +732,7 @@ function renameSlot() {
 			slot.setName(newname);
 			updatePreviews();
 		}
-	}	
+	}
 }
 
 function onProjTypeChange(el) {
@@ -753,7 +753,7 @@ function projTypeChanged() {
 	palette.sigzero = type2;
 	paletteTip.style.visibility = (type2) ? 'visible' : 'hidden';
 	if (type2) {
-		effectMovingArrow(paletteTip);		
+		effectMovingArrow(paletteTip);
 	} else {
 		palette.copy(msx1Palette);
 		colorEditor.hide();
@@ -761,16 +761,32 @@ function projTypeChanged() {
 	colorEditor.updateGUI();
 }
 
+function projectToJSON() {
+	var json = {
+		tiles: []
+	};
+
+	for (s in slots.items) {
+		var hex = slots.items[s].save(true);
+		json.tiles.push({
+			name: slots.items[s].getName(),
+			pixels: hex
+		});
+	}
+
+	return json;
+}
+
 function projectEncode() {
 	var x,y,s;
 	var msx1 = (eid('projType').value == 'msx1');
 	var enc = new Array();
-	
+
 	if (!palette.isEqual(msx1Palette)) {
 		enc.push('!palette');
 		enc.push(palette.encodeColors().join(","));
 	}
-	
+
 	for (s in slots.items) {
 		var hex = slots.items[s].save(msx1);
 		if (hex != null) {
@@ -779,12 +795,12 @@ function projectEncode() {
 			enc.push(hex);
 		}
 	}
-	
+
 	if (enc.length) {
-		enc.unshift(eid('projType').value); 
-		enc.unshift('!type');	
+		enc.unshift(eid('projType').value);
+		enc.unshift('!type');
 	}
-	
+
 	return enc.join("\n");
 }
 
@@ -797,7 +813,7 @@ function saveMozilla(file) {
 	var output = projectEncode();
 	var result = outputStream.write( output, output.length );
 	outputStream.close();
-	
+
 	ff_file = file;
 }
 
@@ -814,17 +830,17 @@ function loadMozilla(file) {
 	sis.init( is );
 	var enc = sis.read( sis.available() );
 	receiveTXT(enc);
-	
+
 	ff_file = file;
 }
 
 function saveAll() {
 	var saveMethod = eid('saveMethod').value;
-	
+
 	if (saveMethod == 'cookie') {
 		eraseCookie("saved");
 		createCookie("saved", projectEncode(), 36500); // 100 years of pain :)
-		alert("Saved :)");	
+		alert("Saved :)");
 	} else
 	if (saveMethod == 'export') {
 		exportTXT();
@@ -832,11 +848,11 @@ function saveAll() {
 	if (saveMethod == 'dataurl') {
 		var str = projectEncode();
 		var strBase64 = btoa(str);
-		var strURL = escape(str);		
-		eid('saveLink').href = 'data:application/octet-stream;' + 
+		var strURL = escape(str);
+		eid('saveLink').href = 'data:application/octet-stream;' +
 			((strBase64.length < strURL.length) ? 'base64,' + strBase64 : ',' + strURL);
 	} else
-	if (saveMethod == 'mozilla') {	
+	if (saveMethod == 'mozilla') {
 		try {
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 		} catch (e) {
@@ -856,7 +872,7 @@ function saveAll() {
 			alert("File saved :)");
 		}
 	}
-	return false;	
+	return false;
 }
 
 function loadAll() {
@@ -896,7 +912,7 @@ function loadAll() {
 			loadMozilla(fp.file);
 		}
 	}
-	
+
 	selectPreview(0);
 	slots.selectIndex(0);
 }
@@ -928,15 +944,15 @@ function projectDecode(c) {
 	for (var i = 0; i < ca.length; i++) {
 		var line = ca[i];
 		if (line.charAt(0) == '#') {
-			// begin slot			
+			// begin slot
 			var name = line.substring(1, line.length);
 			slot = slots.create();
 			slot.setName(name);
 			enc = '';
 			next = 'slot';
-		} else 
+		} else
 		if (line.charAt(0) == '!') {
-			var next = line.substring(1, line.length);			
+			var next = line.substring(1, line.length);
 		} else
 		{
 			switch (next) {
@@ -959,7 +975,7 @@ function projectDecode(c) {
 			}
 		}
 	}
-	colorEditor.updateGUI();	
+	colorEditor.updateGUI();
 	updatePreviews();
 }
 
@@ -986,7 +1002,7 @@ function exportWork() {
 			result = (exp != null) ? exp : "";
 		}
 	}
-	
+
 	var el = eid('exp');
 	if (result == "")
 		el.innerHTML = "<i>Nothing to export</i>";
@@ -1000,7 +1016,7 @@ function exportWork() {
 				stepLine = parseInt(eid('basic.step').value, 10);
 				if (isNaN(stepLine))
 					stepLine = 10;
-		
+
 				var r = result.split("\n");
 				for (var k in r) {
 					if (r[k] != "") {
@@ -1009,8 +1025,8 @@ function exportWork() {
 					}
 				}
 				result = r.join("\n");
-			}			
-			
+			}
+
 			if (eid('basic.includeLoader').checked) {
 				result += startLine + " DATA *\n";
 				startLine += stepLine;
@@ -1031,7 +1047,7 @@ function exportWork() {
 		el.innerHTML = result.replace(/\n/g, '<br />');
 	}
 	showTab(1, 'tabExpCode');
-	
+
 	return result;
 }
 
@@ -1041,7 +1057,7 @@ function exportTXT() {
 		alert('All slots are empty');
 		return;
 	}
-	
+
 	var exp = eid('exp');
 	exp.innerHTML = txt.replace(/\n/g, "<br />");
 
@@ -1065,7 +1081,7 @@ function receiveTXT(txt, loc) {
 		txt.replace(/[0-9a-f][0-9a-f]/ig, function(m) { values.push(parseInt(m, 16)); return ''; });
 		var slot = slots.getSelected();
 		slot.import_(values, grid.color);
-	} else	
+	} else
 	if (txt != "") {
 		slots.clear();
 		projectDecode(txt);
@@ -1151,12 +1167,12 @@ for (var i = 0; i < 4; i++) {
 
 	previews[i] = (useCanvas) ? new GridCanvas(16, true) : new Grid(16, true);
 	previews[i].setPalette(palette);
-	
+
 	var p = previews[i];
 	setupPreview(i, p);
 	p.slot = i;
 	p.pixels = slots.items[i].drawing;
-	
+
 	divpreview[i] = div;
 	div.appendChild(p.el);
 }
@@ -1215,14 +1231,14 @@ picker.ondblclick = function(value) {
 			colorEditor.show();
 		offsetY = -colorEditor.height;
 	}
-		
+
 	colorEditor.move(getOffsetLeft(el_cell), getOffsetTop(el_cell) + offsetY);
-	
+
 	var color = picker.palette.get333(value);
 	colorEditor.setFields(color.r, color.g, color.b);
-	
-	colorEditor.show();	
-	colorEditor.focus();	
+
+	colorEditor.show();
+	colorEditor.focus();
 	colorEditor.current = value;
 }
 
@@ -1276,10 +1292,10 @@ if (parent.app) {
 					createSlot();
 					createSlot();
 					createSlot();
-					createSlot();										
-				}				
+					createSlot();
+				}
 				selectPreview(0);
-				slots.selectIndex(0);				
+				slots.selectIndex(0);
 			},
 			saveDocument: function(aDoc) {
 				return projectEncode();
