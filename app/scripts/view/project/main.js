@@ -46,8 +46,14 @@ function($, BackBone, Project, dock, template, menubarTemplate){
       new Project({name: prompt('Project name?')}).save();
     },
 
-    editResource: function() {
-      dock.createEditor('<iframe src="internal-apps/tinysprite" style="width: 100%; height: 100%; border: 0">');
+    editResource: function(ev) {
+      var $target = $(ev.target);
+
+      dock.createEditor(
+        '<iframe src="internal-apps/tinysprite' +
+        '?entity=' + $target.data('rgeEntity') +
+        '&entityId=' + $target.data('rgeId') +
+        '" style="width: 100%; height: 100%; border: 0">');
     }
   });
 
