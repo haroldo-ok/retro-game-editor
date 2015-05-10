@@ -8,7 +8,8 @@ body {
 }
 
 .core {
-	margin: 0 auto;
+	margin: 0;
+	margin-left: 2px;
 }
 
 td {
@@ -51,7 +52,7 @@ h3, h4, h5 {
 
 .previewSelected {
 	border: solid 1px #7d76fc;
-	cursor: pointer;	
+	cursor: pointer;
 }
 
 .preview {
@@ -99,7 +100,7 @@ h3, h4, h5 {
 
 .tool, .toolSelected {
 	cursor: pointer;
-	padding: 2px;	
+	padding: 2px;
 }
 
 .tool {
@@ -133,7 +134,7 @@ h3, h4, h5 {
 	background: white;
 	display: none;
 	position: absolute;
-	width: 256px;	
+	width: 256px;
 }
 
 .lowprofLink {
@@ -152,9 +153,9 @@ h3, h4, h5 {
 	padding: 8px;
 	border-left: solid 1px #ccc;
 	border-right: solid 1px #ccc;
-	border-bottom: solid 1px #ccc;		
-	width: 34em; 
-	height: 11em;	
+	border-bottom: solid 1px #ccc;
+	width: 34em;
+	height: 11em;
 }
 
 .tabs {
@@ -196,3 +197,14 @@ h3, h4, h5 {
 	background-color: #fff;
 }
 
+.tinysprite-title,
+.tinysprite-credits {
+	display: none;
+}
+
+#tool_export,
+#tabs,
+#tabExpOptions {
+	display: none;
+	visibility: hidden;
+}
