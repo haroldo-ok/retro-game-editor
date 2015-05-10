@@ -1,0 +1,6 @@
+/* Based on http://jsfiddle.net/2Smgv/3100/ */
+
+.dropdown:hover > .dropdown-menu {
+    display: block;
+    margin-top: 0;
+}
