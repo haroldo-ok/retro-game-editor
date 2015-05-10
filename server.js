@@ -15,5 +15,5 @@ app.use('/app', express.static(__dirname + '/app'));
 app.use('/bower_components', express.static(__dirname + '/bower_components'));
 
 
-app.listen(3000);
-console.log('listening on port 3000');
+app.listen(80);
+console.log('listening on port 80');
