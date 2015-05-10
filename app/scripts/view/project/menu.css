@@ -61,16 +61,6 @@
   padding-right: 5px;
 }
 
-/*
-.panel-toolbar > .menu-button > .popup-menu ul {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
-  background-image: -webkit-linear-gradient(left, color-stop(#333333 10px), color-stop(#222222 10px));
-  background-image: linear-gradient(to right, #333333 10px, #222222 10px);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff333333', endColorstr='#ff222222', GradientType=1);
-}
-*/
-
 .project-tree-container {
   height: 100%;
 }
@@ -78,4 +68,21 @@
 .project-tree-scroller {
   height: calc(100% - 26px);
   overflow: auto;
+}
+
+.project-tree .project {
+  position: relative;
+}
+
+.project-tree .project > .project-menu {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.project-tree .project > .project-menu .dropdown-menu {
+  background-image: -webkit-linear-gradient(left, color-stop(#333333 10px), color-stop(#222222 10px));
+  background-image: linear-gradient(to right, #333333 10px, #222222 10px);
+  background-repeat: repeat-x;
+  margin-top: -4px;
 }

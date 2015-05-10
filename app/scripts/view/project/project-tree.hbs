@@ -2,11 +2,31 @@
   <nav class="project-tree sidebar-nav">
     <ul>
       {{#each projects}}
-        <li>
+        <li class="project">
           <a href="#" data-rge-entity="{{entityName}}" data-rge-id="{{id}}">
             <span class="sidebar-nav-item">{{default name "*unnamed*"}}</span>
-            <span class="fa arrow"></span>
           </a>
+
+          <div class="project-menu dropdown pull-right">
+            <a role="button" data-toggle="dropdown" class="btn" data-target="#" href="#">
+              <i class="fa fa-ellipsis-h"></i>
+            </a>
+            <ul class="dropdown-menu">
+              <li>
+                <a href="#" class="rename-project">
+                  <span class="fa fa-edit"></span>
+                  <span>Rename...</span>
+                </a>
+              </li>
+              <li>
+                <a href="#" class="delete-project">
+                  <span class="fa fa-trash"></span>
+                  <span>Delete...</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+
           <ul>
             {{#each resources}}
               <li>
