@@ -39,6 +39,7 @@
     "handlebars": "~3.0.3",
     "font-awesome": "~4.3.0",
     "metisMenu": "~2.0.0",
-    "bootstrap": "~3.3.4"
+    "bootstrap": "~3.3.4",
+    "query-string": "git@github.com:haroldo-ok/query-string.git#2.1.1_haroldo-ok"
   }
 }

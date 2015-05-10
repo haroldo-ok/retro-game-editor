@@ -50,7 +50,7 @@ function($, BackBone, Project, dock, template, menubarTemplate){
       var $target = $(ev.target);
 
       dock.createEditor(
-        '<iframe src="internal-apps/tinysprite' +
+        '<iframe src="internal-apps/tinysprite/tinysprite.html' +
         '?entity=' + $target.data('rgeEntity') +
         '&entityId=' + $target.data('rgeId') +
         '" style="width: 100%; height: 100%; border: 0">');

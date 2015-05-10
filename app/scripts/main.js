@@ -25,7 +25,8 @@ require.config({
     handlebars: '../../bower_components/handlebars/handlebars',
     'font-awesome': '../../bower_components/font-awesome/fonts/*',
     metisMenu: '../../bower_components/metisMenu/dist/metisMenu',
-    bootstrap: '../../bower_components/bootstrap/dist/js/bootstrap'
+    bootstrap: '../../bower_components/bootstrap/dist/js/bootstrap',
+    'query-string': '../../bower_components/query-string/index'
   },
   packages: [
     'model',
