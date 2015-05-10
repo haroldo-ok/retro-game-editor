@@ -42,5 +42,8 @@
     "bootstrap": "~3.3.4",
     "query-string": "git+https://30019e770164e43edf2a304d9a0c5be973c8906e:x-oauth-basic@github.com/haroldo-ok/query-string.git#2.1.1_haroldo-ok",
     "localforage-backbone": "~0.6.1"
+  },
+  "resolutions": {
+    "underscore": ">=1.5.0"
   }
 }
