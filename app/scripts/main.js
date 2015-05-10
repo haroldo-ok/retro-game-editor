@@ -6,7 +6,9 @@ require.config({
       exports: 'dockspawn'
     },
     metisMenu: {
-      deps: ['jquery']
+      deps: [
+        'jquery'
+      ]
     }
   },
   paths: {
@@ -28,8 +30,7 @@ require.config({
     handlebars: '../../bower_components/handlebars/handlebars',
     'font-awesome': '../../bower_components/font-awesome/fonts/*',
     metisMenu: '../../bower_components/metisMenu/dist/metisMenu',
-    bootstrap: '../../bower_components/bootstrap/dist/js/bootstrap',
-    'query-string': '../../bower_components/query-string/index'
+    bootstrap: '../../bower_components/bootstrap/dist/js/bootstrap'
   },
   packages: [
     'model',

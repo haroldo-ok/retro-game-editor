@@ -856,7 +856,7 @@ function loadMozilla(file) {
 
 function loadModel(callback) {
 	var pageQuery = location.search;
-	top.require(["model", "query-string"], function(model, queryString){
+	top.require(["model", "view/util/query-string"], function(model, queryString){
 		var query = queryString.parse(pageQuery);
 		var Model = model.byName(query.entity);
 		var entity = Model.objects.get(query.entityId);

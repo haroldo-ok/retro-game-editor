@@ -15,6 +15,6 @@ app.use('/app', express.static(__dirname + '/app'));
 app.use('/bower_components', express.static(__dirname + '/bower_components'));
 
 
-var port = process.env.PORT || 5000;
+var port = process.env.PORT || 3000;
 app.listen(port);
 console.log('listening on port ' + port);
