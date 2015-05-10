@@ -36,6 +36,7 @@ function($, BackBone, Handlebars, Project, dock, model,
         .done();
 
       Project.objects.on('add', this.render, this);
+      Project.objects.on('destroy', this.render, this);
       Project.objects.on('change:name', this.render, this);
     },
 
@@ -82,6 +83,7 @@ function($, BackBone, Handlebars, Project, dock, model,
     renameResource: function(ev) {
       var resource = this.getSelectedResorce(ev.target);
 
+      // TODO: Use a prettier prompt.
       var name = prompt(
         resource.entityName + ' name?',
         resource.get('name') || '');
@@ -92,7 +94,16 @@ function($, BackBone, Handlebars, Project, dock, model,
     },
 
     deleteResource: function(ev) {
+      var resource = this.getSelectedResorce(ev.target);
 
+      // TODO: Use a prettier prompt.
+      var confirmed = confirm(
+        'Do you want to delete the ' + resource.entityName + ' named ' +
+        (resource.get('name') || '*unnamed*') + '?');
+
+      if (confirmed) {
+        resource.destroy();
+      }
     }
   });
 
