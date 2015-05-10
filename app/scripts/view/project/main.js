@@ -1,6 +1,7 @@
 'use strict';
 
-define(["jquery", "backbone", "handlebars", "model/project", "view/dock/main",
+define(["jquery", "backbone", "handlebars", "model/project",
+  "view/dock/main", "model",
   "hbars!./project-tree.hbs", "hbars!./project-menubar.hbs",
   "text!./resource-menu.hbs",
   "jstree", "view/dock/main", "view/util/main", "metisMenu",
@@ -11,7 +12,7 @@ define(["jquery", "backbone", "handlebars", "model/project", "view/dock/main",
   "css!./bootstrap-dropdown-hover.css",
   "css!./menu.css",
   "domReady!"],
-function($, BackBone, Handlebars, Project, dock,
+function($, BackBone, Handlebars, Project, dock, model,
   template, menubarTemplate, resourceMenuTemplate){
 
   Handlebars.registerPartial('resourceMenu', resourceMenuTemplate);
@@ -22,17 +23,20 @@ function($, BackBone, Handlebars, Project, dock,
 
     events: {
       'click .new-project': 'newProject',
-      'click .resource-link': 'editResource'
+      'click .resource-link': 'editResource',
+      'click .rename-resource': 'renameResource',
+      'click .delete-resource': 'deleteResource'
     },
 
     initialize: function() {
-      _.bindAll(this, "render", "newProject", "editResource");
+      _.bindAll(this, "render", "newProject", "editResource", "renameResource", "deleteResource");
 
       Project.objects.fetchAll()
         .then(this.render)
         .done();
 
       Project.objects.on('add', this.render, this);
+      Project.objects.on('change:name', this.render, this);
     },
 
     render: function() {
@@ -60,6 +64,35 @@ function($, BackBone, Handlebars, Project, dock,
         '?entity=' + $target.data('rgeEntity') +
         '&entityId=' + $target.data('rgeId') +
         '" style="width: 100%; height: 100%; border: 0">');
+    },
+
+    getSelectedResorce: function(clickedElement) {
+      var $link = $(clickedElement).closest('.resource')
+          .find('.resource-link, .project-link');
+
+      var entityName = $link.data('rgeEntity');
+      var entityId = $link.data('rgeId');
+
+      var Model = model.byName(entityName);
+      var entity = Model.objects.get(entityId);
+
+      return entity;
+    },
+
+    renameResource: function(ev) {
+      var resource = this.getSelectedResorce(ev.target);
+
+      var name = prompt(
+        resource.entityName + ' name?',
+        resource.get('name') || '');
+
+      if (name) {
+        resource.save({name: name});
+      }
+    },
+
+    deleteResource: function(ev) {
+
     }
   });
 
