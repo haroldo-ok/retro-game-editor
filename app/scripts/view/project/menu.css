@@ -70,19 +70,30 @@
   overflow: auto;
 }
 
-.project-tree .project {
+.project-tree .resource {
   position: relative;
 }
 
-.project-tree .project > .project-menu {
+.project-tree .resource > .resource-menu {
   position: absolute;
   top: 0;
   right: 0;
 }
 
-.project-tree .project > .project-menu .dropdown-menu {
+.project-tree .resource > .resource-menu .dropdown-menu {
   background-image: -webkit-linear-gradient(left, color-stop(#333333 10px), color-stop(#222222 10px));
   background-image: linear-gradient(to right, #333333 10px, #222222 10px);
   background-repeat: repeat-x;
   margin-top: -4px;
+}
+
+.sidebar-nav ul ul.dropdown-menu a,
+.sidebar-nav ul ul .resource-menu a {
+  background: none;
+}
+
+.sidebar-nav ul .resource-menu a,
+.sidebar-nav ul ul .resource-menu a {
+  padding-left: 12px;
+  padding-right: 12px;
 }

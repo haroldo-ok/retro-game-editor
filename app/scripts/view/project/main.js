@@ -1,7 +1,8 @@
 'use strict';
 
-define(["jquery", "backbone", "model/project", "view/dock/main",
+define(["jquery", "backbone", "handlebars", "model/project", "view/dock/main",
   "hbars!./project-tree.hbs", "hbars!./project-menubar.hbs",
+  "text!./resource-menu.hbs",
   "jstree", "view/dock/main", "view/util/main", "metisMenu",
   "css!/bower_components/bootstrap/dist/css/bootstrap.css",
   "css!/bower_components/jstree/dist/themes/default/style.min.css",
@@ -10,7 +11,10 @@ define(["jquery", "backbone", "model/project", "view/dock/main",
   "css!./bootstrap-dropdown-hover.css",
   "css!./menu.css",
   "domReady!"],
-function($, BackBone, Project, dock, template, menubarTemplate){
+function($, BackBone, Handlebars, Project, dock,
+  template, menubarTemplate, resourceMenuTemplate){
+
+  Handlebars.registerPartial('resourceMenu', resourceMenuTemplate);
 
   var ProjectTree = Backbone.View.extend({
 
