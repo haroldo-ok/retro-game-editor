@@ -777,6 +777,24 @@ function projectToJSON() {
 	return json;
 }
 
+function receiveJSON(json) {
+	slots.clear();
+
+	json.tiles.forEach(function(tile){
+		var slot = slots.create();
+		slot.setName(tile.name);
+		if (tile.pixels) {
+			slot.load(tile.pixels.replace(/\s+/g, ''));
+		}
+	});
+
+	colorEditor.updateGUI();
+	updatePreviews();
+	selectPreview(0);
+	slots.selectIndex(0);
+	grid.updateGrid();
+}
+
 function projectEncode() {
 	var x,y,s;
 	var msx1 = (eid('projType').value == 'msx1');
@@ -834,15 +852,21 @@ function loadMozilla(file) {
 	ff_file = file;
 }
 
+function loadModel(callback) {
+	var pageQuery = location.search;
+	top.require(["model", "query-string"], function(model, queryString){
+		var query = queryString.parse(pageQuery);
+		var Model = model.byName(query.entity);
+		var entity = Model.objects.get(query.entityId);
+		callback(entity);
+	});
+}
+
 function saveAll() {
 	var pageQuery = location.search;
 	var json = projectToJSON();
 
-	top.require(["model", "query-string"], function(model, queryString){
-		debugger;
-		var query = queryString.parse(pageQuery);
-		var Model = model.byName(query.entity);
-		var model = Model.objects.get(query.entityId);
+	loadModel(function(model){
 		model.set(json);
 		model.save();
 	});
@@ -851,42 +875,13 @@ function saveAll() {
 }
 
 function loadAll() {
-	var saveMethod = eid('saveMethod').value;
-
-	if (saveMethod == 'cookie') {
-		var l = confirm("This will erase your current work.\n" + "Are you sure you want to Load?");
-		if (l == false)
-			return;
-
-		var c = readCookie('saved');
-		if (c) {
-			slots.clear();
-			projectDecode(c);
-		}
-	} else
-	if (saveMethod == 'export') {
-		importTXT();
-		return;
-	} else
-	if (saveMethod == 'mozilla') {
-		try {
-			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		} catch (e) {
-			alert("Can't load Project: " + e);
-			return;
-		}
-
-		var nsIFilePicker = Components.interfaces.nsIFilePicker;
-		var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
-		fp.init(window, "Load Project", nsIFilePicker.modeOpen);
-		fp.defaultExtension = "txt";
-		fp.appendFilter("Sprite project (.txt)","*.txt");
-
-		var res = fp.show();
-		if (res == nsIFilePicker.returnOK || res == nsIFilePicker.returnReplace){
-			loadMozilla(fp.file);
-		}
-	}
+	loadModel(function(model){
+		model.fetch({
+			success: function(){
+				receiveJSON(model.toJSON());
+			}
+		});
+	});
 
 	selectPreview(0);
 	slots.selectIndex(0);
@@ -1283,6 +1278,8 @@ if (parent.app) {
 		parent.app.moduleInit(iDocID, aEntryPoints);
 	}
 }
+
+loadAll();
 
 </script>
 
