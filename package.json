@@ -2,7 +2,7 @@
   "name": "retro-game-editor",
   "version": "0.0.4",
   "description": "An editor for making games for retro platforms",
-  "main": "start.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -30,5 +30,9 @@
   "dependencies": {
     "express": "^4.12.3",
     "morgan": "^1.5.2"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "postinstall": "bower install"
   }
 }
