@@ -6,6 +6,7 @@ define(["jquery", "backbone", "model/project", "view/dock/main",
   "css!/bower_components/bootstrap/dist/css/bootstrap.css",
   "css!/bower_components/jstree/dist/themes/default/style.min.css",
   "css!/bower_components/metisMenu/dist/metisMenu.css",
+  "css!./bootstrap-multilevel-menu.css",
   "css!./menu.css",
   "domReady!"],
 function($, BackBone, Project, dock, template, menubarTemplate){

@@ -43,6 +43,7 @@ body {
   text-align: right;
 }
 
+/*
 .panel-toolbar > .menu-button {
   display: inline-block;
   position: relative;
@@ -84,5 +85,6 @@ body {
 .panel-toolbar > .menu-button > .popup-menu .arrow::before {
   content: "";
 }
+*/
 
 .activeline {background: #e8f2ff !important;}
