@@ -4,6 +4,9 @@ require.config({
   shim: {
     dockspawn: {
       exports: 'dockspawn'
+    },
+    metisMenu: {
+      deps: ['jquery']
     }
   },
   paths: {
