@@ -4,10 +4,9 @@ define(["jquery", "backbone", "handlebars", "model/project",
   "view/dock/main", "model",
   "hbars!./project-tree.hbs", "hbars!./project-menubar.hbs",
   "text!./resource-menu.hbs",
-  "jstree", "view/dock/main", "view/util/main", "metisMenu",
+  "jstree", "view/dock/main", "view/util/main", 
   "css!/bower_components/bootstrap/dist/css/bootstrap.css",
   "css!/bower_components/jstree/dist/themes/default/style.min.css",
-  "css!/bower_components/metisMenu/dist/metisMenu.css",
   "css!./bootstrap-multilevel-menu.css",
   "css!./bootstrap-dropdown-hover.css",
   "css!./menu.css",
@@ -68,12 +67,7 @@ function($, BackBone, Handlebars, Project, dock, model,
           .html(
             menubarTemplate({}) +
             template({projects: Project.objects.fullJSON()})
-          )
-          .find('.project-tree > ul')
-            .metisMenu()
-            .end()
-          .find('.project-menubar .popup-menu > ul')
-            .end();
+          );
       } catch (e) {
         console.error(e);
         throw new Error('Problems while rendering the project pane: ' + e);
