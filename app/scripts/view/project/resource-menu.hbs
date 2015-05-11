@@ -3,17 +3,13 @@
     <i class="fa fa-ellipsis-h"></i>
   </a>
   <ul class="dropdown-menu">
-    <li>
-      <a href="#" class="rename-resource">
-        <span class="fa fa-edit"></span>
-        <span>Rename...</span>
-      </a>
-    </li>
-    <li>
-      <a href="#" class="delete-resource">
-        <span class="fa fa-trash"></span>
-        <span>Delete...</span>
-      </a>
-    </li>
+    {{#each (resourceMenuOptions entityName)}}
+      <li>
+        <a href="#" class="{{action}}-resource" data-rge-entity="{{entityName}}">
+          <span class="fa fa-{{icon}}"></span>
+          <span>{{label}}</span>
+        </a>
+      </li>
+    {{/each}}
   </ul>
 </div>

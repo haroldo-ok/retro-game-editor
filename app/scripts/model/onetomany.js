@@ -15,7 +15,7 @@ define(["backbone", "underscore", "q"], function(Backbone, _, Q){
   }
 
   function addAll(oneToMany, models) {
-    oneToMany._items = _.chain(this._items)
+    oneToMany._items = _.chain(oneToMany._items)
         .difference(models)
         .union(models)
         .value();

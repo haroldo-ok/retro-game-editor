@@ -16,6 +16,23 @@ function($, BackBone, Handlebars, Project, dock, model,
   template, menubarTemplate, resourceMenuTemplate){
 
   Handlebars.registerPartial('resourceMenu', resourceMenuTemplate);
+  Handlebars.registerHelper('resourceMenuOptions', function(entityName){
+    var options = [
+      { action: 'rename', icon: 'edit', label: 'Rename...' },
+      { action: 'delete', icon: 'trash', label: 'Delete...' }
+    ];
+
+    if (entityName == 'Project') {
+      options.push({
+        action: 'new',
+        icon: 'image',
+        label: 'New tileset...',
+        entityName: 'TileSet'
+      });
+    }
+
+    return options;
+  });
 
   var ProjectTree = Backbone.View.extend({
 
@@ -24,12 +41,14 @@ function($, BackBone, Handlebars, Project, dock, model,
     events: {
       'click .new-project': 'newProject',
       'click .resource-link': 'editResource',
+      'click .new-resource': 'newResource',
       'click .rename-resource': 'renameResource',
       'click .delete-resource': 'deleteResource'
     },
 
     initialize: function() {
-      _.bindAll(this, "render", "newProject", "editResource", "renameResource", "deleteResource");
+      _.bindAll(this, "render", "newProject",
+        "newResource", "editResource", "renameResource", "deleteResource");
 
       Project.objects.fetchAll()
         .then(this.render)
@@ -41,20 +60,45 @@ function($, BackBone, Handlebars, Project, dock, model,
     },
 
     render: function() {
-      this.$el
-        .html(
-          menubarTemplate({}) +
-          template({projects: Project.objects.fullJSON()})
-        )
-        .find('.project-tree > ul')
-          .metisMenu()
-          .end()
-        .find('.project-menubar .popup-menu > ul')
-          .end();
+      try {
+        this.$el
+          .html(
+            menubarTemplate({}) +
+            template({projects: Project.objects.fullJSON()})
+          )
+          .find('.project-tree > ul')
+            .metisMenu()
+            .end()
+          .find('.project-menubar .popup-menu > ul')
+            .end();
+      } catch (e) {
+        console.error(e);
+        throw new Error('Problems while rendering the project pane: ' + e);
+      }
     },
 
     newProject: function() {
       new Project({name: prompt('Project name?')}).save();
+    },
+
+    newResource: function(ev) {
+      var $target = $(ev.target).closest('a');
+      var $projectLink = $target.closest('.resource').find('> [data-rge-entity="Project"]');
+
+      var resourceEntityName = $target.data('rgeEntity');
+      var parentProjectId = $projectLink.data('rgeId');
+
+      var name = prompt('Name of the new ' + resourceEntityName + '?');
+      if (!name) {
+        return;
+      }
+
+      var Model = model.byName(resourceEntityName);
+      var resource = new Model({name: name});
+
+      var project = Project.objects.get(parentProjectId);
+      project.resources.add(resource);
+      resource.save();
     },
 
     editResource: function(ev) {

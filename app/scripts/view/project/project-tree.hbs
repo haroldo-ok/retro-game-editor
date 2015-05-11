@@ -7,7 +7,7 @@
             <span class="sidebar-nav-item">{{default name "*unnamed*"}}</span>
           </a>
 
-          {{> resourceMenu }}
+          {{> resourceMenu entityName="Project" }}
 
           <ul>
             {{#each resources}}
@@ -16,7 +16,7 @@
                   {{default name "*unnamed*"}}
                 </a>
 
-                {{> resourceMenu }}
+                {{> resourceMenu entityName=entityName }}
               </li>
             {{/each}}
           </ul>
