@@ -1,27 +1,44 @@
 <div class="project-tree-scroller">
-  <nav class="project-tree sidebar-nav">
-    <ul>
-      {{#each projects}}
-        <li class="resource">
-          <a href="#" data-rge-entity="{{entityName}}" data-rge-id="{{id}}" class="project-link">
-            <span class="sidebar-nav-item">{{default name "*unnamed*"}}</span>
-          </a>
+  <div class="project-tree panel-group" id="project-tree" role="tablist" aria-multiselectable="true">
+    {{#each projects}}
+      <div class="panel panel-default">
 
-          {{> resourceMenu entityName="Project" }}
+        <div class="panel-heading" role="tab" id="project-tree-heading-{{id}}">
+          <div class="panel-title">
 
-          <ul>
-            {{#each resources}}
-              <li class="resource">
-                <a href="#" data-rge-entity="{{entityName}}" data-rge-id="{{id}}" class="resource-link">
-                  {{default name "*unnamed*"}}
-                </a>
+            <a data-toggle="collapse" data-parent="#project-tree" aria-expanded="false"
+                data-rge-entity="{{entityName}}" data-rge-id="{{id}}" class="project-link"
+                href="#project-tree-{{id}}" aria-controls="project-tree-{{id}}">
+                {{default name "*unnamed*"}}
+            </a>
 
-                {{> resourceMenu entityName=entityName }}
-              </li>
-            {{/each}}
-          </ul>
-        </li>
-      {{/each}}
-    </ul>
-  </nav>
+            {{> resourceMenu entityName="Project" }}
+
+          </div>
+        </div>
+
+        <div id="project-tree-{{id}}"
+            class="panel-collapse collapse" role="tabpanel"
+            aria-labelledby="project-tree-heading-{{id}}">
+          <div class="panel-body">
+
+            <ul>
+              {{#each resources}}
+                <li class="resource">
+                  <a href="#" data-rge-entity="{{entityName}}" data-rge-id="{{id}}" class="resource-link">
+                    {{default name "*unnamed*"}}
+                  </a>
+
+                  {{> resourceMenu entityName=entityName }}
+                </li>
+              {{/each}}
+            </ul>
+
+          </div>
+        </div>
+
+      </div>
+    {{/each}}
+  </div>
+
 </div>
