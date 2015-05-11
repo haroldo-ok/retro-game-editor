@@ -22,9 +22,9 @@
             aria-labelledby="project-tree-heading-{{id}}">
           <div class="panel-body">
 
-            <ul>
+            <ul class="list-group">
               {{#each resources}}
-                <li class="resource">
+                <li class="resource list-group-item">
                   <a href="#" data-rge-entity="{{entityName}}" data-rge-id="{{id}}" class="resource-link">
                     {{default name "*unnamed*"}}
                   </a>

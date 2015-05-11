@@ -1,65 +1,3 @@
-.sidebar {
-  display: block;
-  float: left;
-  width: 250px;
-  background: #333;
-}
-.content {
-  display: block;
-  overflow: hidden;
-  width: auto;
-}
-
-.sidebar-nav {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
-  background-image: -webkit-linear-gradient(left, color-stop(#333333 10px), color-stop(#222222 10px));
-  background-image: linear-gradient(to right, #333333 10px, #222222 10px);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff333333', endColorstr='#ff222222', GradientType=1);
-}
-.sidebar-nav ul {
-  padding: 0;
-  margin: 0;
-  list-style: none;
-}
-.sidebar-nav a,
-.sidebar-nav a:hover,
-.sidebar-nav a:focus,
-.sidebar-nav a:active {
-  outline: none;
-}
-.sidebar-nav ul li,
-.sidebar-nav ul a {
-  display: block;
-}
-.sidebar-nav ul a {
-  padding: 10px 20px;
-  color: #aaa;
-  border-top: 1px solid rgba(0, 0, 0, 0.3);
-  box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.05) inset;
-  text-shadow: 0px 1px 0px rgba(0, 0, 0, 0.5);
-}
-.sidebar-nav ul a:hover,
-.sidebar-nav ul a:focus,
-.sidebar-nav ul a:active {
-  color: #fff;
-  text-decoration: none;
-}
-.sidebar-nav ul ul a {
-  padding: 10px 30px;
-  background-color: rgba(255, 255, 255, 0.1);
-}
-.sidebar-nav ul ul a:hover,
-.sidebar-nav ul ul a:focus,
-.sidebar-nav ul ul a:active {
-  background-color: rgba(255, 255, 255, 0.2);
-}
-.sidebar-nav-item {
-  padding-left: 5px;
-}
-.sidebar-nav-item-icon {
-  padding-right: 5px;
-}
 
 .project-tree-container {
   height: 100%;
@@ -76,24 +14,15 @@
 
 .project-tree .resource > .resource-menu {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: -6px;
+  right: -8px;
 }
 
-.project-tree .resource > .resource-menu .dropdown-menu {
-  background-image: -webkit-linear-gradient(left, color-stop(#333333 10px), color-stop(#222222 10px));
-  background-image: linear-gradient(to right, #333333 10px, #222222 10px);
-  background-repeat: repeat-x;
-  margin-top: -4px;
+.project-tree .resource.list-group-item > .resource-menu {
+  top: 3px;
+  right: 2px;
 }
 
-.sidebar-nav ul ul.dropdown-menu a,
-.sidebar-nav ul ul .resource-menu a {
-  background: none;
-}
-
-.sidebar-nav ul .resource-menu a,
-.sidebar-nav ul ul .resource-menu a {
-  padding-left: 12px;
-  padding-right: 12px;
+.project-tree .panel-body {
+  padding: 4px;
 }
