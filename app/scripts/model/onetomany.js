@@ -21,6 +21,22 @@ define(["backbone", "underscore", "q"], function(Backbone, _, Q){
         .value();
   }
 
+  function captureEvents(oneToMany, models) {
+    models.forEach(function(model){
+      model.off(null, null, oneToMany);
+
+      model.on('destroy', function(){
+        oneToMany._items = _.without(oneToMany._items, model);
+      });
+
+      ['change', 'add', 'destroy'].forEach(function(evName){
+        model.on(evName, function(){
+          oneToMany._one.trigger(evName + '-detail');
+        }, oneToMany);
+      });
+    });
+  }
+
   OneToMany.prototype.add = function(models) {
     var that = this;
     var models = paramToArray(models);
@@ -28,6 +44,9 @@ define(["backbone", "underscore", "q"], function(Backbone, _, Q){
     _.each(models, function(model){
       model.set(that._ref, that._one.id);
     });
+
+    this._one.trigger('add-detail', models);
+    captureEvents(this, models);
   }
 
   OneToMany.prototype.fetch = function() {
@@ -47,6 +66,7 @@ define(["backbone", "underscore", "q"], function(Backbone, _, Q){
           var values = collection.where(filter);
           that._items = that._items.concat(values);
         });
+        captureEvents(that, that._items);
         return that._items;
       });
   }

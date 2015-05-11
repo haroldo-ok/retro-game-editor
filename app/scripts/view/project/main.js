@@ -54,9 +54,12 @@ function($, BackBone, Handlebars, Project, dock, model,
         .then(this.render)
         .done();
 
-      Project.objects.on('add', this.render, this);
-      Project.objects.on('destroy', this.render, this);
-      Project.objects.on('change:name', this.render, this);
+      var that = this;
+      ['add', 'destroy', 'change:name',
+        'add-detail', 'change-detail', 'destroy-detail']
+        .forEach(function(evName){
+          Project.objects.on(evName, that.render, that);
+        });
     },
 
     render: function() {
