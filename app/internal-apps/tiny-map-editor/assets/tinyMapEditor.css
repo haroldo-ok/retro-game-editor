@@ -17,7 +17,16 @@ header h2 { font-size: 14px; font-weight: normal; margin-bottom: 3px }
 
 /*************************************** Editor */
 section { margin: 80px auto; text-align: center; padding-right: 250px }
-canvas { cursor: pointer; position: relative }
+canvas {
+  cursor: pointer;
+  position: relative;
+
+  image-rendering: optimizeSpeed;
+	image-rendering: -moz-crisp-edges;
+	image-rendering: -webkit-optimize-contrast;
+	image-rendering: optimize-contrast;
+	-ms-interpolation-mode: nearest-neighbor;
+}
 #tileEditor { background: url('bg.png') left top repeat }
 
 /*************************************** Tools  */

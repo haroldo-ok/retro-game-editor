@@ -3,13 +3,16 @@ var tinyMapEditor = (function() {
         doc = document,
         pal = doc.getElementById('palette').getContext('2d'),
         map = doc.getElementById('tileEditor').getContext('2d'),
-        width = 10,
-        height = 10,
-        tileSize = 32,
+        width = 16,
+        height = 12,
+        tileSize = 16,
         srcTile = 0,
         sprite = new Image(),
         tiles, // used for demo, not *really* needed atm
         alpha,
+
+        selectedZoom = 4,
+        mapZoom = 2,
 
         player,
         draw,
@@ -19,10 +22,14 @@ var tinyMapEditor = (function() {
     var app = {
         getTile : function(e) {
             if (e.target.nodeName === 'CANVAS') {
-                var row = e.layerX / tileSize | 0,
-                    col = e.layerY / tileSize | 0;
+                var targetId = e.target.id;
+                var zoom = targetId == 'tileEditor' ? mapZoom : 1;
+
+                var row = Math.floor(e.layerX / tileSize / zoom) | 0,
+                    col = Math.floor(e.layerY / tileSize / zoom) | 0;
 
                 if (e.target.id === 'palette') srcTile = { row : row, col : col };
+
                 return { row : row, col : col };
             }
         },
@@ -53,6 +60,7 @@ var tinyMapEditor = (function() {
                 };
 
             rect.width = rect.height = tileSize;
+            rect.style.width = (rect.width * selectedZoom) + 'px';
             doc.getElementById('selected').appendChild(rect);
             eraser();
 
@@ -228,6 +236,7 @@ var tinyMapEditor = (function() {
             sprite.src = 'assets/tilemap_32a.png';
             map.canvas.width = width * tileSize;
             map.canvas.height = height * tileSize;
+            map.canvas.style.width = (map.canvas.width * mapZoom) + 'px';
             this.drawTool();
         },
 
