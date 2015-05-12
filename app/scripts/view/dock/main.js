@@ -3,6 +3,7 @@
 define(["jquery", "./static-view", "./tab-panel",
     "html!./dock", "css!./dock",
     "css!/bower_components/font-awesome/css/font-awesome",
+    "css!/bower_components/github-fork-ribbon-css/gh-fork-ribbon",
     "domReady!"],
     function($, StaticView, TabPanel, template){
       $('body').append(template);
