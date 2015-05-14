@@ -53,3 +53,10 @@ input[type=text] { width: 30px }
 /*************************************** Output */
 output { display: block; margin: 0 auto; padding-right: 250px; text-align: center; z-index: 1 }
 textarea { width: 400px; height: 200px; margin: 0; font-family: monospace }
+
+/**** Hiding unnecessary parts */
+#options,
+#tools,
+output {
+  display: none;
+}
