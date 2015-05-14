@@ -47,4 +47,7 @@ require.config({
 require(["jquery", "model/project", "view"], function($, Project) {
   $("#main-loading-animation").fadeOut();
   console.log('Loaded.');
+}, function(err){
+  console.error(err);
+  alert("There was a problem while loading the required libraries:\n" + err);
 });
