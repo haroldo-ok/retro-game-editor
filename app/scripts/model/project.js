@@ -1,10 +1,11 @@
 'use strict';
 
-define(["model", "model/onetomany", "model/tileset", "q"],
-function(model, OneToMany, TileSet, Q){
+define(["model", "model/onetomany", "q",
+  "model/tileset", "model/map"],
+function(model, OneToMany, Q, TileSet, Map){
   var Project = model("Project", {
     constructor: function() {
-      this.resources = new OneToMany(this, [TileSet], 'projectId');
+      this.resources = new OneToMany(this, [TileSet, Map], 'projectId');
       Project.BaseModel.apply(this, arguments);
     },
     fullJSON: function() {
