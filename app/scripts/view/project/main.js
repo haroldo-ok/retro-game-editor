@@ -22,12 +22,20 @@ function($, BackBone, Handlebars, Project, dock, model,
     ];
 
     if (entityName == 'Project') {
-      options.push({
-        action: 'new',
-        icon: 'image',
-        label: 'New tileset...',
-        entityName: 'TileSet'
-      });
+      options = options.concat([
+        {
+          action: 'new',
+          icon: 'image',
+          label: 'New tileset...',
+          entityName: 'TileSet'
+        },
+        {
+          action: 'new',
+          icon: 'cubes',
+          label: 'New map...',
+          entityName: 'Map'
+        }
+      ]);
     }
 
     return options;
