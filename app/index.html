@@ -3,10 +3,22 @@
   <head>
     <meta charset="utf-8">
     <title>title</title>
-    <link rel="stylesheet" href="scripts/view/main.css">
-    <script data-main="scripts/main" src="../bower_components/requirejs/require.js"></script>
+    <link rel="stylesheet" href="../bower_components/spinkit/css/spinners/1-rotating-plane.css">
+    <style>
+      #main-loading-animation {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        margin: auto;
+      }
+    </style>
   </head>
   <body>
-    <!-- page content -->
+    <div id="main-loading-animation" class="sk-spinner sk-spinner-rotating-plane"></div>
+
+    <link rel="stylesheet" href="scripts/view/main.css">
+    <script data-main="scripts/main" src="../bower_components/requirejs/require.js"></script>
   </body>
 </html>

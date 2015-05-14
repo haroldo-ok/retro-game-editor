@@ -2,13 +2,12 @@
 
 require.config({
   shim: {
-    dockspawn: {
-      exports: 'dockspawn'
+    backbone: {
+        deps: ['underscore', 'jquery'],
+        exports: 'Backbone'
     },
-    metisMenu: {
-      deps: [
-        'jquery'
-      ]
+    underscore: {
+        exports: '_'
     }
   },
   paths: {
@@ -46,5 +45,6 @@ require.config({
 });
 
 require(["jquery", "model/project", "view"], function($, Project) {
-  window.Project = Project;
+  $("#main-loading-animation").fadeOut();
+  console.log('Loaded.');
 });
