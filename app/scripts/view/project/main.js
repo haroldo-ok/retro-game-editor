@@ -78,11 +78,15 @@ function($, _, BackBone, Handlebars, Project, dock, model,
 
     render: function() {
       try {
+        var lastExpandedId = this.$el.find('.collapse.in').first().attr('id');
+
         this.$el
           .html(
             menubarTemplate({}) +
             template({projects: Project.objects.fullJSON()})
           );
+
+        this.$el.find('#' + lastExpandedId).collapse('show');
       } catch (e) {
         console.error(e);
         throw new Error('Problems while rendering the project pane: ' + e);
