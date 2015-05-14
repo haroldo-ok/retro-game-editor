@@ -4,7 +4,7 @@ define(["jquery", "backbone", "handlebars", "model/project",
   "view/dock/main", "model",
   "hbars!./project-tree.hbs", "hbars!./project-menubar.hbs",
   "text!./resource-menu.hbs",
-  "jstree", "view/dock/main", "view/util/main", 
+  "jstree", "view/dock/main", "view/util/main",
   "css!/bower_components/bootstrap/dist/css/bootstrap.css",
   "css!/bower_components/jstree/dist/themes/default/style.min.css",
   "css!./bootstrap-multilevel-menu.css",
@@ -22,16 +22,29 @@ function($, BackBone, Handlebars, Project, dock, model,
     ];
 
     if (entityName == 'Project') {
-      options.push({
-        action: 'new',
-        icon: 'image',
-        label: 'New tileset...',
-        entityName: 'TileSet'
-      });
+      options = options.concat([
+        {
+          action: 'new',
+          icon: 'image',
+          label: 'New tileset...',
+          entityName: 'TileSet'
+        },
+        {
+          action: 'new',
+          icon: 'cubes',
+          label: 'New map...',
+          entityName: 'Map'
+        }
+      ]);
     }
 
     return options;
   });
+
+  var editors = {
+    TileSet: "internal-apps/tinysprite/tinysprite.html",
+    Map: "internal-apps/tiny-map-editor/index.html"
+  }
 
   var ProjectTree = Backbone.View.extend({
 
@@ -101,10 +114,13 @@ function($, BackBone, Handlebars, Project, dock, model,
     editResource: function(ev) {
       var $target = $(ev.target);
 
+      var entityName = $target.data('rgeEntity'),
+          entityId = $target.data('rgeId');
+
       dock.createEditor(
-        '<iframe src="internal-apps/tinysprite/tinysprite.html' +
-        '?entity=' + $target.data('rgeEntity') +
-        '&entityId=' + $target.data('rgeId') +
+        '<iframe src="' + editors[entityName] + 
+        '?entity=' + entityName +
+        '&entityId=' + entityId +
         '" style="width: 100%; height: 100%; border: 0">');
     },
 
