@@ -782,7 +782,11 @@ function projectToJSON() {
 function receiveJSON(json) {
 	slots.clear();
 
-	json.tiles.forEach(function(tile){
+	var tiles = json.tiles || [
+		{name: 'slot0', pixels: null}
+	];
+
+	tiles.forEach(function(tile){
 		var slot = slots.create();
 		slot.setName(tile.name);
 		if (tile.pixels) {
