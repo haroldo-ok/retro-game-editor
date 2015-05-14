@@ -1,0 +1,1091 @@
+<html>
+<!--
+
+BiT - A Javascript Z80 ASM Editor
+Copyright (C) 2006  Rafael de Oliveira Jannone
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+Please follow this link: http://www.gnu.org/licenses/gpl.txt
+
+Contact the author by e-mail: rafael@jannone.org
+
+-->
+<head>
+	<title>BiT 0.4.5</title>
+<style>
+
+body, td, th {
+	font-family: verdana, tahoma, arial;
+	font-size: 13px;	
+}
+
+th {
+	text-align: left;
+}
+
+body {
+	background-color: #EEEEEE;
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+	overflow-y: hidden;	
+}
+
+textarea, .fixed {
+	font-family: mono;
+	font-size: 13px;
+}
+
+.fixed {
+	white-space: pre;
+	padding: 2px;
+}
+
+.logo {
+	text-align: right;
+	font-size: 18px;
+	font-weight: bold;
+	background-color: black;
+	color: white;
+	padding: 2px;
+}
+
+.logo small {
+	font-size: 8px;
+}
+
+.opcodesBody {
+	background: white; 
+	height: 128px;
+
+	overflow-x:hidden;
+	overflow-y:auto;
+}
+
+.opcodesBody[class] {
+	overflow:-moz-scrollbars-none;
+	overflow:-moz-scrollbars-vertical;
+}
+
+.labDescBody {
+	font-family: mono, courier new;
+	font-size: 13px;
+}
+
+.float {
+	background-color: white;
+	color: black;
+	border: solid 1px gray;
+	font-size: 11px;
+	max-height: 96px;
+	overflow: auto;
+}
+
+.floatItem {
+	padding: 3px;
+}
+
+.floatItemSelected {
+	padding: 3px;
+	background-color: navy;
+	color: white;
+}
+
+.download {
+	text-decoration: none;
+	color: yellow;
+}
+
+.download:hover {
+	text-decoration: underline;
+}
+
+.smallButton, .tool {
+	padding: 1px;
+	border-top: solid 1px white;
+	border-left: solid 1px white;
+	border-right: solid 1px gray;
+	border-bottom: solid 1px gray;			
+}
+
+.tool {
+	font-size: 10px;
+}
+
+.smallButton {
+	font-size: 9px;
+}
+
+.codeMargin {
+	color: gray;
+	cursor: pointer;
+}
+
+.registers {
+	width: 256px;
+	margin-left: auto;
+	margin-right: auto;	
+}
+
+.registers td {
+	font-family: mono, courier new, courier;
+}
+
+.regNames {
+	background-color: lightgray;
+	color: black;
+	width: 24px;
+	text-align: center;
+}
+
+.regVals {
+	background-color: white;
+	color: black;
+}
+
+.labels {
+	font-size: 11px;
+	border: solid 1px gray;
+}
+
+/* menu CSS effect */
+
+.menuTop, .menuSub ul {
+	padding: 0; margin: 0; 
+	border-bottom: 1px solid silver;
+	font: 12px verdana;
+}
+
+.menuTop li, .menuSub li {
+	list-style-type: none;
+	border: 1px solid silver; 
+	border-width: 1px 1px 0 3px;
+	position: relative; 
+	margin: 0; padding: 0;
+}
+
+.menuTop ul {
+	display: none;
+}
+
+.menuTop li:hover > ul, .menuSub li:hover > ul {
+	display: block; 
+	position: absolute; 
+	top: -1px; left: 100%;
+}
+
+.menuTop > li a,  .menuSub > li a {
+	display: block; 
+	padding: 4px 6px; 
+	text-decoration: none;
+	background: #FFF;
+	cursor: pointer;
+}
+
+.menuTop li a:hover {
+	background: orange;
+	color: white;
+}
+
+li.menuSub > a {
+	cursor: default;
+	background: #FFE;
+}
+
+.menuTop {
+	float: left;
+	/*background-color: transparent;*/
+	border-bottom: none;
+}
+
+.menuTop > li:hover > ul {
+	width: 12em; 
+	top: 1.75em; 
+	left: -3px;
+	z-index: 1000;
+}
+
+.menuTop ul, .menuSub ul {
+	width: 10em;
+}
+
+.menuTop > .menuSub {
+	border: 0;
+}
+
+.menuTop > .menuSub > a {
+	background-color: transparent;
+}
+
+</style>
+<script>
+
+/* GDE shared internal functions */
+var shared = {};
+
+</script>
+<script src='util.js'></script>
+<script src='opcodes.js'></script>
+<script src='instr.js'></script>
+<script src='editor.js'></script>
+<script src='asm.js'></script>
+<script src='file.js'></script>
+<script src='float.js'></script>
+<script src='log.js'></script>
+<script src='shared.js'></script>
+</head>
+<body>
+	<div style='display: none'>
+	<form id="postForm" action="http://msx.jannone.org/bit/echo.php" method="post" enctype="multipart/form-data" target="postTarget">
+		<input name="data" type="hidden" id="postData" />
+		<input name="type" type="hidden" id="postType" />
+		<input name="name" type="hidden" id="postName" />		
+	</form>
+	<iframe name="postTarget"></iframe>
+	</div>
+
+<div id='divTopMenuProto' style='display: none'>
+<!-- TOP MENU -->
+	<ul id='menuFile' class="menuTop" style='width: 3.5em'>
+		<li class="menuSub"><a>File</a>
+		<ul>
+			<li><a onclick='newFile()'>New</a></li>
+			<li><a onclick='load()'>Load...</a></li>
+			<li><a onclick='save()'>Save...</a></li>
+		</ul>
+		</li>
+	</ul>
+	<ul class="menuTop" style='width: 7em'>				
+		<li class="menuSub"><a>Assembler</a>
+		<ul>
+			<li><a onclick='build("bin")'>Build BIN...</a></li>
+			<li><a onclick='build("rom")'>Build ROM...</a></li>
+			<li><a onclick='findOffset()'>Jump to Offset...</a></li>
+			<li><a onclick='build("check")'>Check syntax</a></li>
+			<li><a onclick='preview()'>Preview block</a></li>
+			<li><a onclick='calcTime()'>Clock / Size</a></li>
+		</ul>
+		</li>
+	</ul>
+	<!--
+	<ul class="menuTop" style='width: 5em'>
+		<li class="menuSub"><a>Debug</a>
+		<ul>
+			<li><a onclick='debugStart()'>Start</a></li>
+			<li><a onclick='debugStop()'>Stop</a></li>
+			<li><a onclick='debugPause()'>Pause</a></li>
+			<li><a onclick='debugStep()'>Step</a></li>
+			<li><a onclick='toggleBreakpoint()'>Toggle Breakpoint</a></li>
+		</ul>
+		</li>
+	</ul>
+	-->
+	<ul class="menuTop" style='width: 4em'>
+		<li class="menuSub"><a>Help</a>
+		<ul>
+			<li><a href='faq.html' target='faq'>BiT FAQ</a></li>
+			<!--<li><a onclick=''>Z80 ASM Reference</a></li>
+			<li><a onclick=''>About...</a></li>-->
+			<li><a href='http://sourceforge.net/project/showfiles.php?group_id=182985' target='sf'>Download BiT</a></li>
+			<li><a href='http://sourceforge.net/projects/bitz80/' target='sf'>Project on SourceForge.net</a></li>
+		</ul>
+		</li>
+	</ul>
+</div>
+	
+	<table width='100%' height='100%' cellspacing='0' cellpadding='0'>
+		<tr>
+			<!-- TOP MENU PLACEHOLDER -->
+			<td id='tdTopMenuHolder' colspan='2' style='border-bottom: solid 1px silver'>
+				<span style='float: left'>&nbsp;</span>				
+				<div id='tblLabels' style='float: right; padding-top: 4px; padding-right: 24px;'>
+					Jump:
+					<select class='labels' id='labels' onchange='gotoLabel(this)'></select>
+					<button class='tool' onclick='gotoLabel(eid("labels"))' >Go</button>
+				</div>
+			</td>
+			<td>
+				<div class='logo'>
+					<div style='float: left; font-size: 10px' id='pos'></div>
+					<div style='float: right'>BiT =] <small>0.4.5</small></div>
+					<div style='clear: both'></div>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td id='codeMarginTD' valign='top'>
+				<div class='codeMargin' id='codeMarginCont' height='500' style='overflow-y: hidden'><div id='codeMargin'></div></div>
+			</td>
+			<td width='70%' style='padding: 0px; border-right: solid 1px gray'>
+				<textarea wrap="off" id='code' name='code' style='width: 100%; height: 100%; border: 0px; padding: 2px' spellcheck="false"></textarea>
+			</td>
+			<td valign='top' style='padding: 0px; border-left: solid 1px white'>
+			<div id='sidePanel' style='height: 500; overflow: auto'>
+				<div class='info' style='padding: 6px; border-bottom: dashed 1px #aaa'>
+					<b>Information Panel</b><br />
+					<small>References appear as you start coding</small>
+				</div>
+
+				<div style='padding: 6px'>
+				<div id='debug' style='text-align:center'>
+					<div id='emulator'></div>
+					<table class='registers' id='registers' style='display: none' cellspacing='0' cellpadding='2'>
+					<tr style='background-color: navy; color: white'>
+						<td colspan='6'><small style='font-family: verdana'>Registers</small></td>
+					</tr>
+					<tr>
+						<td class='regNames' valign='top'>
+							AF<br /> BC<br /> DE<br /> HL
+						</td>
+						<td class='regVals' valign='top'>
+							<span></span><br />
+							<span></span><br />	
+							<span></span><br />	
+							<span></span><br />	
+						</td>
+						<td class='regNames' valign='top'>
+							AF'<br /> BC'<br /> DE'<br /> HL'
+						</td>
+						<td class='regVals' valign='top'>
+							<span></span><br />
+							<span></span><br />	
+							<span></span><br />	
+							<span></span><br />	
+						</td>
+						<td class='regNames' valign='top'>
+							IX<br /> IY<br /> PC<br /> SP
+						</td>
+						<td class='regVals' valign='top'>
+							<span></span><br />
+							<span></span><br />	
+							<span></span><br />	
+							<span></span><br />	
+						</td>
+					</tr>
+					</table>
+				</div>
+				<table id='desc' width='100%' cellspacing='0'>
+					<tr><td id='descTitle' style='padding: 2px; background-color: blue; color: white'></td></tr>
+					<tr><td id='descBody' style='padding: 2px; background-color: white'></td></tr>
+				</table>
+				<table id='opcodes' width='100%' cellspacing='0' style='margin-bottom: 24px; border-bottom: solid 1px gray'>
+					<thead style='background: lightgray; color: black'>
+						<th>Variant</th>
+						<th>Time</th>
+						<th>Size</th>
+					</thead>
+					<tbody id='opcodesBody' class='opcodesBody'></tbody>
+				</table>
+				<table id='labDesc' width='100%' cellspacing='0' style='margin-bottom: 24px; border-bottom: solid 1px gray'>
+					<tr><td id='labDescTitle' style='padding: 2px; background-color: green; color: white'></td></tr>
+					<tr><td id='labDescBody' style='padding: 2px; background-color: white'></td></tr>
+					<tr><td id='labDescFile' style='padding: 2px; background-color: #aaa; color: white'></td></tr>
+				</table>
+				<table id='warningBox' width='100%' cellspacing='0' style='display: none; margin-bottom: 24px; border-bottom: solid 1px gray'>
+					<tr><td style='padding: 2px; background-color: yellow; color: black'>Warnings <button class='smallButton' onclick='clearWarnings()'>clear</button></td></tr>
+					<tr><td id='warningBody' style='padding: 2px; background-color: white; font-size: 10px'></td></tr>
+				</table>
+				</div>
+			</div>
+			</td>
+		</tr>
+	</table>
+</body>
+<script>
+
+/*
+
+BiT information is based on theses resources:
+
+http://map.tni.nl/resources/z80instr.php
+http://fms.komkon.org/comp/CPUs/z80.txt
+
+*/
+
+
+
+//---- main app
+
+var bEnableDebugging = false;
+
+var aBreakpoints = {};
+var sDebugStatus = null;
+var oActiveBreakpoint = null;
+
+var oFloat = new Float();
+
+var currentLabel = null;
+
+/* hide infos */
+eid('desc').style.display = 'none';
+eid('opcodes').style.display = 'none';
+eid('tblLabels').style.display = 'none';
+eid('labDesc').style.display = 'none';
+
+var editor = new Editor(eid('code'));
+editor.labels = {};
+
+editor.onChangePosition = function(x, y) {
+	eid('pos').innerHTML = 'Cursor: ' + [x,y];
+}
+
+function warning(sHTML) {
+	var oWarning = eid('warningBox');
+	var oWarningBody = eid('warningBody');
+	var oDiv = document.createElement('div');
+	oDiv.innerHTML = sHTML + ' <button class="smallButton">x</button>';
+	oDiv.style.borderBottom = 'dotted 1px lightgray';
+	oDiv.lastChild.onclick = function() {
+		oWarningBody.removeChild(oDiv);
+		if (!oWarningBody.firstChild)
+			oWarning.style.display = 'none';
+		return false;
+	}
+	oWarningBody.appendChild(oDiv);
+	oWarning.style.display = 'table';
+}
+
+function clearWarnings() {
+	var oWarning = eid('warningBox');
+	var oWarningBody = eid('warningBody');
+	oWarning.style.display = 'none';
+	oWarningBody.innerHTML = '';
+}
+
+function showLabelInfo(l) {
+	if (!l)
+		return;
+	var aLabel = editor.labels[l];
+	if (!aLabel && iDocID != null && parent.shared.bit.aLabels) {
+		for (var i in parent.shared.bit.aLabels) {			
+			aLabel = parent.shared.bit.aLabels[i][l];
+			if (aLabel)
+				break;
+		}
+	}
+	if (!aLabel)
+		return;
+
+	currentLabel = l;
+
+	eid('labDescTitle').innerHTML = 'Ref <b>' + l + '</b>';
+	eid('labDescBody').innerHTML = (aLabel.desc) ?
+		'<div class="labDescBody">' + 
+			aLabel.desc.replace(/^[ \t]*;/, '').replace(/\n[ \t]*;/g, "\n").replace(/\n/g, '<br />') + '</div>' :
+		'<i>No comment available</i><br /><small style="color: gray">Tip: write comments before this label</small>';
+	if (iDocID != null && aLabel.path) {
+		var aDoc = parent.app.moduleGetDocument(iDocID);
+		var sJump = '';
+		if (aLabel.path != aDoc.sPath) {
+			sJump = ' <button class=\'smallButton\' onclick=\'javascript:parent.app.openDocument("' + aLabel.path + '", "asm", "' + l + '")\'>Go &raquo;</button>';
+		}
+		eid('labDescFile').innerHTML = '<small>in ' + aLabel.path + sJump + '</small>';
+	} else {
+		eid('labDescFile').innerHTML = '';
+	}	
+	eid('labDesc').style.display = null;
+}
+
+function sortByScore(a, b) {
+	return b.score - a.score;
+}
+
+function opcodeScore(opstr, frag) {
+	opstr = opstr.replace(/ /g, '');
+	frag = frag.replace(/ /g, '');	
+	for (var i=0; i<opstr.length; i++) {
+		if (opstr.charAt(i) != frag.charAt(i))
+			return i;
+	}
+	return opstr.length;
+}
+
+editor.onCheckKeyword = function(line) {
+	var m;
+
+	// parse label, chop it out
+	if (m = /^[ \t]*([a-zA-Z0-9_]+)\:/.exec(line)) {
+		line = line.substr(m[0].length);
+		var l = m[1];
+		showLabelInfo(l);
+	}
+
+	// check for calls/jumps to labels
+	line = line.replace(/^[ \t]*/, '')
+	var parts = line.split(/[^a-zA-Z0-9_]/);
+	for (var i=0; i<parts.length; i++) {
+		var part = parts[i];
+		showLabelInfo(part);
+	}
+
+	// parse mnemonics
+	var frag = line.toUpperCase();
+	var key = frag.split(' ')[0].replace(/[^A-Z]/g, '');
+	var idx = opcodesIdx[key];
+	if (!idx)
+		return;
+
+	var klen = key.length;
+	var tab = [];
+	var selected = [];
+	for (var i=idx.start; i <= idx.end; i++) {
+		if (opcodes[i].op.substr(0, klen) == key) {
+			var opcode = opcodes[i];
+			var score = opcodeScore(opcode.op, frag);
+			selected.push({score: score, opcode: opcode});			
+		}
+	}
+	selected.sort(sortByScore);
+	for (var i=0; i < selected.length; i++) {
+		var opcode = selected[i].opcode;
+		tab.push("<tr><td>" + opcode.op + "</td><td>" + opcode.wt + "</td><td>" + opcode.sz + "</td></tr>");
+	}
+	if (tab.length) {
+		eid('opcodesBody').innerHTML = tab.join('');
+		eid('opcodes').style.display = null;
+	}
+	eid('descTitle').innerHTML = '<b>' + key + '</b>';
+	eid('descBody').innerHTML = idx.desc;
+	eid('desc').style.display = null;
+}
+
+editor.onChange = function() {
+	var sFilePath = null;
+	if (iDocID != null) {
+		var aDoc = parent.app.moduleGetDocument(iDocID);
+		sFilePath = aDoc.sPath;
+		parent.app.moduleDocumentChanged(iDocID);
+		
+		/* use shared scanning, only possible after moduleDocumentChanged */
+		this.labels = parent.shared.bit.aLabels[aDoc.sPath];
+	} else {
+		/* use independant scanning */
+		this.labels = {};
+		shared.bit.scanLabels(this.el.value, this.labels, sFilePath);
+	}
+	
+	showLabelInfo(currentLabel);
+
+	var el = eid('labels');	
+	el.options.length = 0;
+	for (var l in this.labels) {
+		var opt = new Option(l, l);
+		el.options.add(opt);
+	}
+	eid('tblLabels').style.display = (el.options.length == 0) ? 'none' : null;
+}
+
+editor.onKeyDown = function(e, c) {
+	//log('editor keydown ' + c);
+	if (c == 40 && oFloat.isActive()) {
+		oFloat.focus(editor.el);
+		return true;
+	}
+}
+
+editor.onKeyUp = function(c) {
+	//log('editor keyup ' + c);
+	if (c != 8 && c != 16 && c != 17 && c != 18) {
+		if (!/[a-z0-9_]/i.exec(String.fromCharCode(c))) {
+			oFloat.hide();
+			return;
+		}
+	}
+	var aRange = Sel.getRange(editor.el);
+	if (aRange.start != aRange.end) {
+		oFloat.hide();
+		return;
+	}
+	aRange.start = aRange.end - 256; // FIXME: calculate max label size
+	aRange.start = (aRange.start < 0) ? 0 : aRange.start;
+	var sText = Sel.getText(editor.el, aRange);
+	var m;
+	if (m = /[a-z0-9_]+$/i.exec(sText)) {
+		var aMatches = {};
+		var sLabel = m[0];
+		var iSz = sLabel.length;
+		var bFound = false;
+		for (var sKey in this.labels) {
+			if (sKey != sLabel && sKey.substr(0, iSz) == sLabel) {
+				aMatches[sKey] = sKey;
+				bFound = true;
+			}
+		}
+		if (bFound) {
+			// tab as spaces, for calculation purposes
+			var iLinePos = scanLeft(sText, sText.length - 1, "\n");
+			var sLine = sText.substr(iLinePos, sText.length).replace(/\t/g, '        ');
+			var iX = getOffsetLeft(editor.el), iY = getOffsetTop(editor.el);
+			oFloat.setup(aMatches);
+			oFloat.show(iX + (sLine.length - iSz) * 8, 
+				iY + (this.oCursor.y) * 17 - this.el.scrollTop);
+			oFloat.onChange = function(sText) {
+				//log('float onchange');
+				var iTop = editor.el.scrollTop;
+				var sRemaining = sText.substr(sLabel.length);
+				Sel.replace(editor.el, sRemaining);
+				editor.el.scrollTop = iTop;
+			}
+		} else {
+			oFloat.hide();
+		}
+	}
+}
+
+function gotoLabel(el) {
+	var label;
+	if (typeof el == "string") {
+		label = editor.labels[el];
+	} else {
+		var l = el.options[el.selectedIndex].value;
+		label = editor.labels[l];
+	}
+	if (label) {
+		Sel.setRange(editor.el, label.pos, label.pos);
+		editor.el.scrollTop = label.line * 13; // FIXME: hard-coded font size
+		editor.checkPosition();
+	} else {
+		alert('Label not found');
+	}
+}
+
+function assemble(sType) {
+	var sCode = eid('code').value;
+
+	var oASM = new ASM();
+	oASM.aBreakpoints = aBreakpoints;
+	oASM.sGenType = sType;
+	try {
+		oASM.start(sCode);
+		oASM.evaluateData();
+	} catch(e) {
+		alert(e);
+		Sel.setRange(editor.el, oASM.iPos, oASM.iPos);
+		editor.el.scrollTop = oASM.iLine * 13; // FIXME: hard-coded font size
+		editor.checkPosition();
+		return;
+	}
+
+	oASM.patch();
+
+	if (oASM.iExec == null) {
+		var r = confirm("There's no MAIN label; execution will begin at " + 
+			toHex(oASM.iBegin,4) + "h. Proceed?");
+		if (!r)
+			return;
+		oASM.iExec = oASM.iBegin;
+	}
+
+	var aMem = oASM.aMem;
+
+	var aBin = null;
+	oASM.iPointer--;
+	
+	switch (sType) {
+		case 'rom':
+			 aBin = [];
+			break;
+		case 'bin':
+		default:
+			 aBin = [ 0xFE, 
+				oASM.iBegin & 255, (oASM.iBegin >> 8) & 255, 
+				oASM.iPointer & 255, (oASM.iPointer >> 8) & 255, 
+				oASM.iBegin & 255, (oASM.iBegin >> 8) & 255, 
+			];
+			break;
+	}
+	
+	for (var i=0; i<aMem.length; i++) {
+		if (typeof aMem[i] != 'object')
+			aBin.push(aMem[i]);
+	}	
+
+	// debug
+	/*
+		for (var i=0; i<aBin.length; i++) {
+			aBin[i] = toHex(aBin[i], 2);
+		}
+		log(aBin.join(',')); return;
+	*/
+	
+	return aBin;
+}
+
+function build(sType) {
+	var aBin = assemble(sType);
+	if (!aBin)
+		return;
+	if (sType == 'check') {
+		alert('Syntax check successful');
+		return;
+	}
+	if (sType == 'rom') {
+		// FIXME: when more than 64 kb, check if multiple of 8 kb
+		// ROMs must be at least 64 kb
+		while (aBin.length < 65536) {
+			aBin.push(0);
+		}
+	}
+	if (iDocID != null) {
+		for (var i=0; i<aBin.length; i++) {
+			aBin[i] = String.fromCharCode(aBin[i]);
+		}	
+		var aFile = parent.app.moduleGetDocument(iDocID);
+		var sPath = aFile.sPath.replace(/\.[^\.]*$/, '') + '.' + sType;
+		parent.app.moduleGeneration(sPath, aBin.join(''));
+	} else
+	if (localAccess) {
+		for (var i=0; i<aBin.length; i++) {
+			aBin[i] = String.fromCharCode(aBin[i]);
+		}
+
+		oFile = new File(sType);
+		File.permission(function() {
+			oFile.savePicker('Save ' + sType.toUpperCase());
+			oFile.save(aBin.join(''));
+		});
+	} else {
+		for (var i=0; i<aBin.length; i++) {
+			aBin[i] = toHex(aBin[i], 2);
+		}
+
+		eid('postData').value = aBin.join('');
+		eid('postType').value = 'hex';
+		eid('postForm').submit();
+	}
+}
+
+function findOffset() {
+	var sCode = eid('code').value;
+	var sOffset = prompt('Enter offset');
+	if (sOffset == null)
+		return;
+	var iOffset = parseInt(sOffset);
+	var oASM = new ASM();
+	oASM.fBreakpoint = function() {
+		if (oASM.aMem.length >= iOffset) {
+			alert("Break in " + oASM.aMem.length);
+			return true;
+		}
+	}
+	try {
+		oASM.start(sCode);
+
+	} catch(e) {		
+		alert(e + " (line " + oASM.getLineNumber() + ")");
+	}
+	Sel.setRange(editor.el, oASM.iPos, oASM.iPos);
+	editor.el.scrollTop = oASM.iLine * 13; // FIXME: hard-coded font size
+	editor.checkPosition();
+}
+
+function calcTime() {
+	var sCode = Sel.getText(editor.el);
+	
+	var oASM = new ASM();
+	try {
+		oASM.start(sCode);
+	} catch(e) {
+		alert(e);
+		return;
+	}
+	
+	if (oASM.aMem.length == 0) {
+		alert("You must select a block containing Z80 instructions");
+	} else {
+		function showTime(aTime) {
+			return (aTime[0] == aTime[1]) ? aTime[0].toString() : aTime.join("/");
+		}
+		var aTotal = [oASM.aTime[0], oASM.aTime[1]];
+		aTotal[0] += oASM.iM1;
+		aTotal[1] += oASM.iM1;		
+		alert("Measured time: " + showTime(oASM.aTime) + "\n" + 
+			"Z80 Waitstates: " + oASM.iM1 + "\n" + 
+			"Total time: " + showTime(aTotal) + "\n\n" + 
+			"Code size: " + oASM.aMem.length + " byte" + (oASM.aMem.length == 1 ? '' : 's'));
+	}
+}
+
+function preview() {
+	var sCode = Sel.getText(editor.el);
+	
+	var oASM = new ASM();
+	try {
+		oASM.start(sCode);
+	} catch(e) {
+		alert(e);
+		return;
+	}
+
+	oASM.evaluateData(true);
+	oASM.patch(true);
+	
+	if (oASM.aMem.length == 0) {
+		alert("You must select a block containing Z80 instructions");
+	} else {
+		var aMem = oASM.aMem;
+		for (var i=0; i<aMem.length; i++) {
+			if (typeof aMem[i] == 'function')
+				aMem[i] = '??';
+			else
+				aMem[i] = toHex(aMem[i],2);
+		}
+		prompt("Preview:", aMem.join(" "));
+	}
+}
+
+function newFile() {
+	eid('code').value = '';
+}
+
+function load() {
+	oFile = new File('as');
+	var bGranted = File.permission(function() {
+		oFile.loadPicker('Load ASM');
+		var sData = oFile.load();
+		if (sData != false) {
+			editor.el.value = sData;
+			editor.postChange();
+		}
+	});
+	if (!bGranted) {
+		alert("Error: access denied.\nYou must grant local access to allow loading files");
+		if (!localAccess)
+			warning("Click <a href='faq.html#onlineAccess' target='faq'>here</a> to discover how to enable loading/saving");
+	}
+}
+
+function save() {
+	oFile = new File('as');
+	var bGranted = File.permission(function() {
+		oFile.savePicker('Save ASM');
+		var mRes;
+		try {
+			mRes = oFile.save(editor.el.value);
+		} catch(e) {
+			alert("Error: access denied");			
+		}
+	});
+	if (!bGranted) {
+		alert("Error: access denied.\nYou must grant local access to allow saving files");
+		if (!localAccess)
+			warning("Click <a href='faq.html#onlineAccess' target='faq'>here</a> to discover how to enable loading/saving");
+	}
+}
+
+function showRegisters() {
+	var oApplet = eid('emu');
+	var aRegs = ["AF", "BC", "DE", "HL", "AF'", "BC'", "DE'", "HL'", "IX", "IY", "PC", "SP"]; 
+	var aValues = {};
+	for (var i = 0; i < aRegs.length; i++) {
+		var sReg = aRegs[i];
+		aValues[sReg] = oApplet.getRegister(sReg);
+	}
+	var aElems = eid('registers').getElementsByTagName('SPAN');
+	for (var i=0; i<aElems.length; i++) {
+		var oSpan = aElems[i];
+		var sReg = aRegs[i];
+		oSpan.innerHTML = toHex(aValues[sReg], 4);
+	}
+	eid('registers').style.display = 'table';
+}
+
+function debugStart() {
+	var oApplet = eid('emu');
+
+	if (oActiveBreakpoint) {
+		oActiveBreakpoint.style.backgroundColor = 'green';
+		oActiveBreakpoint.style.color = 'white';
+		oActiveBreakpoint.iMark = 1;
+		oActiveBreakpoint = null;
+	}
+
+	switch (sDebugStatus) {
+		case 'running':
+			if (oApplet)
+				oApplet.stop();
+			//eid('debugButton').innerHTML = 'Debug';
+			sDebugStatus = null;
+			return;
+		case 'paused':
+			// FIXME: set latest breakpoint to green
+			// FIXME: check whether the code or breakpoints have changed
+			if (oApplet)
+				oApplet.start();
+			//eid('debugButton').innerHTML = 'Stop';
+			sDebugStatus = 'running';
+			return;
+	}
+
+	var aBin = assemble('rom');	
+	if (!aBin)
+		return;
+	for (var i=0; i<aBin.length; i++) {
+		aBin[i] = String.fromCharCode(aBin[i]);
+	}
+	var sBin = aBin.join('');
+	//alert("bin [send] = " + sBin.length);
+
+	if (bEnableDebugging && !oApplet) {	
+		eid('debug').style.marginBottom = '24px';
+		sApplet = '<applet id="emu" codebase="jmsx" code="MsxEmu" width="256" height="192" MAYSCRIPT>' +
+			'<param name="bios" value="jmsx/msx1.rom"><param name="scriptable" value="true">' +
+			'</applet>';
+		eid('emulator').innerHTML = sApplet;
+		oApplet = eid('emu');
+		oApplet.setBreakpointHandler("onBreakpoint");
+	}
+	if (oApplet) {
+		// FIXME: for some unknown reason, loadString only works before the stop() when creating the applet
+		oApplet.loadString(sBin);
+		oApplet.clearBreakpoints();
+		for (var k in aBreakpoints) {
+			oApplet.setBreakpoint(aBreakpoints[k], k);
+		}
+		oApplet.stop();	
+		oApplet.start();
+		//eid('debugButton').innerHTML = 'Stop';
+		sDebugStatus = 'running';	
+	}
+}
+
+function onLineClick(e) {
+	e = e || window.event;
+	var oDiv = e.currentTarget || e.target || e.srcElement;
+	toggleBreakpointDiv(oDiv);
+}
+	
+function toggleBreakpointDiv(oDiv) {
+	switch (oDiv.iMark) {
+		case 2:
+		case 1:
+			oDiv.style.backgroundColor = '';
+			oDiv.style.color = '';
+			oDiv.iMark = 0;
+			delete aBreakpoints[oDiv.iLine];
+			break;
+		case 0:
+		default:
+			oDiv.style.backgroundColor = 'green';
+			oDiv.style.color = 'white';
+			oDiv.iMark = 1;
+			aBreakpoints[oDiv.iLine] = true;			
+			break;
+	}
+}
+
+function onBreakpoint(iLine) {
+	if (iLine != null) {
+		var oMargin = eid('codeMargin');
+		var oDiv = oMargin.childNodes[iLine];
+		oDiv.style.backgroundColor = 'red';
+		oDiv.style.color = 'white';
+		oDiv.iMark = 2;
+		//eid('debugButton').innerHTML = 'Resume';
+		sDebugStatus = 'paused';
+		oActiveBreakpoint = oDiv;
+		showRegisters();
+	}	
+}
+
+function setMargin() {
+	var sText = eid('code').value;
+	var iLines = 1;
+	sText.replace(/\n/g, function() { iLines++; });
+	if (setMargin.iLines != iLines) {
+		var iFirst = setMargin.iLines || 0;
+		var oMargin = eid('codeMargin');
+		for (var i=iFirst; i<iLines; i++) {
+			var oDiv = document.createElement('div');
+			oDiv.innerHTML = i+1;
+			oDiv.onclick = onLineClick;
+			oDiv.iLine = i;
+			oMargin.appendChild(oDiv);
+		}
+		while (oMargin.childNodes.length > iLines) {
+			oMargin.removeChild(oMargin.lastChild);
+		}
+		setMargin.iLines = iLines;
+	}
+}
+
+function setMarginScroll() {
+	var oText = eid('code');
+	var oMargin = eid('codeMargin');
+	oMargin.style.position = 'relative';
+	oMargin.style.top = -oText.scrollTop + 2; // FIXME: hard-coded padding compensation
+}
+
+function toggleBreakpoint() {
+	var iLine = editor.oCursor.y - 1;
+	var oMargin = eid('codeMargin');
+	var oDiv = oMargin.childNodes[iLine];
+	toggleBreakpointDiv(oDiv);	
+}
+
+Sel.setRange(editor.el, 0, 0);
+editor.checkPosition();
+
+window.onresize = function() {
+	var oPanel = eid('sidePanel');
+	var oText = eid('code');
+	oPanel.style.height = oText.offsetHeight - 18;
+	eid('codeMarginCont').style.height = oText.offsetHeight;
+}
+
+window.onresize();
+
+setInterval(setMargin, 1000);
+setInterval(setMarginScroll, 150);
+
+/* MSXGDE */
+
+var iDocID = null;
+if (parent.app) {
+	var oMenuFile = eid('menuFile');
+	oMenuFile.parentNode.removeChild(oMenuFile);
+
+	ASM.fExternalLoader = function(sFile) {
+		return parent.app.moduleRequireFile(sFile);
+	}
+
+	iDocID = parent.app.moduleDocID(document.location);
+	if (iDocID != null) {
+		var aEntryPoints = {
+			loadDocument: function(aDoc, sData) {
+				editor.last = editor.el.value = sData.replace(/\r/g, '');
+				editor.labels = parent.shared.bit.aLabels[aDoc.sPath];
+			},
+			saveDocument: function(aDoc) {
+				var aEntry = {};
+				aEntry.sData = editor.el.value;
+				if (aDoc.sName.match(/\.bas$/i)) {
+					aEntry.sMode = 'dos';					
+				}
+				return aEntry;
+			},
+			jumpToAnchor: function(sAnchor) {
+				gotoLabel(sAnchor);
+			}
+		}
+		parent.app.moduleSetMenubar(iDocID, eid('divTopMenuProto'));
+		parent.app.moduleInit(iDocID, aEntryPoints);
+	}
+} else {
+	/* place menu */
+	var el = eid('divTopMenuProto');
+	el = el.parentNode.removeChild(el);
+	el = eid('tdTopMenuHolder').appendChild(el, eid('tblLabels'));
+	el.style.display = '';
+}
+
+</script>
+</html>
