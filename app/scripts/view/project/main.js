@@ -41,6 +41,11 @@ function($, BackBone, Handlebars, Project, dock, model,
     return options;
   });
 
+  var editors = {
+    TileSet: "internal-apps/tinysprite/tinysprite.html",
+    Map: "internal-apps/tiny-map-editor/index.html"
+  }
+
   var ProjectTree = Backbone.View.extend({
 
     className: "project-tree-container",
@@ -109,10 +114,13 @@ function($, BackBone, Handlebars, Project, dock, model,
     editResource: function(ev) {
       var $target = $(ev.target);
 
+      var entityName = $target.data('rgeEntity'),
+          entityId = $target.data('rgeId');
+
       dock.createEditor(
-        '<iframe src="internal-apps/tinysprite/tinysprite.html' +
-        '?entity=' + $target.data('rgeEntity') +
-        '&entityId=' + $target.data('rgeId') +
+        '<iframe src="' + editors[entityName] + 
+        '?entity=' + entityName +
+        '&entityId=' + entityId +
         '" style="width: 100%; height: 100%; border: 0">');
     },
 
