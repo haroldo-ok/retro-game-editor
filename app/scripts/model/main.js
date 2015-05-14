@@ -42,6 +42,11 @@ define(["backbone", "underscore", "q", "localforage-backbone"], function(Backbon
 
     var BaseCollection = Backbone.Collection.extend({
         model: Model,
+        get: function(id) {
+          var result = Backbone.Collection.prototype.get.apply(this, arguments);
+          // TODO: See why get() isn't working with recently included items
+          return result || this.find({id: id});
+        },
         fetch: function(options) {
           options = injectPromise(options);
           Backbone.Collection.prototype.fetch.call(this, options);

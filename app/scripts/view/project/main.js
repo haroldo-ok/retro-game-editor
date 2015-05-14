@@ -1,6 +1,6 @@
 'use strict';
 
-define(["jquery", "backbone", "handlebars", "model/project",
+define(["jquery", "underscore", "backbone", "handlebars", "model/project",
   "view/dock/main", "model",
   "hbars!./project-tree.hbs", "hbars!./project-menubar.hbs",
   "text!./resource-menu.hbs",
@@ -11,7 +11,7 @@ define(["jquery", "backbone", "handlebars", "model/project",
   "css!./bootstrap-dropdown-hover.css",
   "css!./menu.css",
   "domReady!"],
-function($, BackBone, Handlebars, Project, dock, model,
+function($, _, BackBone, Handlebars, Project, dock, model,
   template, menubarTemplate, resourceMenuTemplate){
 
   Handlebars.registerPartial('resourceMenu', resourceMenuTemplate);
@@ -62,6 +62,8 @@ function($, BackBone, Handlebars, Project, dock, model,
       _.bindAll(this, "render", "newProject",
         "newResource", "editResource", "renameResource", "deleteResource");
 
+      this.requestRender = _.debounce(this.render, 300);
+
       Project.objects.fetchAll()
         .then(this.render)
         .done();
@@ -70,7 +72,7 @@ function($, BackBone, Handlebars, Project, dock, model,
       ['add', 'destroy', 'change:name',
         'add-detail', 'change-detail', 'destroy-detail']
         .forEach(function(evName){
-          Project.objects.on(evName, that.render, that);
+          Project.objects.on(evName, that.requestRender, that);
         });
     },
 
@@ -89,6 +91,7 @@ function($, BackBone, Handlebars, Project, dock, model,
 
     newProject: function() {
       new Project({name: prompt('Project name?')}).save();
+      this.requestRender();
     },
 
     newResource: function(ev) {
@@ -109,6 +112,8 @@ function($, BackBone, Handlebars, Project, dock, model,
       var project = Project.objects.get(parentProjectId);
       project.resources.add(resource);
       resource.save();
+
+      this.requestRender();
     },
 
     editResource: function(ev) {
@@ -118,7 +123,7 @@ function($, BackBone, Handlebars, Project, dock, model,
           entityId = $target.data('rgeId');
 
       dock.createEditor(
-        '<iframe src="' + editors[entityName] + 
+        '<iframe src="' + editors[entityName] +
         '?entity=' + entityName +
         '&entityId=' + entityId +
         '" style="width: 100%; height: 100%; border: 0">');
