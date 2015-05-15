@@ -41,7 +41,8 @@
     "bootstrap": "~3.3.4",
     "localforage-backbone": "~0.6.1",
     "github-fork-ribbon-css": "~0.1.1",
-    "spinkit": "~1.0.1"
+    "spinkit": "~1.0.1",
+    "requirejs-google-analytics": "~0.1.11"
   },
   "resolutions": {
     "underscore": ">=1.5.0"

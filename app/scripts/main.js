@@ -3,11 +3,14 @@
 require.config({
   shim: {
     backbone: {
-        deps: ['underscore', 'jquery'],
-        exports: 'Backbone'
+      deps: [
+        'underscore',
+        'jquery'
+      ],
+      exports: 'Backbone'
     },
     underscore: {
-        exports: '_'
+      exports: '_'
     }
   },
   paths: {
@@ -29,7 +32,9 @@ require.config({
     handlebars: '../../bower_components/handlebars/handlebars',
     'font-awesome': '../../bower_components/font-awesome/fonts/*',
     bootstrap: '../../bower_components/bootstrap/dist/js/bootstrap',
-    'iframe': 'util/iframe'
+    iframe: 'util/iframe',
+    'requirejs-google-analytics': '../../bower_components/requirejs-google-analytics/dist/GoogleAnalytics',
+    EventEmitter: '../../bower_components/event-emitter/dist/EventEmitter'
   },
   packages: [
     'model',
@@ -40,12 +45,18 @@ require.config({
       text: 'requirejs-text',
       html: 'requirejs-html',
       hbars: 'requirejs-handlebars',
-      domReady: 'requirejs-domready'
+      domReady: 'requirejs-domready',
+      GA: 'requirejs-google-analytics'
+    }
+  },
+  config: {
+    'requirejs-google-analytics': {
+      id: 'UA-63017813-1'
     }
   }
 });
 
-require(["jquery", "model/project", "view", "assembler/main"], function($, Project, view, assembler) {
+require(["jquery", "model/project", "view", "assembler/main", "GA"], function($, Project, view, assembler) {
   $("#main-loading-animation").fadeOut();
   console.log('Loaded.');
 }, function(err){
