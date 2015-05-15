@@ -45,7 +45,7 @@ require.config({
   }
 });
 
-require(["jquery", "model/project", "view", "iframe!assembler/bitz80/faq.html"], function($, Project, view, iframe) {
+require(["jquery", "model/project", "view", "assembler/main"], function($, Project, view, assembler) {
   $("#main-loading-animation").fadeOut();
   console.log('Loaded.');
 }, function(err){
