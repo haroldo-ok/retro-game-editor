@@ -28,7 +28,8 @@ require.config({
     'requirejs-handlebars': '../../bower_components/requirejs-handlebars/hb',
     handlebars: '../../bower_components/handlebars/handlebars',
     'font-awesome': '../../bower_components/font-awesome/fonts/*',
-    bootstrap: '../../bower_components/bootstrap/dist/js/bootstrap'
+    bootstrap: '../../bower_components/bootstrap/dist/js/bootstrap',
+    'iframe': 'util/iframe'
   },
   packages: [
     'model',
@@ -44,7 +45,7 @@ require.config({
   }
 });
 
-require(["jquery", "model/project", "view"], function($, Project) {
+require(["jquery", "model/project", "view", "iframe!assembler/bitz80/faq.html"], function($, Project, view, iframe) {
   $("#main-loading-animation").fadeOut();
   console.log('Loaded.');
 }, function(err){
