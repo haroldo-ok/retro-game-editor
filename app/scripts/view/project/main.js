@@ -1,7 +1,7 @@
 'use strict';
 
 define(["jquery", "underscore", "backbone", "handlebars", "model/project",
-  "view/dock/main", "model",
+  "view/dock/main", "model", "assembler/main",
   "hbars!./project-tree.hbs", "hbars!./project-menubar.hbs",
   "text!./resource-menu.hbs",
   "jstree", "view/dock/main", "view/util/main",
@@ -11,7 +11,7 @@ define(["jquery", "underscore", "backbone", "handlebars", "model/project",
   "css!./bootstrap-dropdown-hover.css",
   "css!./menu.css",
   "domReady!"],
-function($, _, BackBone, Handlebars, Project, dock, model,
+function($, _, BackBone, Handlebars, Project, dock, model, assembler,
   template, menubarTemplate, resourceMenuTemplate){
 
   Handlebars.registerPartial('resourceMenu', resourceMenuTemplate);
@@ -55,11 +55,12 @@ function($, _, BackBone, Handlebars, Project, dock, model,
       'click .resource-link': 'editResource',
       'click .new-resource': 'newResource',
       'click .rename-resource': 'renameResource',
-      'click .delete-resource': 'deleteResource'
+      'click .delete-resource': 'deleteResource',
+      'click .compile-project': 'compileProject'
     },
 
     initialize: function() {
-      _.bindAll(this, "render", "newProject",
+      _.bindAll(this, "render", "newProject", "compileProject",
         "newResource", "editResource", "renameResource", "deleteResource");
 
       this.requestRender = _.debounce(this.render, 300);
@@ -170,6 +171,12 @@ function($, _, BackBone, Handlebars, Project, dock, model,
       if (confirmed) {
         resource.destroy();
       }
+    },
+
+    compileProject: function(ev) {
+      var projectId = $('.project-link:not(.collapsed):first').data('rgeId');
+      var project = Project.objects.get(projectId);
+      assembler(project).saveZip();
     }
   });
 
