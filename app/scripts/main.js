@@ -34,7 +34,8 @@ require.config({
     bootstrap: '../../bower_components/bootstrap/dist/js/bootstrap',
     iframe: 'util/iframe',
     'requirejs-google-analytics': '../../bower_components/requirejs-google-analytics/dist/GoogleAnalytics',
-    EventEmitter: '../../bower_components/event-emitter/dist/EventEmitter'
+    EventEmitter: '../../bower_components/event-emitter/dist/EventEmitter',
+    'file-saver': '../../bower_components/file-saver.js/FileSaver'
   },
   packages: [
     'model',
