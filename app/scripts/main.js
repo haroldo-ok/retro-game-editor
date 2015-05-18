@@ -62,10 +62,15 @@ require.config({
   }
 });
 
-require(["jquery", "model/project", "view", "assembler/main", "GA"], function($, Project, view, assembler) {
+require(["jquery", "util/error-tracker",
+  "model/project", "view", "assembler/main", "GA"],
+function($) {
   $("#main-loading-animation").fadeOut();
   console.log('Loaded.');
 }, function(err){
   console.error(err);
+  require(["util/error-tracker"], function(trackError){
+    trackError(err);
+  });
   alert("There was a problem while loading the required libraries:\n" + err);
 });
