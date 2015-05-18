@@ -1,6 +1,7 @@
 'use strict';
 
 require.config({
+  waitSeconds: 60,
   shim: {
     bootstrap: {
       deps: ['jquery'],
