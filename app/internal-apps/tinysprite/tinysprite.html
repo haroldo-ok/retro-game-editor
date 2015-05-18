@@ -27,6 +27,17 @@ Also, take a look at the Changelog:
 <head>
 	<title>TinySprite 0.4.7 - MSX Sprite Editor</title>
 	<link rel="SHORTCUT ICON" href="img/logo.gif" />
+
+	<script>
+		(function(){
+			var editorWindow = window;
+			top.require(["GA","util/error-tracker"], function(GA, trackError){
+				trackError.listenTo(editorWindow);
+				GA.view(editorWindow.location.pathname);
+			});
+		})();
+	</script>
+
 	<script src='tinysprite.js'></script>
 	<script src='slots.js'></script>
 	<script src='palette.js'></script>

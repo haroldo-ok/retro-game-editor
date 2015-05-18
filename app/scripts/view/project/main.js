@@ -125,13 +125,14 @@ function($, _, BackBone, Handlebars, Project, dock, model, assembler,
       var $target = $(ev.target);
 
       var entityName = $target.data('rgeEntity'),
-          entityId = $target.data('rgeId');
+          entityId = $target.data('rgeId'),
+          src = editors[entityName] +
+              '?entity=' + entityName +
+              '&entityId=' + entityId;
 
       dock.createEditor(
-        '<iframe src="' + editors[entityName] +
-        '?entity=' + entityName +
-        '&entityId=' + entityId +
-        '" style="width: 100%; height: 100%; border: 0">');
+        '<iframe src="' + src + '" ' +
+            'style="width: 100%; height: 100%; border: 0">');
     },
 
     getSelectedResorce: function(clickedElement) {

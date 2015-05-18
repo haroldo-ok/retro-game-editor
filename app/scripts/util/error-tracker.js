@@ -12,7 +12,10 @@ define(["GA"], function(GA){
     }
   }
 
-  window.addEventListener('error', trackError);
+  trackError.listenTo = function(element) {
+    element.addEventListener('error', trackError);
+  }
+  trackError.listenTo(window);
 
   require(["jquery"], function($){
     $(document).ajaxError(function(e, request, settings) {
