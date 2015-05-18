@@ -2,6 +2,10 @@
 
 require.config({
   shim: {
+    bootstrap: {
+      deps: ['jquery'],
+      exports: 'Bootstrap'
+    },
     backbone: {
       deps: [
         'underscore',
