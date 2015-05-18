@@ -79,5 +79,33 @@ define(["backbone", "underscore", "q"], function(Backbone, _, Q){
     });
   }
 
+  var functionsToProxy = [
+    'forEach','each','map','collect','reduce','foldl','inject','reduceRight',
+    'foldr','find','detect','filter','select','reject','every','all','some',
+    'any','contains','include','invoke','max','min','sortBy','groupBy',
+    'shuffle','toArray','size','first','head','take','initial','rest','tail',
+    'drop','last','without','indexOf','lastIndexOf','isEmpty','chain',
+    'difference','sample','partition','countBy','indexBy'];
+
+  functionsToProxy.forEach(function(funcName){
+    OneToMany.prototype[funcName] = function(){
+      var params = [this._items].concat(_.toArray(arguments));
+      return _[funcName].apply(this, params);
+    }
+  });
+/*
+  ['forEach','each','map','collect','reduce','foldl','inject','reduceRight',
+  'foldr','find','detect','filter','select','reject','every','all','some',
+  'any','contains','include','invoke','max','min','sortBy','groupBy','shuffle',
+  'toArray','size','first','head','take','initial','rest','tail','drop','last',
+  'without','indexOf','lastIndexOf','isEmpty','chain','difference','sample',
+  'partition','countBy','indexBy'].forEach(function(funcName){
+    OneToMany.prototype[funcName] = function(){
+      var params = [this._items].concat(_.toArray(arguments));
+      return _[funcName].apply(this, params);
+    }
+  });
+  */
+
   return OneToMany;
 });
