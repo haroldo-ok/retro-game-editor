@@ -87,7 +87,12 @@ function($, _, BackBone, Handlebars, Project, dock, model, assembler,
             template({projects: Project.objects.fullJSON()})
           );
 
-        this.$el.find('#' + lastExpandedId).collapse('show');
+        // Expands whatever was expanded last, if any; otherwise, expands the first item.
+        var $toExpand = this.$el.find('#' + lastExpandedId);
+        if (!$toExpand.length) {
+          $toExpand = this.$el.find('.collapse').first();
+        }
+        $toExpand.collapse('show');
       } catch (e) {
         console.error(e);
         throw new Error('Problems while rendering the project pane: ' + e);
