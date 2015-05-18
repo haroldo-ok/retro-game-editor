@@ -1,8 +1,9 @@
 define(["./asm", "underscore", "file-saver", "jszip",
+  "./tileset",
   "text!./sms.asm", "text!./data.asm", "text!./common.asm"],
 function(asm, _, saveAs, JSZip,
+    tileSetConverter,
     smsAsm, dataAsm, commonAsm){
-  var code = [smsAsm, commonAsm, dataAsm].join('\n');
 
   function arrayAsBinary(array) {
     return new Blob([array], {type: "application/octet-stream"});
@@ -11,6 +12,11 @@ function(asm, _, saveAs, JSZip,
   return function(project){
     var prefix = project && project.get('name') || '';
     prefix = prefix.replace(/[|&;$%@"<>()+,]/g, "") || 'out';
+
+    var code = [
+      smsAsm, commonAsm, dataAsm,
+      tileSetConverter(project)
+    ].join('\n');
 
     var assembled = asm(code);
     var binary = new Uint8Array(assembled.code);
