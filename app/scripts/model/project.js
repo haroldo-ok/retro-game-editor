@@ -6,6 +6,9 @@ function(model, OneToMany, Q, TileSet, Map){
   var Project = model("Project", {
     constructor: function() {
       this.resources = new OneToMany(this, [TileSet, Map], 'projectId');
+      this.resources.ofType = function(type){
+        return this.where({entityName: type});
+      }
       Project.BaseModel.apply(this, arguments);
     },
     fullJSON: function() {

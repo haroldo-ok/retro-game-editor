@@ -101,8 +101,8 @@ ClearVRAM_Loop:
 	ld hl,$2000 | VRAMWrite
 	call SetVDPAddress
 	; 2. Output tile data
-	ld hl,OrcData              ; Location of tile data
-	ld bc,OrcDataEnd-OrcData  ; Counter for number of bytes to write
+	ld hl,TileSet_0              ; Location of tile data
+	ld bc,TileSet_0_End-TileSet_0  ; Counter for number of bytes to write
 	call CopyToVDP
 
 	;==============================================================

@@ -1,0 +1,13 @@
+;==============================================================
+; Tile set # {{position}}: {{name}}
+;==============================================================
+TileSet_{{position}}:
+TileSet_{{formattedId}}:
+{{#each tiles}}
+  ; Tile {{name}}
+  {{#each hex}}
+    db {{this}}
+  {{/each}}
+{{/each}}
+TileSet_{{formattedId}}_End:
+TileSet_{{position}}_End:
