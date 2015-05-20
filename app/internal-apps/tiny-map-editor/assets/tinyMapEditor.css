@@ -45,7 +45,6 @@ input[type=text] { width: 30px }
 #options p span { display: inline-block; width: 20px; padding-left: 5px; text-align: left }
 
 #tiles canvas { margin-bottom: 10px }
-#tiles input { display: inline-block }
 
 #layers li { text-align: left }
 #layers li p { margin: 5px; padding: 5px; border: 1px solid #bbb }
