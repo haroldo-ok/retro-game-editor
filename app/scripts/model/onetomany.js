@@ -37,6 +37,13 @@ define(["backbone", "underscore", "q"], function(Backbone, _, Q){
     });
   }
 
+  OneToMany.prototype.get = function(entityName, id) {
+    return this.findWhere({
+      entityName: entityName,
+      id: id
+    });
+  }
+
   OneToMany.prototype.add = function(models) {
     var that = this;
     var models = paramToArray(models);

@@ -1,5 +1,26 @@
+'use strict';
+
 top.require(["jquery", "model", "model/project", "view/util/query-string"],
 function($, model, Project, queryString){
+
+  var defaultPalette = [
+    [0,255,255], // None
+    [0,0,0], // Black
+    [33,200,66], // Green
+    [94,220,120], // Green (light)
+    [84,85,237], // Blue (dark)
+    [125,118,252], // Blue
+    [212,82,77], // Red (dark)
+    [66,235,245], // Cyan
+    [252,85,84], // Red
+    [255,121,120], // Red (light)
+    [212,193,84], // Yellow (dark)
+    [230,206,128], // Yellow
+    [33,176,59], // Green (dark)
+    [201,91,186], // Purple
+    [204,204,204], // Gray
+    [255,255,255] // White
+  ];
 
   var tinyMapEditor = (function() {
       var win = window,
@@ -199,6 +220,8 @@ function($, model, Project, queryString){
           },
 
           populateTilesets: function() {
+            // TODO: Rewrite this without jQuery, to match the rest of the file.
+
             var $select = $doc.find('#tileSets');
 
             $select.empty();
@@ -207,6 +230,66 @@ function($, model, Project, queryString){
                 .attr('value', tileSet.get('id'))
                 .text(tileSet.get('name') || '**unnamed**'));
             });
+
+            this.updateTileset();
+          },
+
+          updateTileset: function() {
+            var select = doc.getElementById('tileSets');
+            var selectedOption = select.selectedIndex < 0 ?
+              null : select.options[select.selectedIndex];
+
+            if (selectedOption) {
+              var tileSet = this.project.resources.get('TileSet', selectedOption.value);
+              console.warn(tileSet);
+
+              var tiles = tileSet.tilePixels();
+              console.warn(tiles);
+
+              var tilesPerLine = 6,
+                  tileSize = 16;
+
+              var canvas = document.createElement('canvas');
+              canvas.width = tileSize * tilesPerLine;
+              canvas.height = tileSize * Math.ceil(tiles.length / tilesPerLine);
+
+              var ctx = canvas.getContext('2d');
+              var imgData = map.getImageData(0, 0, canvas.width, canvas.height);
+
+              // Draw the tiles on the canvas
+              var dX = 0,
+                  dY = 0;
+              tiles.forEach(function(tile){
+                if (tile) {
+                  // Draw tile on the canvas
+                  for (var y = 0; y < tile.length; y++) {
+                    var line = tile[y],
+                        yOffs = (y + dY) * canvas.width;
+
+                    for (var x = 0; x < line.length; x++) {
+                      var colorIndex = line[x],
+                          rgb = defaultPalette[colorIndex],
+                          offs = (x + dX + yOffs) * 4;
+
+                      imgData.data[offs] = rgb[0]; // Red
+                      imgData.data[offs + 1] = rgb[1]; // Green
+                      imgData.data[offs + 2] = rgb[2]; // Blue
+                      imgData.data[offs + 3] = 255; // Alpha
+                    }
+                  }
+                }
+
+                // Calculate position of next tile
+                dX += tileSize;
+                if (dX >= canvas.width) {
+                  dX = 0;
+                  dY += tileSize;
+                }
+              });
+
+              ctx.putImageData(imgData, 0, 0);
+              sprite.src = canvas.toDataURL();
+            }
           },
 
           bindEvents : function() {
@@ -259,7 +342,7 @@ function($, model, Project, queryString){
               this.loadMap();
               this.populateTilesets();
 
-              sprite.src = 'assets/tilemap_32a.png';
+              //sprite.src = 'assets/tilemap_32a.png';
               map.canvas.width = width * tileSize;
               map.canvas.height = height * tileSize;
               map.canvas.style.width = (map.canvas.width * mapZoom) + 'px';
