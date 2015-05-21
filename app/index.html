@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>title</title>
+    <title>Retro Game Editor</title>
     <link rel="stylesheet" href="../bower_components/spinkit/css/spinners/1-rotating-plane.css">
     <style>
       #main-loading-animation {
@@ -18,6 +18,9 @@
   <body>
     <div id="main-loading-animation" class="sk-spinner sk-spinner-rotating-plane"></div>
 
+    <script>
+      document.title = document.title + ' (Loading...)';
+    </script>
     <link rel="stylesheet" href="scripts/view/main.css">
     <script data-main="scripts/main" src="../bower_components/requirejs/require.js"></script>
   </body>

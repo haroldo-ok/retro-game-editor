@@ -67,6 +67,7 @@ require(["jquery", "util/error-tracker",
   "model/project", "view", "assembler/main", "GA"],
 function($) {
   $("#main-loading-animation").fadeOut();
+  document.title = 'Retro Game Editor';
   console.log('Loaded.');
 }, function(err){
   console.error(err);
