@@ -52,7 +52,7 @@ function($, model, Project, queryString){
                   var targetId = e.target.id;
                   var zoom =
                       targetId == 'tileEditor' ? mapZoom
-                      : targetId == 'palette' ? palZoom 
+                      : targetId == 'palette' ? palZoom
                       : 1;
 
                   var row = Math.floor(e.layerX / tileSize / zoom) | 0,
@@ -341,6 +341,14 @@ function($, model, Project, queryString){
                   _this.destroy();
                   _this.init();
               }, false);
+
+              /**
+               * Select tileset event
+               */
+
+               document.getElementById('tileSets').addEventListener('change', function() {
+                 _this.updateTileset();
+               });
           },
 
           init : function() {
