@@ -37,6 +37,7 @@ function($, model, Project, queryString){
 
           selectedZoom = 4,
           mapZoom = 2,
+          palZoom = 2,
 
           player,
           draw,
@@ -49,7 +50,10 @@ function($, model, Project, queryString){
           getTile : function(e) {
               if (e.target.nodeName === 'CANVAS') {
                   var targetId = e.target.id;
-                  var zoom = targetId == 'tileEditor' ? mapZoom : 1;
+                  var zoom =
+                      targetId == 'tileEditor' ? mapZoom
+                      : targetId == 'palette' ? palZoom 
+                      : 1;
 
                   var row = Math.floor(e.layerX / tileSize / zoom) | 0,
                       col = Math.floor(e.layerY / tileSize / zoom) | 0;
@@ -317,6 +321,7 @@ function($, model, Project, queryString){
               sprite.addEventListener('load', function() {
                   pal.canvas.width = this.width;
                   pal.canvas.height = this.height;
+                  pal.canvas.style.width = (pal.canvas.width * palZoom) + 'px';
                   pal.drawImage(this, 0, 0);
               }, false);
 
