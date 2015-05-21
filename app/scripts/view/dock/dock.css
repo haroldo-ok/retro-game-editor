@@ -46,5 +46,25 @@ body {
 .activeline {background: #e8f2ff !important;}
 
 .project-menu {
-  
+
+}
+
+div.github-fork-ribbon-wrapper {
+  width: 100px;
+  height: 100px;
+}
+
+div.github-fork-ribbon-wrapper.right-bottom .github-fork-ribbon {
+  right: -33px;
+  top: 45px;
+}
+
+div.github-fork-ribbon {
+  font-size: 10px;
+}
+
+div.github-fork-ribbon a,
+div.github-fork-ribbon a:hover {
+  line-height: 12px;
+  width: 150px;
 }
