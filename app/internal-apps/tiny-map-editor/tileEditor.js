@@ -32,12 +32,14 @@ function($, model, Project, queryString){
           tileSize = 16,
           srcTile = 0,
           sprite = new Image(),
-          tiles, // used for demo, not *really* needed atm
+          tiles,
           alpha,
 
           selectedZoom = 4,
           mapZoom = 2,
           palZoom = 2,
+
+          tilesPerLine = 6,
 
           player,
           draw,
@@ -69,6 +71,7 @@ function($, model, Project, queryString){
 
               if (e.target.id === 'tileEditor' && srcTile && !draw) {
                   destTile = this.getTile(e);
+                  tiles[destTile.col][destTile.row] = srcTile.col * tilesPerLine + srcTile.row;
                   map.clearRect(destTile.row * tileSize, destTile.col * tileSize, tileSize, tileSize);
                   map.drawImage(sprite, srcTile.row * tileSize, srcTile.col * tileSize, tileSize, tileSize, destTile.row * tileSize, destTile.col * tileSize, tileSize, tileSize);
               }
@@ -113,18 +116,18 @@ function($, model, Project, queryString){
           },
 
           drawMap : function() {
-              var i, j, invert = document.getElementById('invert').checked ? 0 : 1;
+            for (var y = 0; y < height; y++) {
+              for (var x = 0; x < width; x++) {
+                var tileIdx = tiles[y][x],
+                    srcY = tileIdx / tilesPerLine,
+                    srcX = tileIdx % tilesPerLine;
 
-              map.fillStyle = 'black';
-              for (i = 0; i < width; i++) {
-                  for (j = 0; j < height; j++) {
-                      if (alpha[i][j] === invert) {
-                          map.fillRect(i * tileSize, j * tileSize, tileSize, tileSize);
-                      } else if (typeof alpha[i][j] === 'object') {
-                          // map.putImageData(tiles[i][j], i * tileSize, j * tileSize); // temp fix to colour collision layer black
-                      }
-                  }
+                map.clearRect(x * tileSize, y * tileSize, tileSize, tileSize);
+                map.drawImage(sprite,
+                    srcX * tileSize, srcY * tileSize, tileSize, tileSize,
+                    x * tileSize, y * tileSize, tileSize, tileSize);
               }
+            }
           },
 
           clearMap : function(e) {
@@ -132,50 +135,6 @@ function($, model, Project, queryString){
                   map.clearRect(0, 0, map.canvas.width, map.canvas.height);
                   this.destroy();
                   build.disabled = false;
-              }
-          },
-
-          buildMap : function(e) {
-              if (e.target.id === 'build') {
-                  var obj = {},
-                      pixels,
-                      len,
-                      x, y, z;
-
-                  tiles = []; // graphical tiles (not currently needed, can be used to create standard tile map)
-                  alpha = []; // collision map
-
-                  for (x = 0; x < width; x++) { // tiles across
-                      tiles[x] = [];
-                      alpha[x] = [];
-
-                      for (y = 0; y < height; y++) { // tiles down
-                          pixels = map.getImageData(x * tileSize, y * tileSize, tileSize, tileSize);
-                          len = pixels.data.length;
-
-                          tiles[x][y] = pixels; // store ALL tile data
-                          alpha[x][y] = [];
-
-                          for (z = 0; z < len; z += 4) {
-                              pixels.data[z] = 0;
-                              pixels.data[z + 1] = 0;
-                              pixels.data[z + 2] = 0;
-                              alpha[x][y][z / 4] = pixels.data[z + 3]; // store alpha data only
-                          }
-
-                          if (alpha[x][y].indexOf(0) === -1) { // solid tile
-                              alpha[x][y] = 1;
-                          } else if (alpha[x][y].indexOf(255) === -1) { // transparent tile
-                              alpha[x][y] = 0;
-                          } else { // partial alpha, build pixel map
-                              alpha[x][y] = this.sortPartial(alpha[x][y]);
-                              tiles[x][y] = pixels; // (temporarily) used for drawing map
-                          }
-                      }
-                  }
-
-                  this.outputJSON();
-                  this.drawMap();
               }
           },
 
@@ -221,6 +180,14 @@ function($, model, Project, queryString){
             var Model = model.byName(query.entity);
             this.mapEntity = Model.objects.get(query.entityId);
             this.project = Project.objects.get(this.mapEntity.get('projectId'));
+
+            tiles = [];
+            for (var y = 0; y < height; y++) {
+              tiles[y] = [];
+              for (var x = 0; x < width; x++) {
+                tiles[y][x] = 0;
+              }
+            }
           },
 
           populateTilesets: function() {
@@ -241,24 +208,18 @@ function($, model, Project, queryString){
           updateTileset: function() {
             var select = doc.getElementById('tileSets');
             var selectedOption = select.selectedIndex < 0 ?
-              null : select.options[select.selectedIndex];
+                null : select.options[select.selectedIndex];
 
             if (selectedOption) {
-              var tileSet = this.project.resources.get('TileSet', selectedOption.value);
-              console.warn(tileSet);
-
-              var tiles = tileSet.tilePixels();
-              console.warn(tiles);
-
-              var tilesPerLine = 6,
-                  tileSize = 16;
+              var tileSet = this.project.resources.get('TileSet', selectedOption.value),
+                  tiles = tileSet.tilePixels();
 
               var canvas = document.createElement('canvas');
               canvas.width = tileSize * tilesPerLine;
               canvas.height = tileSize * Math.ceil(tiles.length / tilesPerLine);
 
               var ctx = canvas.getContext('2d');
-              var imgData = map.getImageData(0, 0, canvas.width, canvas.height);
+              var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
               // Draw the tiles on the canvas
               var dX = 0,
@@ -310,7 +271,6 @@ function($, model, Project, queryString){
                   _this.eraseTile(e);
                   _this.drawTool();
                   _this.clearMap(e);
-                  _this.buildMap(e);
               }, false);
 
 
@@ -323,23 +283,8 @@ function($, model, Project, queryString){
                   pal.canvas.height = this.height;
                   pal.canvas.style.width = (pal.canvas.width * palZoom) + 'px';
                   pal.drawImage(this, 0, 0);
-              }, false);
 
-
-              /**
-               * Input change events
-               */
-
-              document.getElementById('width').addEventListener('change', function() {
-                  width = +this.value;
-                  _this.destroy();
-                  _this.init();
-              }, false);
-
-              document.getElementById('height').addEventListener('change', function() {
-                  height = +this.value;
-                  _this.destroy();
-                  _this.init();
+                  _this.drawMap();
               }, false);
 
               /**
@@ -352,6 +297,13 @@ function($, model, Project, queryString){
           },
 
           init : function() {
+              [pal, map].forEach(function(ctx){
+                ctx.mozImageSmoothingEnabled = false;
+                ctx.webkitImageSmoothingEnabled = false;
+                ctx.msImageSmoothingEnabled = false;
+                ctx.imageSmoothingEnabled = false;
+              });
+
               this.loadMap();
               this.populateTilesets();
 
