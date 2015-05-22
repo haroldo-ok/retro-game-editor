@@ -119,7 +119,7 @@ function($, model, Project, queryString){
             for (var y = 0; y < height; y++) {
               for (var x = 0; x < width; x++) {
                 var tileIdx = tiles[y][x],
-                    srcY = tileIdx / tilesPerLine,
+                    srcY = Math.floor(tileIdx / tilesPerLine),
                     srcX = tileIdx % tilesPerLine;
 
                 map.clearRect(x * tileSize, y * tileSize, tileSize, tileSize);
