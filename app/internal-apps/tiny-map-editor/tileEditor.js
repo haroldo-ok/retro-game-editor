@@ -194,6 +194,10 @@ function($, model, Project, queryString){
             if (!tiles) {
               this.clearMapTiles();
             }
+
+            document.getElementById('tileSets').innerHTML =
+                '<option value="' + this.mapEntity.get('tileSetId') +
+                '">Loading...</option>';
           },
 
           clearMapTiles: function() {
@@ -209,7 +213,8 @@ function($, model, Project, queryString){
           populateTilesets: function() {
             // TODO: Rewrite this without jQuery, to match the rest of the file.
 
-            var $select = $doc.find('#tileSets');
+            var $select = $doc.find('#tileSets'),
+                selectedValue = $select.val();
 
             $select.empty();
             this.project.resources.ofType('TileSet').forEach(function(tileSet){
@@ -217,6 +222,8 @@ function($, model, Project, queryString){
                 .attr('value', tileSet.get('id'))
                 .text(tileSet.get('name') || '**unnamed**'));
             });
+
+            $select.val(selectedValue);
 
             this.updateTileset();
           },
