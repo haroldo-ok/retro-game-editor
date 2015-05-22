@@ -135,9 +135,7 @@ function($, _, BackBone, Handlebars, Project, dock, model, assembler,
               '?entity=' + entityName +
               '&entityId=' + entityId;
 
-      dock.createEditor(
-        '<iframe src="' + src + '" ' +
-            'style="width: 100%; height: 100%; border: 0">');
+      dock.createInternalEditor(src);
     },
 
     getSelectedResorce: function(clickedElement) {

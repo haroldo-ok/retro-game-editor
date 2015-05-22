@@ -30,7 +30,12 @@ define(["jquery", "./static-view", "./tab-panel",
       Dock.prototype.createEditor = function(content) {
         var view = prepareView(content);
         tabPanel.createTab(view);
-//        $('#editor-window').html('').append(view.$el);
+      }
+
+      Dock.prototype.createInternalEditor = function(url) {
+        this.createEditor(
+          '<iframe src="' + url + '" ' +
+              'style="width: 100%; height: 100%; border: 0">');
       }
 
       return new Dock();
