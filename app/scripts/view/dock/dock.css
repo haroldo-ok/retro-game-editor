@@ -35,6 +35,18 @@ body {
   height: calc(100% - 41px);
 }
 
+#editor-window > .tabpanel > .nav-tabs .close-tab {
+  color: #555;
+  cursor: pointer;
+  opacity: 0.5;
+}
+
+#editor-window > .tabpanel > .nav-tabs .close-tab:hover {
+  color: #a94442;
+  opacity: 1;
+  transition: color .3s ease-in-out, opacity .2s ease-in-out;
+}
+
 .panel-toolbar {
   background-color: #aac;
   color: #333;

@@ -11,7 +11,13 @@ function($, Backbone, _, template, tabTemplate){
     className: 'tabpanel',
     tabs: [],
 
+    events: {
+      'click .close-tab': 'closeTab'
+    },
+
     initialize: function(options) {
+      _.bindAll(this, 'closeTab');
+
       this.render();
     },
 
@@ -41,6 +47,21 @@ function($, Backbone, _, template, tabTemplate){
       tab.show();
 
       return tab;
+    },
+
+    closeTab: function(ev) {
+      var $tabNav = $(ev.target).closest('a'),
+          href = $tabNav.attr('href');
+
+      var tab = _.chain(this.tabs)
+          .where({id: href.replace('#', '')})
+          .first().value();
+
+      if (tab) {
+        ev.stopPropagation();
+        tab.close();
+        this.tabs = _.without(this.tabs, tab);
+      }
     }
 
   });
@@ -67,6 +88,12 @@ function($, Backbone, _, template, tabTemplate){
 
     show: function() {
       this.$nav.find('a').tab('show');
+    },
+
+    close: function() {
+      this.$el.remove();
+      this.$nav.remove();
+      this.trigger('close', this);
     }
   });
 

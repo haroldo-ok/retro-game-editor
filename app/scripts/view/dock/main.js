@@ -41,7 +41,12 @@ define(["jquery", "./static-view", "./tab-panel",
           var tab = this.createEditor(
             '<iframe src="' + url + '" ' +
                 'style="width: 100%; height: 100%; border: 0">');
-          this._internalEditors[url] = tab;          
+          var that = this;
+
+          tab.on('close', function(){
+            delete that._internalEditors[url];
+          });
+          this._internalEditors[url] = tab;
         }
       }
 
