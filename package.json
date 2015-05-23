@@ -1,6 +1,6 @@
 {
   "name": "retro-game-editor",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "An editor for making games for retro platforms",
   "main": "server.js",
   "scripts": {
