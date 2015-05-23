@@ -25,17 +25,24 @@ define(["jquery", "./static-view", "./tab-panel",
       // ***** //
 
       function Dock() {
+        this._internalEditors = {};
       }
 
       Dock.prototype.createEditor = function(content) {
         var view = prepareView(content);
-        tabPanel.createTab(view);
+        return tabPanel.createTab(view);
       }
 
       Dock.prototype.createInternalEditor = function(url) {
-        this.createEditor(
-          '<iframe src="' + url + '" ' +
-              'style="width: 100%; height: 100%; border: 0">');
+        var tab = this._internalEditors[url];
+        if (tab) {
+          tab.show();
+        } else {
+          var tab = this.createEditor(
+            '<iframe src="' + url + '" ' +
+                'style="width: 100%; height: 100%; border: 0">');
+          this._internalEditors[url] = tab;          
+        }
       }
 
       return new Dock();

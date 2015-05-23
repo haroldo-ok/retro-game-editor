@@ -38,7 +38,7 @@ function($, Backbone, _, template, tabTemplate){
       this.$nav.append(tab.$nav);
       this.$content.append(tab.$el);
 
-      tab.$nav.find('a').tab('show');
+      tab.show();
 
       return tab;
     }
@@ -63,6 +63,10 @@ function($, Backbone, _, template, tabTemplate){
       this.$el.html('').append(this.view.$el);
 
       this.$nav = $(tabTemplate(this));
+    },
+
+    show: function() {
+      this.$nav.find('a').tab('show');
     }
   });
 
