@@ -138,6 +138,15 @@ function($, model, Project, queryString){
               }
           },
 
+          saveMap : function(e) {
+              if (e.target.id === 'save') {
+                this.mapEntity.save({
+                  tileSetId: this.selectedTileSetId(),
+                  tiles: tiles
+                });
+              }
+          },
+
           sortPartial : function(arr) {
               var len = arr.length,
                   temp = [],
@@ -181,6 +190,17 @@ function($, model, Project, queryString){
             this.mapEntity = Model.objects.get(query.entityId);
             this.project = Project.objects.get(this.mapEntity.get('projectId'));
 
+            tiles = this.mapEntity.get('tiles');
+            if (!tiles) {
+              this.clearMapTiles();
+            }
+
+            document.getElementById('tileSets').innerHTML =
+                '<option value="' + this.mapEntity.get('tileSetId') +
+                '">Loading...</option>';
+          },
+
+          clearMapTiles: function() {
             tiles = [];
             for (var y = 0; y < height; y++) {
               tiles[y] = [];
@@ -193,7 +213,8 @@ function($, model, Project, queryString){
           populateTilesets: function() {
             // TODO: Rewrite this without jQuery, to match the rest of the file.
 
-            var $select = $doc.find('#tileSets');
+            var $select = $doc.find('#tileSets'),
+                selectedValue = $select.val();
 
             $select.empty();
             this.project.resources.ofType('TileSet').forEach(function(tileSet){
@@ -202,16 +223,23 @@ function($, model, Project, queryString){
                 .text(tileSet.get('name') || '**unnamed**'));
             });
 
+            $select.val(selectedValue);
+
             this.updateTileset();
           },
 
-          updateTileset: function() {
+          selectedTileSetId: function() {
             var select = doc.getElementById('tileSets');
             var selectedOption = select.selectedIndex < 0 ?
                 null : select.options[select.selectedIndex];
 
-            if (selectedOption) {
-              var tileSet = this.project.resources.get('TileSet', selectedOption.value),
+            return selectedOption && selectedOption.value;
+          },
+
+          updateTileset: function() {
+            var tileSetId = this.selectedTileSetId();
+            if (tileSetId) {
+              var tileSet = this.project.resources.get('TileSet', tileSetId),
                   tiles = tileSet.tilePixels();
 
               var canvas = document.createElement('canvas');
@@ -271,6 +299,7 @@ function($, model, Project, queryString){
                   _this.eraseTile(e);
                   _this.drawTool();
                   _this.clearMap(e);
+                  _this.saveMap(e);
               }, false);
 
 

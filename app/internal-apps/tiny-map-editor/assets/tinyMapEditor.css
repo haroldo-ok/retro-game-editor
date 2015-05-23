@@ -55,7 +55,6 @@ textarea { width: 400px; height: 200px; margin: 0; font-family: monospace }
 
 /**** Hiding unnecessary parts */
 #options,
-#tools,
 output {
   display: none;
 }
