@@ -1,8 +1,8 @@
 define(["./asm", "underscore", "file-saver", "jszip",
-  "./tileset",
+  "./tileset", "./map",
   "text!./sms.asm", "text!./data.asm", "text!./common.asm"],
 function(asm, _, saveAs, JSZip,
-    tileSetConverter,
+    tileSetConverter, mapConverter,
     smsAsm, dataAsm, commonAsm){
 
   function arrayAsBinary(array) {
@@ -15,7 +15,8 @@ function(asm, _, saveAs, JSZip,
 
     var code = [
       smsAsm, commonAsm, dataAsm,
-      tileSetConverter(project)
+      tileSetConverter(project),
+      mapConverter(project)
     ].join('\n');
 
     var assembled = asm(code);

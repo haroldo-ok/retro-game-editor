@@ -59,7 +59,7 @@ define(["underscore", "hbars!./tileset.hbs"], function(_, template){
       var tileSets = project.resources.ofType('TileSet');
       return tileSets.map(function(tileSet, position){
         var json = tileSet.toJSON();
-        json = _.extend(tileSet.toJSON(), {
+        json = _.extend(json, {
           position: position,
           formattedId: json.id.replace(/-/g, '_'),
           tiles: (json.tiles || []).map(function(tile){

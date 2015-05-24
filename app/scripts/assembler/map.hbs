@@ -1,0 +1,10 @@
+;==============================================================
+; Map set # {{position}}: {{name}}
+;==============================================================
+Map_{{position}}:
+Map_{{formattedId}}:
+{{#each tiles}}
+  db {{this}}
+{{/each}}
+Map_{{formattedId}}_End:
+Map_{{position}}_End:

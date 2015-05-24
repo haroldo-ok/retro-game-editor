@@ -4,7 +4,9 @@ require.config({
   waitSeconds: 60,
   shim: {
     bootstrap: {
-      deps: ['jquery'],
+      deps: [
+        'jquery'
+      ],
       exports: 'Bootstrap'
     },
     backbone: {
@@ -16,6 +18,9 @@ require.config({
     },
     underscore: {
       exports: '_'
+    },
+    'underscore.string': {
+      deps: [ 'underscore' ]
     }
   },
   paths: {
@@ -41,7 +46,8 @@ require.config({
     'requirejs-google-analytics': '../../bower_components/requirejs-google-analytics/dist/GoogleAnalytics',
     EventEmitter: '../../bower_components/event-emitter/dist/EventEmitter',
     'file-saver': '../../bower_components/file-saver.js/FileSaver',
-    jszip: '../../bower_components/jszip/dist/jszip'
+    jszip: '../../bower_components/jszip/dist/jszip',
+    'underscore.string': '../../bower_components/underscore.string/dist/underscore.string'
   },
   packages: [
     'model',

@@ -1,5 +1,5 @@
 define(["iframe!./bitz80/bitz80-frame.html"],
-function(iframe, smsAsm, dataAsm, commonAsm){
+function(iframe){
   var ASM = iframe.contentWindow.ASM;
 
   return function(code){
