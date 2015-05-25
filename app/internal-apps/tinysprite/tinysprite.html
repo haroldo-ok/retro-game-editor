@@ -109,6 +109,7 @@ Also, take a look at the Changelog:
 						<select id='projType' onchange='return onProjTypeChange(this)' >
 							<option value='msx1'>MSX 1</option>
 							<option value='msx2'>MSX 2</option>
+							<option value='sms' selected='selected'>SMS</option>
 						</select>&nbsp;
 					</td>
 					<td>
@@ -762,7 +763,7 @@ function onProjTypeChange(el) {
 function projTypeChanged() {
 	var projType = eid('projType');
 	var paletteTip = eid('paletteTip');
-	var type2 = (projType.value == 'msx2');
+	var type2 = (projType.value == 'msx2' || projType.value == 'sms');
 	palette.sigzero = type2;
 	paletteTip.style.visibility = (type2) ? 'visible' : 'hidden';
 	if (type2) {
@@ -953,7 +954,7 @@ function projectDecode(c) {
 					next = null;
 					break;
 				case 'type':
-					if (line == 'msx1' || line == 'msx2') {
+					if (line == 'msx1' || line == 'msx2' || line == 'sms') {
 						eid('projType').value = line;
 						projTypeChanged();
 					}
