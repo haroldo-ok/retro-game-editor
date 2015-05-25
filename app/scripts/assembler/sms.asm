@@ -95,7 +95,7 @@ ClearVRAM_Loop:
 	call Copy1bppToVDP
 
 	;==============================================================
-	; Load orc tiles
+	; Load bkg tiles
 	;==============================================================
 	; 1. Set VRAM write address to tile index 256
 	ld hl,$2000 | VRAMWrite
@@ -120,27 +120,64 @@ ClearVRAM_Loop:
 	ld a,$81
 	out (VDPControl),a
 
-; Infinite loop to stop program
-; Infinite_Loop :  jr Infinite_Loop
+; Draw first map
+	; Set VRAM write address to tilemap index 0
+	ld hl,$3800 | VRAMWrite
+	call SetVDPAddress
 
-; Show a sprite
-	; Left side
-	ld a, 96
-	ld (hw_sprites_y), a
-	ld (hw_sprites_xc), a
-	ld a, 0
-	ld (hw_sprites_xc+1), a
-	; Right side
-	ld a, 96
-	ld (hw_sprites_y+1), a
-	ld a, 96 + 8
-	ld (hw_sprites_xc+2), a
-	ld a, 2
-	ld (hw_sprites_xc+3), a
-	; Sprite list terminator
-	ld a, 208
-	ld (hw_sprites_y+2), a
-	call UpdateSprites
+	ld hl, Map_0
+	ld c, 12							; Vertical count of 16x16 tiles
+RenderMap_Row_Loop:
+
+	; Even rows
+	ld b, 16							; Horizontal count of 16x16 tiles
+RenderMap_ColA_Loop:
+	ld a, (hl)						; Get current tile
+	add a, a
+	add a, a							; Multiply by 4
+	ld d, a								; Save it for later
+
+	; Even columns
+	out (VDPData), a			; Tile
+	ld a, $01
+	out (VDPData), a			; Attributes
+	; Odd columns
+	ld a, d
+	add a, 2
+	out (VDPData), a			; Tile
+	ld a, $01
+	out (VDPData), a			; Attributes
+
+	inc hl								; Next map tile
+	djnz RenderMap_ColA_Loop
+
+	; Odd rows
+	ld de, -16
+	add hl, de						; Move pointer back to start of current map row
+	ld b, 16							; Horizontal count of 16x16 tiles
+RenderMap_ColB_Loop:
+	ld a, (hl)						; Get current tile
+	add a, a
+	add a, a							; Multiply by 4
+	add a, 1
+	ld d, a								; Save it for later
+
+	; Even columns
+	out (VDPData), a			; Tile
+	ld a, $01
+	out (VDPData), a			; Attributes
+	; Odd columns
+	ld a, d
+	add a, 2
+	out (VDPData), a			; Tile
+	ld a, $01
+	out (VDPData), a			; Attributes
+
+	inc hl								; Next map tile
+	djnz RenderMap_ColB_Loop
+
+	dec c
+	jr nz, RenderMap_Row_Loop
 
 
 ; call main program
