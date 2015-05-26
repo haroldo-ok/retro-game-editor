@@ -1118,7 +1118,26 @@ msx1Palette.add(201,91,186,		'Purple');
 msx1Palette.add(204,204,204,		'Gray');
 msx1Palette.add(255,255,255,		'White');
 
-var palette = msx1Palette.clone();
+// EGA palette (just to use it as a starting point)
+var egaPalette = new Palette();
+egaPalette.add(0,0,0,		'Black');
+egaPalette.add(0,0,0xAA,		'Blue');
+egaPalette.add(0,0xAA,0,		'Green');
+egaPalette.add(0,0xAA,0xAA,		'Cyan');
+egaPalette.add(0xAA,0,0,		'Red');
+egaPalette.add(0xAA,0,0xAA,		'Magenta');
+egaPalette.add(0xAA,0x55,0,		'Brown');
+egaPalette.add(0xAA,0xAA,0xAA,		'Light gray');
+egaPalette.add(0x55,0x55,0x55,		'Dark gray');
+egaPalette.add(0x55,0x55,0xFF,		'Bright blue');
+egaPalette.add(0x55,0xFF,0x55,		'Bright green');
+egaPalette.add(0x55,0xFF,0xFF,		'Bright cyan');
+egaPalette.add(0xFF,0x55,0x55,		'Bright red');
+egaPalette.add(0xFF,0x55,0xFF,		'Bright magenta');
+egaPalette.add(0xFF,0xFF,0x55,		'Bright yellow');
+egaPalette.add(255,255,255,		'White');
+
+var palette = egaPalette.clone();
 
 
 // init grid and color pickers
