@@ -777,7 +777,8 @@ function projTypeChanged() {
 
 function projectToJSON() {
 	var json = {
-		tiles: []
+		tiles: [],
+		palette: palette.rgb.slice()
 	};
 
 	for (s in slots.items) {
@@ -804,6 +805,10 @@ function receiveJSON(json) {
 		if (tile.pixels) {
 			slot.load(tile.pixels.replace(/\s+/g, ''));
 		}
+	});
+
+	(json.palette || []).forEach(function(rgb, i){
+		palette.set(i, rgb.r, rgb.g, rgb.b);
 	});
 
 	colorEditor.updateGUI();
