@@ -28,7 +28,7 @@ function Palette(sigzero) {
 
 	this.clear();
 }
-	
+
 Palette.prototype.clear = function() {
 	this.rgb = new Array();
 	this.hex = new Array();
@@ -56,7 +56,7 @@ Palette.prototype.add = function(r, g, b, name) {
 	var hex = '#' + toHex(r) + toHex(g) + toHex(b);
 	color.hex = hex;
 	this.rgb.push(color);
-	this.hex.push(hex);		
+	this.hex.push(hex);
 }
 
 Palette.prototype.set = function(index, r, g, b, name) {
@@ -65,7 +65,7 @@ Palette.prototype.set = function(index, r, g, b, name) {
 	var hex = '#' + toHex(r) + toHex(g) + toHex(b);
 	color.hex = hex;
 	this.rgb[index] = color;
-	this.hex[index] = hex;		
+	this.hex[index] = hex;
 }
 
 Palette.prototype.get333 = function(index) {
@@ -74,6 +74,15 @@ Palette.prototype.get333 = function(index) {
 		r: Math.floor(color.r / 32),
 		g: Math.floor(color.g / 32),
 		b: Math.floor(color.b / 32)
+	};
+}
+
+Palette.prototype.get222 = function(index) {
+	var color = this.rgb[index];
+	return {
+		r: Math.floor(color.r / 64),
+		g: Math.floor(color.g / 64),
+		b: Math.floor(color.b / 64)
 	};
 }
 
@@ -98,7 +107,7 @@ Palette.prototype.encodeColors = function() {
 
 Palette.prototype.decodeColors = function(txt) {
 	var values = txt.split(",");
-	
+
 	for (var k in values) {
 		var value = values[k];
 		/*
@@ -111,8 +120,8 @@ Palette.prototype.decodeColors = function(txt) {
 		*/
 		var r = parseInt(value.substring(0, 2), 16);
 		var g = parseInt(value.substring(2, 4), 16);
-		var b = parseInt(value.substring(4, 6), 16);			
-		
+		var b = parseInt(value.substring(4, 6), 16);
+
 		this.set(k, r, g, b);
 	}
 }
