@@ -109,6 +109,7 @@ Also, take a look at the Changelog:
 						<select id='projType' onchange='return onProjTypeChange(this)' >
 							<option value='msx1'>MSX 1</option>
 							<option value='msx2'>MSX 2</option>
+							<option value='sms' selected='selected'>SMS</option>
 						</select>&nbsp;
 					</td>
 					<td>
@@ -762,7 +763,7 @@ function onProjTypeChange(el) {
 function projTypeChanged() {
 	var projType = eid('projType');
 	var paletteTip = eid('paletteTip');
-	var type2 = (projType.value == 'msx2');
+	var type2 = (projType.value == 'msx2' || projType.value == 'sms');
 	palette.sigzero = type2;
 	paletteTip.style.visibility = (type2) ? 'visible' : 'hidden';
 	if (type2) {
@@ -776,7 +777,8 @@ function projTypeChanged() {
 
 function projectToJSON() {
 	var json = {
-		tiles: []
+		tiles: [],
+		palette: palette.rgb.slice()
 	};
 
 	for (s in slots.items) {
@@ -803,6 +805,10 @@ function receiveJSON(json) {
 		if (tile.pixels) {
 			slot.load(tile.pixels.replace(/\s+/g, ''));
 		}
+	});
+
+	(json.palette || []).forEach(function(rgb, i){
+		palette.set(i, rgb.r, rgb.g, rgb.b);
 	});
 
 	colorEditor.updateGUI();
@@ -953,7 +959,7 @@ function projectDecode(c) {
 					next = null;
 					break;
 				case 'type':
-					if (line == 'msx1' || line == 'msx2') {
+					if (line == 'msx1' || line == 'msx2' || line == 'sms') {
 						eid('projType').value = line;
 						projTypeChanged();
 					}
@@ -1117,7 +1123,26 @@ msx1Palette.add(201,91,186,		'Purple');
 msx1Palette.add(204,204,204,		'Gray');
 msx1Palette.add(255,255,255,		'White');
 
-var palette = msx1Palette.clone();
+// EGA palette (just to use it as a starting point)
+var egaPalette = new Palette();
+egaPalette.add(0,0,0,		'Black');
+egaPalette.add(0,0,0xAA,		'Blue');
+egaPalette.add(0,0xAA,0,		'Green');
+egaPalette.add(0,0xAA,0xAA,		'Cyan');
+egaPalette.add(0xAA,0,0,		'Red');
+egaPalette.add(0xAA,0,0xAA,		'Magenta');
+egaPalette.add(0xAA,0x55,0,		'Brown');
+egaPalette.add(0xAA,0xAA,0xAA,		'Light gray');
+egaPalette.add(0x55,0x55,0x55,		'Dark gray');
+egaPalette.add(0x55,0x55,0xFF,		'Bright blue');
+egaPalette.add(0x55,0xFF,0x55,		'Bright green');
+egaPalette.add(0x55,0xFF,0xFF,		'Bright cyan');
+egaPalette.add(0xFF,0x55,0x55,		'Bright red');
+egaPalette.add(0xFF,0x55,0xFF,		'Bright magenta');
+egaPalette.add(0xFF,0xFF,0x55,		'Bright yellow');
+egaPalette.add(255,255,255,		'White');
+
+var palette = egaPalette.clone();
 
 
 // init grid and color pickers
@@ -1221,7 +1246,7 @@ picker.ondblclick = function(value) {
 
 	colorEditor.move(getOffsetLeft(el_cell), getOffsetTop(el_cell) + offsetY);
 
-	var color = picker.palette.get333(value);
+	var color = picker.palette.get222(value);
 	colorEditor.setFields(color.r, color.g, color.b);
 
 	colorEditor.show();

@@ -25,13 +25,14 @@ function ColorEditor(parent, palette) {
 	this.palette = palette;
 	this.current = null;
 	this.height = null;
+	this.maxValue = 3;
 
 	this.create(parent);
 }
 
 ColorEditor.prototype.create = function(parent) {
 	this.el = parent;
-	this.el.innerHTML = 
+	this.el.innerHTML =
 		"<table width='256px' cellspacing='0'>" +
 			"<tr>" +
 				"<td></td>" +
@@ -47,21 +48,21 @@ ColorEditor.prototype.create = function(parent) {
 			"</tr>" +
 			"<tr>" +
 				"<td></td>" +
-				"<td><small>0-7</small></td>" +
-				"<td><small>0-7</small></td>" +
-				"<td><small>0-7</small></td>" +
+				"<td><small>0-" + this.maxValue + "</small></td>" +
+				"<td><small>0-" + this.maxValue + "</small></td>" +
+				"<td><small>0-" + this.maxValue + "</small></td>" +
 			"</tr>" +
 			"<tr style='background-color: #E0E0E0'>" +
 				"<td colspan='3' style='padding: 3px'>" +
-					"<a href='#' id='colorEditorCancel'>cancel</a> | " + 
+					"<a href='#' id='colorEditorCancel'>cancel</a> | " +
 					"<a href='#' id='colorEditorReset'>reset</a>" +
 				"</td>" +
 				"<td style='text-align: right; padding: 3px'>" +
-					"<a href='#' id='colorEditorApply'>apply</a>" + 
+					"<a href='#' id='colorEditorApply'>apply</a>" +
 				"<td>" +
 			"</tr>" +
 		"</table>";
-		
+
 	this.el.onmouseup = function(e) {
 		e.stopPropagation();
 	}
@@ -69,24 +70,24 @@ ColorEditor.prototype.create = function(parent) {
 	this.colorFieldR = eid('colorR');
 	this.colorFieldG = eid('colorG');
 	this.colorFieldB = eid('colorB');
-	
+
 	var editor = this;
 	eid('colorEditorCancel').onclick = function() {
 		editor.hide();
 		return false;
-	}			
+	}
 	eid('colorEditorApply').onclick = function() {
 		editor.apply();
 		return false;
-	}			
+	}
 	eid('colorEditorReset').onclick = function() {
 		editor.resetColor();
 		return false;
 	}
-	
-	this.setupField(this.colorFieldR, 7);
-	this.setupField(this.colorFieldG, 7);
-	this.setupField(this.colorFieldB, 7);
+
+	this.setupField(this.colorFieldR, this.maxValue);
+	this.setupField(this.colorFieldG, this.maxValue);
+	this.setupField(this.colorFieldB, this.maxValue);
 }
 
 ColorEditor.prototype.updatePreview = function() {
@@ -98,12 +99,12 @@ ColorEditor.prototype.parse = function() {
 	var r = parseInt(this.colorFieldR.value, 10);
 	var g = parseInt(this.colorFieldG.value, 10);
 	var b = parseInt(this.colorFieldB.value, 10);
-	r = inRange(r, 0, 7);
-	g = inRange(g, 0, 7);
-	b = inRange(b, 0, 7);
-	r = Math.floor(255 * r / 7);
-	g = Math.floor(255 * g / 7);
-	b = Math.floor(255 * b / 7);
+	r = inRange(r, 0, this.maxValue);
+	g = inRange(g, 0, this.maxValue);
+	b = inRange(b, 0, this.maxValue);
+	r = Math.floor(255 * r / this.maxValue);
+	g = Math.floor(255 * g / this.maxValue);
+	b = Math.floor(255 * b / this.maxValue);
 	return {r: r, g: g, b: b};
 }
 
@@ -117,7 +118,7 @@ ColorEditor.prototype.hide = function() {
 }
 
 ColorEditor.prototype.resetColor = function() {
-	var rgb = msx1Palette.rgb[this.current];
+	var rgb = egaPalette.rgb[this.current];
 	this.palette.set(this.current, rgb.r, rgb.g, rgb.b, rgb.name);
 	this.updateGUI();
 	this.hide();
@@ -158,7 +159,7 @@ ColorEditor.prototype.setupField = function(field, max) {
 
 ColorEditor.prototype.move = function(x, y) {
 	this.el.style.top = y;
-	this.el.style.left = x;	
+	this.el.style.left = x;
 }
 
 ColorEditor.prototype.setFields = function(r, g, b) {
