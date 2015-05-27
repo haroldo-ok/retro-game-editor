@@ -122,6 +122,16 @@ ClearVRAM_Loop:
 	ld b, h											; Now, BC has the amount of bytes to transfer
 	pop hl
 	; Send the chars to the VDP
+	push hl
+	push bc
+	call CopyToVDP
+	; Updates palette
+	ld hl, $0000 | CRAMWrite
+	call SetVDPAddress
+	pop bc
+	pop hl
+	add hl, bc
+	ld bc, 16
 	call CopyToVDP
 
 	;==============================================================
