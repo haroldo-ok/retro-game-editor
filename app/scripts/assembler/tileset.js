@@ -51,6 +51,22 @@ define(["underscore", "hbars!./tileset.hbs"], function(_, template){
     return s;
   }
 
+  function palToHex(palette) {
+    var padded = (palette || []).slice(0, 16);
+    while (padded.length < 16) {
+      padded.push({r: 0, g: 0, b: 0});
+    }
+
+    return padded.map(function(rgb){
+      if (!rgb) {
+        return '00h';
+      }
+
+      var b = (rgb.r >> 6 << 4) | (rgb.g >> 6 << 2) | (rgb.b >> 6);
+      return toHex(b) + 'h';
+    }).join(',')
+  }
+
   return function(project) {
       if (!project) {
         return "";
@@ -72,7 +88,8 @@ define(["underscore", "hbars!./tileset.hbs"], function(_, template){
             });
 
             return tile;
-          })
+          }),
+          palHex: palToHex(json.palette)
         });
         return template(json);
       }).join('\n');

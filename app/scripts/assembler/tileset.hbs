@@ -3,11 +3,15 @@
 ;==============================================================
 TileSet_{{position}}:
 TileSet_{{formattedId}}:
+  ; Number of tiles
+  dw {{tiles.length}}
 {{#each tiles}}
   ; Tile {{name}}
   {{#each hex}}
     db {{this}}
   {{/each}}
 {{/each}}
+  ; Palette
+  db {{palHex}}
 TileSet_{{formattedId}}_End:
 TileSet_{{position}}_End:
