@@ -62,8 +62,8 @@ define(["underscore", "hbars!./tileset.hbs"], function(_, template){
         return '00h';
       }
 
-      var b = (rgb.r >> 6 << 4) | (rgb.g >> 6 << 2) | (rgb.b >> 6);
-      return toHex(b) + 'h';
+      var entry = (rgb.g >> 6 << 4) | (rgb.g >> 6 << 2) | (rgb.r >> 6);
+      return toHex(entry) + 'h';
     }).join(',')
   }
 
