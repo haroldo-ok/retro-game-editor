@@ -102,25 +102,41 @@ ClearVRAM_Loop:
 	call SetVDPAddress
 	; 2. Output tile data
 	ld hl,TileSet_0              ; Location of tile data
-	ld bc,TileSet_0_End-TileSet_0  ; Counter for number of bytes to write
+	; Gets the tile count
+	ld c, (hl)
+	inc hl
+	ld b, (hl)
+	inc hl
+	; Calculate byte count from tile count (4 chars per tile * 32 bytes per char: shift 7 bits)
+	push hl
+	ld l, c
+	ld h, b
+	add hl, hl
+	add hl, hl
+	add hl, hl
+	add hl, hl
+	add hl, hl
+	add hl, hl
+	add hl, hl									; TODO: Optimize this; could have been a roll right
+	ld c, l
+	ld b, h											; Now, BC has the amount of bytes to transfer
+	pop hl
+	; Send the chars to the VDP
+	push hl
+	push bc
+	call CopyToVDP
+	; Updates palette
+	ld hl, $0000 | CRAMWrite
+	call SetVDPAddress
+	pop bc
+	pop hl
+	add hl, bc
+	ld bc, 16
 	call CopyToVDP
 
 	;==============================================================
-	; Turn screen on
+	; Draw first map
 	;==============================================================
-	ld a,01000010b
-;          ||||||`- Zoomed sprites -> 16x16 pixels
-;          |||||`-- Doubled sprites -> 2 tiles per sprite, 8x16
-;          ||||`--- Mega Drive mode 5 enable
-;          |||`---- 30 row/240 line mode
-;          ||`----- 28 row/224 line mode
-;          |`------ VBlank interrupts
-;          `------- Enable display
-	out (VDPControl),a
-	ld a,$81
-	out (VDPControl),a
-
-; Draw first map
 	; Set VRAM write address to tilemap index 0
 	ld hl,$3800 | VRAMWrite
 	call SetVDPAddress
@@ -179,6 +195,21 @@ RenderMap_ColB_Loop:
 	dec c
 	jr nz, RenderMap_Row_Loop
 
+
+	;==============================================================
+	; Turn screen on
+	;==============================================================
+	ld a,01000010b
+	;          ||||||`- Zoomed sprites -> 16x16 pixels
+	;          |||||`-- Doubled sprites -> 2 tiles per sprite, 8x16
+	;          ||||`--- Mega Drive mode 5 enable
+	;          |||`---- 30 row/240 line mode
+	;          ||`----- 28 row/224 line mode
+	;          |`------ VBlank interrupts
+	;          `------- Enable display
+	out (VDPControl),a
+	ld a,$81
+	out (VDPControl),a
 
 ; call main program
 	; Set VRAM write address to tilemap index 0
