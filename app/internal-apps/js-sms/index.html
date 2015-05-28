@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>jsSMS - JavaScript Sega Master System &amp; Game Gear dynamic recompiling emulator</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/bootstrap-responsive.min.css">
+<style>
+html, body {
+  background: #eee;
+}
+/* IE10 is not tested though */
+a, input, button {
+  -ms-touch-action: none !important;
+}
+.container {
+  margin-top: 20px;
+}
+.content {
+  background: #fff;
+  padding: 20px;
+  margin: 0 -20px;
+  border-radius: 10px;
+}
+.page-header {
+  background: #f5f5f5;
+  padding: 20px 20px 10px;
+  margin: -20px -20px 20px;
+  border-radius: 10px 10px 0 0;
+  border: 0;
+}
+#emulator > div {
+  text-align: center;
+}
+#screen {
+  height: 192px;
+  width: 256px;
+  margin: auto;
+  border: 1px solid #000;
+}
+#screen canvas {
+  background: #000;
+  margin: auto;
+  display: block;
+  image-rendering: -moz-crisp-edges;          /* FF 6+ */
+  image-rendering: -webkit-optimize-contrast; /* Webkit */
+  image-rendering: pixelated;                 /* Blink */
+  -ms-interpolation-mode: nearest-neighbor;   /* IE 7+ */
+}
+#screen:-webkit-full-screen {
+  height: 100%;
+  width: 100%;
+}
+.gamepad {
+  height: 80px;
+  position: relative;
+}
+div .direction > div,
+div .buttons > div {
+  width: 40px;
+  height: 40px;
+  float: left;
+  display: inline;
+}
+div .direction {
+  background: lightgrey;
+  width: 80px;
+  height: 80px;
+  border-radius: 40px;
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+.up, .down {
+  background: darkgrey;
+}
+.up {
+  border-radius: 40px 0 0 0;
+}
+.down {
+  border-radius: 0 0 40px 0;
+}
+div .buttons {
+  position: absolute;
+  right: 0;
+  top: 20px;
+}
+div .buttons .start {
+  background: darkblue;
+  border-radius: 0 40px 40px 0;
+  width: 25px;
+}
+.fire1, .fire2 {
+  background: black;
+  margin-left: 10px;
+  border-radius: 40px;
+}
+#romSelector {
+  clear: both;
+  margin-top: 80px;
+}
+select, .btn {
+  margin: 5px 5px 0 0;
+}
+footer {
+  padding-top: 10px;
+}
+@media (max-width: 768px) {
+  .container {
+    margin-top: 0;
+  }
+}
+@media (orientation: portrait) {
+  #screen canvas {
+    height: auto;
+    width: 100%;
+  }
+}
+@media (orientation: landscape) {
+  #screen canvas {
+    height: 100%;
+    width: auto;
+  }
+}
+/* Debugger */
+div.row-fluid .span8 {
+  position: relative;
+}
+#dissambler {
+  font-family: monospace;
+  font-size: small;
+  color: #aaa;
+  right: 0;
+  position: absolute;
+  top: 0;
+}
+.current {
+  color: #333;
+}
+.current code {
+  background: pink;
+  border-color: #DD1144;
+}
+code {
+  padding: 0 2px;
+}
+</style>
+<script>(function(G,o,O,g,l){G.GoogleAnalyticsObject=O;G[O]||(G[O]=function(){(G[O].q=G[O].q||[]).push(arguments)});G[O].l=Date.now();g=o.createElement('script'),l=o.scripts[0];g.src='//www.google-analytics.com/analytics.js';l.parentNode.insertBefore(g,l)}(this,document,'ga'));ga('create','UA-207391-16',{'siteSpeedSampleRate':100});ga('send','pageview')</script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<script>if(!window.$)document.write('<script src="lib/jquery.min.js"><\/script>')</script>
+</head>
+<body>
+<div class="container">
+  <div class="content">
+    <div class="page-header">
+      <h1>jsSMS<small> JavaScript Sega Master System &amp; Game Gear dynamic recompiling emulator</small></h1>
+    </div>
+    <div class="row-fluid">
+      <div class="span8">
+        <div id="emulator"></div>
+        <div class="alert alert-info">
+          <p>To get some technical insights, watch the <a href="http://bit.ly/18n5yHj">video of the talk about JSSMS</a> I gave at Reject.js 2013.<br>
+            There are also the <a href="http://gmarty.github.io/jsSMS/Reject.JS-2013-Slides/">slides in HTML</a>.</p>
+        </div>
+      </div>
+      <div class="span4">
+        <h3>Controllers</h3>
+        <table class="table table-striped">
+          <tr>
+            <th>Button</th>
+            <th>Player 1</th>
+            <th>Player 2</th>
+          </tr>
+          <tr>
+            <th>Left</th>
+            <td>Left</td>
+            <td>Num-4</td>
+          <tr>
+            <th>Right</th>
+            <td>Right</td>
+            <td>Num-6</td>
+          </tr>
+          <tr>
+            <th>Up</th>
+            <td>Up</td>
+            <td>Num-8</td>
+          </tr>
+          <tr>
+            <th>Down</th>
+            <td>Down</td>
+            <td>Num-2</td>
+          </tr>
+          <tr>
+            <th>Fire 1</th>
+            <td>X</td>
+            <td>Num-7</td>
+          </tr>
+          <tr>
+            <th>Fire 2</th>
+            <td>Z</td>
+            <td>Num-9</td>
+          </tr>
+          <tr>
+            <th>Start</th>
+            <td>Enter</td>
+            <td>Num-1</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <p>© 2014 Guillaume Marty (<a href="https://github.com/gmarty">https://github.com/gmarty</a>)</p>
+  </footer>
+</div>
+<a href="http://github.com/gmarty/jsSMS"><img style="position: absolute; top: 0; right: 0; border: 0;" src="//s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork jsSMS on GitHub"></a>
+<script src="src/setup.js"></script>
+<script src="src/sms.js"></script>
+<script src="src/utils.js"></script>
+<script src="src/sync-client.js"></script>
+<script src="src/z80.js"></script>
+<script src="src/debugger.js"></script>
+<script src="src/vdp.js"></script>
+<script src="src/psg.js"></script>
+<script src="src/ui.js"></script>
+<script src="src/keyboard.js"></script>
+<script src="src/ports.js"></script>
+<script src="src/compiler/bytecode.js"></script>
+<script src="src/compiler/parser.js"></script>
+<script src="src/compiler/opcodes-ast.js"></script>
+<script src="src/compiler/opcodes-CB.js"></script>
+<script src="src/compiler/opcodes-DD-FD.js"></script>
+<script src="src/compiler/opcodes-ED.js"></script>
+<script src="src/compiler/opcodes.js"></script>
+<script src="src/compiler/analyzer.js"></script>
+<script src="src/compiler/optimizer.js"></script>
+<script src="src/compiler/generator.js"></script>
+<script src="src/compiler/recompiler.js"></script>
+<script src="lib/esprima.js"></script>
+<script src="lib/escodegen.browser.js"></script>
+<script>
+'use strict';
+
+var sms = new JSSMS({
+  'ui': $('#emulator').JSSMSUI({
+    'Homebrew Master System': [
+      ['Blockhead', 'rom/homebrew/blockhead.sms'],
+      ['KunKun & KokoKun', 'rom/homebrew/KunKun & KokoKun.sms'],
+      ['vg-fighter', 'rom/homebrew/vg-fighter.sms'],
+      ['Bock\'s Birthday 2011 II', 'rom/homebrew/Bock\'s Birthday 2011 II.sms'],
+      ['KunKun & KokoKun 2 - Return of the Kun', 'rom/homebrew/KunKun & KokoKun 2 - Return of the Kun [v0.99].sms'],
+      ['Sokoban', 'rom/homebrew/sokoban.sms'],
+      ['ono', 'rom/homebrew/ono [v1.01].sms'],
+      ['Reject.js 2013 Slides', 'rom/homebrew/Reject.JS 2013 - Slides.sms']
+    ],
+    'Homebrew Master System not working': [
+      ['vpoker', 'rom/homebrew/vpoker.sms']
+    ],
+    'Homebrew Game Gear': [
+      ['Fire Track', 'rom/gg/homebrew/ftrack.gg'],
+      ['GG Nibbles v.4', 'rom/gg/homebrew/nibbles.gg'],
+      ['Zoop \'Em Up', 'rom/gg/homebrew/zoopemup.gg']
+    ],
+    'Master System technical ROMs': [
+      ['Chkstate v.1.0', 'rom/technical/Chkstate Demo by Dave (PD).sms'],
+      ['Color Check v.1.0', 'rom/technical/ColorCheck.sms'],
+      ['Fullscreen Palette Test v.1.0', 'rom/technical/FullscreenPaletteTestProgram.sms'],
+      ['Palette v.1.0', 'rom/technical/smspal.sms'],
+      ['Pause Test v1.00', 'rom/technical/PauseTest.sms'],
+      ['PFR Detect v.2.00', 'rom/technical/PFR Detect V2.00 by Eric R. Quinn (PD).sms'],
+      ['Sound Test v.1.1', 'rom/technical/SMSSoundTest1.1.sms'],
+      ['V Counter Test v.1.0', 'rom/technical/V Counter Test by Charles MacDonald (PD).sms'],
+      ['VDP Test v.1.31', 'rom/technical/VDPTEST.sms'],
+      ['ZEXALL v.0.15', 'rom/technical/zexall.sms']
+    ],
+    'Game Gear technical ROMs': [
+      ['FadeTest', 'rom/gg/technical/FadeTest.gg']
+    ]
+  })
+});
+</script>
+</body>

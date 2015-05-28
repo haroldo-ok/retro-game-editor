@@ -1,0 +1,3 @@
+[submodule "app/internal-apps/js-sms/jsSMS"]
+	path = app/internal-apps/js-sms/jsSMS
+	url = https://github.com/gmarty/jsSMS
