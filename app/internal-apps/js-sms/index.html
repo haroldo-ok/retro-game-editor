@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <title>jsSMS - JavaScript Sega Master System &amp; Game Gear dynamic recompiling emulator</title>
 <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
-<link rel="stylesheet" href="css/bootstrap.min.css">
-<link rel="stylesheet" href="css/bootstrap-responsive.min.css">
+<link rel="stylesheet" href="jsSMS/css/bootstrap.min.css">
+<link rel="stylesheet" href="jsSMS/css/bootstrap-responsive.min.css">
 <style>
 html, body {
   background: #eee;
@@ -145,9 +145,7 @@ code {
   padding: 0 2px;
 }
 </style>
-<script>(function(G,o,O,g,l){G.GoogleAnalyticsObject=O;G[O]||(G[O]=function(){(G[O].q=G[O].q||[]).push(arguments)});G[O].l=Date.now();g=o.createElement('script'),l=o.scripts[0];g.src='//www.google-analytics.com/analytics.js';l.parentNode.insertBefore(g,l)}(this,document,'ga'));ga('create','UA-207391-16',{'siteSpeedSampleRate':100});ga('send','pageview')</script>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
-<script>if(!window.$)document.write('<script src="lib/jquery.min.js"><\/script>')</script>
+<script src="jsSMS/lib/jquery.min.js"></script>
 </head>
 <body>
 <div class="container">
@@ -214,67 +212,37 @@ code {
   </footer>
 </div>
 <a href="http://github.com/gmarty/jsSMS"><img style="position: absolute; top: 0; right: 0; border: 0;" src="//s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork jsSMS on GitHub"></a>
-<script src="src/setup.js"></script>
-<script src="src/sms.js"></script>
-<script src="src/utils.js"></script>
-<script src="src/sync-client.js"></script>
-<script src="src/z80.js"></script>
-<script src="src/debugger.js"></script>
-<script src="src/vdp.js"></script>
-<script src="src/psg.js"></script>
-<script src="src/ui.js"></script>
-<script src="src/keyboard.js"></script>
-<script src="src/ports.js"></script>
-<script src="src/compiler/bytecode.js"></script>
-<script src="src/compiler/parser.js"></script>
-<script src="src/compiler/opcodes-ast.js"></script>
-<script src="src/compiler/opcodes-CB.js"></script>
-<script src="src/compiler/opcodes-DD-FD.js"></script>
-<script src="src/compiler/opcodes-ED.js"></script>
-<script src="src/compiler/opcodes.js"></script>
-<script src="src/compiler/analyzer.js"></script>
-<script src="src/compiler/optimizer.js"></script>
-<script src="src/compiler/generator.js"></script>
-<script src="src/compiler/recompiler.js"></script>
-<script src="lib/esprima.js"></script>
-<script src="lib/escodegen.browser.js"></script>
+<script src="jsSMS/src/setup.js"></script>
+<script src="jsSMS/src/sms.js"></script>
+<script src="jsSMS/src/utils.js"></script>
+<script src="jsSMS/src/sync-client.js"></script>
+<script src="jsSMS/src/z80.js"></script>
+<script src="jsSMS/src/debugger.js"></script>
+<script src="jsSMS/src/vdp.js"></script>
+<script src="jsSMS/src/psg.js"></script>
+<script src="jsSMS/src/ui.js"></script>
+<script src="jsSMS/src/keyboard.js"></script>
+<script src="jsSMS/src/ports.js"></script>
+<script src="jsSMS/src/compiler/bytecode.js"></script>
+<script src="jsSMS/src/compiler/parser.js"></script>
+<script src="jsSMS/src/compiler/opcodes-ast.js"></script>
+<script src="jsSMS/src/compiler/opcodes-CB.js"></script>
+<script src="jsSMS/src/compiler/opcodes-DD-FD.js"></script>
+<script src="jsSMS/src/compiler/opcodes-ED.js"></script>
+<script src="jsSMS/src/compiler/opcodes.js"></script>
+<script src="jsSMS/src/compiler/analyzer.js"></script>
+<script src="jsSMS/src/compiler/optimizer.js"></script>
+<script src="jsSMS/src/compiler/generator.js"></script>
+<script src="jsSMS/src/compiler/recompiler.js"></script>
+<script src="jsSMS/lib/esprima.js"></script>
+<script src="jsSMS/lib/escodegen.browser.js"></script>
 <script>
 'use strict';
 
 var sms = new JSSMS({
   'ui': $('#emulator').JSSMSUI({
     'Homebrew Master System': [
-      ['Blockhead', 'rom/homebrew/blockhead.sms'],
-      ['KunKun & KokoKun', 'rom/homebrew/KunKun & KokoKun.sms'],
-      ['vg-fighter', 'rom/homebrew/vg-fighter.sms'],
-      ['Bock\'s Birthday 2011 II', 'rom/homebrew/Bock\'s Birthday 2011 II.sms'],
-      ['KunKun & KokoKun 2 - Return of the Kun', 'rom/homebrew/KunKun & KokoKun 2 - Return of the Kun [v0.99].sms'],
-      ['Sokoban', 'rom/homebrew/sokoban.sms'],
-      ['ono', 'rom/homebrew/ono [v1.01].sms'],
-      ['Reject.js 2013 Slides', 'rom/homebrew/Reject.JS 2013 - Slides.sms']
-    ],
-    'Homebrew Master System not working': [
-      ['vpoker', 'rom/homebrew/vpoker.sms']
-    ],
-    'Homebrew Game Gear': [
-      ['Fire Track', 'rom/gg/homebrew/ftrack.gg'],
-      ['GG Nibbles v.4', 'rom/gg/homebrew/nibbles.gg'],
-      ['Zoop \'Em Up', 'rom/gg/homebrew/zoopemup.gg']
-    ],
-    'Master System technical ROMs': [
-      ['Chkstate v.1.0', 'rom/technical/Chkstate Demo by Dave (PD).sms'],
-      ['Color Check v.1.0', 'rom/technical/ColorCheck.sms'],
-      ['Fullscreen Palette Test v.1.0', 'rom/technical/FullscreenPaletteTestProgram.sms'],
-      ['Palette v.1.0', 'rom/technical/smspal.sms'],
-      ['Pause Test v1.00', 'rom/technical/PauseTest.sms'],
-      ['PFR Detect v.2.00', 'rom/technical/PFR Detect V2.00 by Eric R. Quinn (PD).sms'],
-      ['Sound Test v.1.1', 'rom/technical/SMSSoundTest1.1.sms'],
-      ['V Counter Test v.1.0', 'rom/technical/V Counter Test by Charles MacDonald (PD).sms'],
-      ['VDP Test v.1.31', 'rom/technical/VDPTEST.sms'],
-      ['ZEXALL v.0.15', 'rom/technical/zexall.sms']
-    ],
-    'Game Gear technical ROMs': [
-      ['FadeTest', 'rom/gg/technical/FadeTest.gg']
+      ['Blockhead', 'jsSMS/rom/homebrew/blockhead.sms'],
     ]
   })
 });
