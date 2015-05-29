@@ -56,7 +56,8 @@ function($, _, BackBone, Handlebars, Project, dock, model, assembler,
       'click .new-resource': 'newResource',
       'click .rename-resource': 'renameResource',
       'click .delete-resource': 'deleteResource',
-      'click .compile-project': 'compileProject'
+      'click .compile-project': 'compileProject',
+      'click .run-project': 'runProject',
     },
 
     initialize: function() {
@@ -181,6 +182,18 @@ function($, _, BackBone, Handlebars, Project, dock, model, assembler,
       var projectId = $('.project-link:not(.collapsed):first').data('rgeId');
       var project = Project.objects.get(projectId);
       assembler(project).saveZip();
+    },
+
+    runProject: function(ev) {
+      var projectId = $('.project-link:not(.collapsed):first').data('rgeId');
+
+      var entityName = 'Project',
+          entityId = projectId,
+          src = 'internal-apps/js-sms/index.html' +
+              '?entity=' + entityName +
+              '&entityId=' + entityId;
+
+      dock.createInternalEditor(src);
     }
   });
 
