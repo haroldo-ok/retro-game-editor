@@ -40,7 +40,8 @@ define(["jquery", "./static-view", "./tab-panel",
         } else {
           var tab = this.createEditor(
             '<iframe src="' + url + '" ' +
-                'style="width: 100%; height: 100%; border: 0">');
+                'style="width: 100%; height: 100%; border: 0"' +
+                'allowfullscreen="true">');
           var that = this;
 
           tab.on('close', function(){
