@@ -4,12 +4,9 @@
 <meta charset="utf-8">
 <title>jsSMS - JavaScript Sega Master System &amp; Game Gear dynamic recompiling emulator</title>
 <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
-<link rel="stylesheet" href="jsSMS/css/bootstrap.min.css">
+<link rel="stylesheet" href="../../../bower_components/bootstrap/dist/css/bootstrap.css">
 <link rel="stylesheet" href="jsSMS/css/bootstrap-responsive.min.css">
 <style>
-html, body {
-  background: #eee;
-}
 /* IE10 is not tested though */
 a, input, button {
   -ms-touch-action: none !important;
@@ -30,12 +27,17 @@ a, input, button {
   border-radius: 10px 10px 0 0;
   border: 0;
 }
+
+#emulator {
+  margin-top: 8px;
+}
+
 #emulator > div {
   text-align: center;
 }
 #screen {
-  height: 192px;
-  width: 256px;
+  height: 384px;
+  width: 512px;
   margin: auto;
   border: 1px solid #000;
 }
@@ -144,22 +146,26 @@ div.row-fluid .span8 {
 code {
   padding: 0 2px;
 }
+
+footer {
+  display: none;
+}
+
+#romSelector {
+  clear: both;
+  height: 1px;
+  visibility: hidden;
+}
+
 </style>
-<script src="jsSMS/lib/jquery.min.js"></script>
+<script src="../../../bower_components/jquery/dist/jquery.js"></script>
 </head>
 <body>
-<div class="container">
-  <div class="content">
-    <div class="page-header">
-      <h1>jsSMS<small> JavaScript Sega Master System &amp; Game Gear dynamic recompiling emulator</small></h1>
-    </div>
+<div>
+  <div>
     <div class="row-fluid">
       <div class="span8">
         <div id="emulator"></div>
-        <div class="alert alert-info">
-          <p>To get some technical insights, watch the <a href="http://bit.ly/18n5yHj">video of the talk about JSSMS</a> I gave at Reject.js 2013.<br>
-            There are also the <a href="http://gmarty.github.io/jsSMS/Reject.JS-2013-Slides/">slides in HTML</a>.</p>
-        </div>
       </div>
       <div class="span4">
         <h3>Controllers</h3>
@@ -256,7 +262,6 @@ function(model, queryString, assembler){
 
   var asm = assembler(entity);
   var data = String.fromCharCode.apply(undefined, asm.binary);
-  console.log(data);
 
   sms.stop();
   sms.readRomDirectly(data, "test-rom.sms");
