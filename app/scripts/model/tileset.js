@@ -19,6 +19,20 @@ define(["model"], function(model){
           return numericValues;
         });
       });
+    },
+
+    palette: function() {
+      var palette = this.get('palette') || [];
+
+      for (var i = 0; i < 16; i++) {
+        var palEntry = palette[i] || {};
+        palEntry.r = palEntry.r || 0;
+        palEntry.g = palEntry.g || 0;
+        palEntry.b = palEntry.b || 0;
+        palette[i] = palEntry;
+      }
+
+      return palette;
     }
   });
 });

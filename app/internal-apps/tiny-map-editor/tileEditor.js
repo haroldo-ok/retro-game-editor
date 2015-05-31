@@ -3,25 +3,6 @@
 top.require(["jquery", "model", "model/project", "view/util/query-string"],
 function($, model, Project, queryString){
 
-  var defaultPalette = [
-    [0,255,255], // None
-    [0,0,0], // Black
-    [33,200,66], // Green
-    [94,220,120], // Green (light)
-    [84,85,237], // Blue (dark)
-    [125,118,252], // Blue
-    [212,82,77], // Red (dark)
-    [66,235,245], // Cyan
-    [252,85,84], // Red
-    [255,121,120], // Red (light)
-    [212,193,84], // Yellow (dark)
-    [230,206,128], // Yellow
-    [33,176,59], // Green (dark)
-    [201,91,186], // Purple
-    [204,204,204], // Gray
-    [255,255,255] // White
-  ];
-
   var tinyMapEditor = (function() {
       var win = window,
           doc = document,
@@ -240,7 +221,8 @@ function($, model, Project, queryString){
             var tileSetId = this.selectedTileSetId();
             if (tileSetId) {
               var tileSet = this.project.resources.get('TileSet', tileSetId),
-                  tiles = tileSet.tilePixels();
+                  tiles = tileSet.tilePixels(),
+                  colorPalette = tileSet.palette();
 
               var canvas = document.createElement('canvas');
               canvas.width = tileSize * tilesPerLine;
@@ -261,12 +243,12 @@ function($, model, Project, queryString){
 
                     for (var x = 0; x < line.length; x++) {
                       var colorIndex = line[x],
-                          rgb = defaultPalette[colorIndex],
+                          rgb = colorPalette[colorIndex],
                           offs = (x + dX + yOffs) * 4;
 
-                      imgData.data[offs] = rgb[0]; // Red
-                      imgData.data[offs + 1] = rgb[1]; // Green
-                      imgData.data[offs + 2] = rgb[2]; // Blue
+                      imgData.data[offs] = rgb.r; // Red
+                      imgData.data[offs + 1] = rgb.g; // Green
+                      imgData.data[offs + 2] = rgb.b; // Blue
                       imgData.data[offs + 3] = 255; // Alpha
                     }
                   }
