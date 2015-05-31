@@ -10,6 +10,7 @@ function(asm, _, saveAs, JSZip,
   }
 
   return function(project){
+    // TODO: Move this replace to an utility function
     var prefix = project && project.get('name') || '';
     prefix = prefix.replace(/[|&;$%@"<>()+,]/g, "") || 'out';
 

@@ -18,7 +18,8 @@ function($, _, BackBone, Handlebars, Project, dock, model, assembler,
   Handlebars.registerHelper('resourceMenuOptions', function(entityName){
     var options = [
       { action: 'rename', icon: 'edit', label: 'Rename...' },
-      { action: 'delete', icon: 'trash', label: 'Delete...' }
+      { action: 'delete', icon: 'trash', label: 'Delete...' },
+      { action: 'export', icon: 'save', label: 'Export...' }
     ];
 
     if (entityName == 'Project') {
@@ -56,13 +57,15 @@ function($, _, BackBone, Handlebars, Project, dock, model, assembler,
       'click .new-resource': 'newResource',
       'click .rename-resource': 'renameResource',
       'click .delete-resource': 'deleteResource',
+      'click .export-resource': 'exportResource',
       'click .compile-project': 'compileProject',
       'click .run-project': 'runProject',
     },
 
     initialize: function() {
       _.bindAll(this, "render", "newProject", "compileProject",
-        "newResource", "editResource", "renameResource", "deleteResource");
+        "newResource", "editResource", "renameResource", "deleteResource",
+        "exportResource");
 
       this.requestRender = _.debounce(this.render, 300);
 
@@ -176,6 +179,24 @@ function($, _, BackBone, Handlebars, Project, dock, model, assembler,
       if (confirmed) {
         resource.destroy();
       }
+    },
+
+    exportResource: function(ev) {
+      var resource = this.getSelectedResorce(ev.target);
+      var json = resource.fullJSON ? resource.fullJSON() : resource.toJSON();
+      var jsonString = JSON.stringify(json, null, '\t');
+      console.log(json);
+
+      require(["file-saver"], function(saveAs){
+        // TODO: Move this replace to an utility function
+        var prefix = resource && resource.get('name') || '';
+        prefix = prefix.replace(/[|&;$%@"<>()+,]/g, "") || 'exported';
+
+        var fileName = prefix + '.'
+            + resource.entityName.toLowerCase() + '.json';
+
+        saveAs(new Blob([jsonString]), fileName);
+      });
     },
 
     compileProject: function(ev) {
