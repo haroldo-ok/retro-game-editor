@@ -27,6 +27,8 @@ function($, _, Modal, Project, trackError){
     },
 
     import: function() {
+      var that = this;
+
       function showError(e) {
         console.error(e);
         trackError(e);
@@ -40,6 +42,7 @@ function($, _, Modal, Project, trackError){
           try {
             var text = ev.target.result;
             new Project().importJSON(text);
+            that.hide();
           } catch (e) {
             showError(e);
           }
