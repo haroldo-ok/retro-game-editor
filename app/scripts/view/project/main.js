@@ -53,6 +53,7 @@ function($, _, BackBone, Handlebars, Project, dock, model, assembler,
 
     events: {
       'click .new-project': 'newProject',
+      'click .import-project': 'importProject',
       'click .resource-link': 'editResource',
       'click .new-resource': 'newResource',
       'click .rename-resource': 'renameResource',
@@ -63,7 +64,7 @@ function($, _, BackBone, Handlebars, Project, dock, model, assembler,
     },
 
     initialize: function() {
-      _.bindAll(this, "render", "newProject", "compileProject",
+      _.bindAll(this, "render", "newProject", "importProject", "compileProject",
         "newResource", "editResource", "renameResource", "deleteResource",
         "exportResource");
 
@@ -106,6 +107,16 @@ function($, _, BackBone, Handlebars, Project, dock, model, assembler,
     newProject: function() {
       new Project({name: prompt('Project name?')}).save();
       this.requestRender();
+    },
+
+    importProject: function() {
+      require(["view/project/project-import"], function(Import){
+        try {
+          new Import().show();
+        } catch(e) {
+          console.error(e);
+        }
+      });
     },
 
     newResource: function(ev) {

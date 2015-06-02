@@ -20,7 +20,9 @@ require.config({
       exports: '_'
     },
     'underscore.string': {
-      deps: [ 'underscore' ]
+      deps: [
+        'underscore'
+      ]
     }
   },
   paths: {
@@ -47,7 +49,8 @@ require.config({
     EventEmitter: '../../bower_components/event-emitter/dist/EventEmitter',
     'file-saver': '../../bower_components/file-saver.js/FileSaver',
     jszip: '../../bower_components/jszip/dist/jszip',
-    'underscore.string': '../../bower_components/underscore.string/dist/underscore.string'
+    'underscore.string': '../../bower_components/underscore.string/dist/underscore.string',
+    'bootstrap-fileinput': '../../bower_components/bootstrap-fileinput/js/fileinput.min'
   },
   packages: [
     'model',
