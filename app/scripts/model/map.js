@@ -3,7 +3,7 @@
 define(["model"], function(model){
   return model("Map", {
     afterImport: function(importData) {
-      this.set({
+      this.save({
         tileSetId: importData.originalIds[this.get('tileSetId')]
       });
     }
