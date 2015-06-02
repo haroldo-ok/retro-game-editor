@@ -20,6 +20,8 @@ function(model, OneToMany, Q, _, TileSet, Map){
     },
 
     importJSON: function(json) {
+      var json = _.isString(json) ? JSON.parse(json) : json;
+
       var that = this;
       this.save(_.omit(json, 'id', 'resources', 'entityName'));
 
