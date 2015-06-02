@@ -1,7 +1,7 @@
 'use strict';
 
-define(["jquery", "backbone", "hbars!./modal.hbs"],
-function($, Backbone, template){
+define(["jquery", "backbone", "underscore", "hbars!./modal.hbs"],
+function($, Backbone, _, template){
   return Backbone.View.extend({
     className: 'modal fade',
 
@@ -12,6 +12,7 @@ function($, Backbone, template){
     },
 
     initialize: function(options) {
+      _.bindAll(this, 'render', 'renderContent', 'show');
       this.render();
     },
 

@@ -110,9 +110,9 @@ function($, _, BackBone, Handlebars, Project, dock, model, assembler,
     },
 
     importProject: function() {
-      require(["view/dock/modal"], function(Modal){
+      require(["view/project/project-import"], function(Import){
         try {
-          new Modal().show();
+          new Import().show();
         } catch(e) {
           console.error(e);
         }
