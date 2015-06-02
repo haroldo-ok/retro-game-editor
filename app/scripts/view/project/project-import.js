@@ -1,7 +1,8 @@
-define(["jquery", "underscore", "view/dock/modal",
+define(["jquery", "underscore", "view/dock/modal", "model/project",
+  "util/error-tracker",
   "bootstrap-fileinput",
   "css!/bower_components/bootstrap-fileinput/css/fileinput.min.css"],
-function($, _, Modal){
+function($, _, Modal, Project, trackError){
   return Modal.extend({
     title: 'Import project',
 
@@ -26,7 +27,30 @@ function($, _, Modal){
     },
 
     import: function() {
-      alert('TODO: Implement actual importing');
+      var that = this;
+
+      function showError(e) {
+        console.error(e);
+        trackError(e);
+        alert("Error while importing project:\n" + e);
+      }
+
+      try {
+        var file = this.$el.find('input[type="file"]').prop('files')[0];
+        var reader = new FileReader();
+        reader.onload = function(ev){
+          try {
+            var text = ev.target.result;
+            new Project().importJSON(text);
+            that.hide();
+          } catch (e) {
+            showError(e);
+          }
+        };
+        reader.readAsText(file);
+      } catch (e) {
+        showError(e);
+      }
     }
   });
 });

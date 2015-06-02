@@ -1,8 +1,8 @@
 'use strict';
 
-define(["model", "model/onetomany", "q",
+define(["model", "model/onetomany", "q", "underscore",
   "model/tileset", "model/map"],
-function(model, OneToMany, Q, TileSet, Map){
+function(model, OneToMany, Q, _, TileSet, Map){
   var Project = model("Project", {
     constructor: function() {
       this.resources = new OneToMany(this, [TileSet, Map], 'projectId');
@@ -11,10 +11,35 @@ function(model, OneToMany, Q, TileSet, Map){
       }
       Project.BaseModel.apply(this, arguments);
     },
+
     fullJSON: function() {
       return _.extend(this.toJSON(), {
         entityName: this.entityName,
         resources: this.resources.toJSON()
+      });
+    },
+
+    importJSON: function(json) {
+      var json = _.isString(json) ? JSON.parse(json) : json;
+
+      var that = this;
+      this.save(_.omit(json, 'id', 'resources', 'entityName'));
+
+      var importData = {
+        project: this,
+        originalIds: {}
+      };
+
+      (json.resources || []).forEach(function(resJson){
+        var Model = model.byName(resJson.entityName);
+        var resource = new Model(_.omit(resJson, 'id', 'projectId', 'entityName'));
+        importData.originalIds[resJson.entityName + ':' + resJson.id] = resource;
+        that.resources.add(resource);
+        resource.save();
+      });
+
+      this.resources.forEach(function(resource){
+        resource.afterImport && resource.afterImport(importData);
       });
     },
 

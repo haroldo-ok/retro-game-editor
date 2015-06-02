@@ -26,6 +26,17 @@ define(["jquery", "./static-view", "./tab-panel",
 
       function Dock() {
         this._internalEditors = {};
+        this._popups = {};
+      }
+
+      Dock.prototype.createPopup = function(View) {
+        var popup = this._popups[View];
+        if (!popup) {
+          popup = new View();
+          this._popups[View] = popup;
+        }
+        popup.show();
+        return popup;
       }
 
       Dock.prototype.createEditor = function(content) {

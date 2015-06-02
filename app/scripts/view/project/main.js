@@ -112,7 +112,7 @@ function($, _, BackBone, Handlebars, Project, dock, model, assembler,
     importProject: function() {
       require(["view/project/project-import"], function(Import){
         try {
-          new Import().show();
+          dock.createPopup(Import);
         } catch(e) {
           console.error(e);
         }

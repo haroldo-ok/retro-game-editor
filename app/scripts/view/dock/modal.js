@@ -35,6 +35,10 @@ function($, Backbone, _, template){
         $('body').append(this.$el);
       }
       this.$el.modal('show');
+    },
+
+    hide: function() {
+      this.$el.modal('hide');
     }
   });
 });
