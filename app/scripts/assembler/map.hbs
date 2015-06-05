@@ -3,8 +3,9 @@
 ;==============================================================
 Map_{{position}}:
 Map_{{formattedId}}:
+  ; Map data
 {{#each tiles}}
   db {{this}}
 {{/each}}
-Map_{{formattedId}}_End:
-Map_{{position}}_End:
+  ; Pointer to map's tileset
+  dw TileSet_{{formattedTileSetId}}

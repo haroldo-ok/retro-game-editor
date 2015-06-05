@@ -101,7 +101,11 @@ ClearVRAM_Loop:
 	ld hl,$2000 | VRAMWrite
 	call SetVDPAddress
 	; 2. Output tile data
-	ld hl,TileSet_0              ; Location of tile data
+	ld hl, Map_0 + 16 * 12     ; Pointer to tileset of first map
+	ld a, (hl)
+	inc hl
+	ld h, (hl)
+	ld l, a                    ; HL now points to the tileset
 	; Gets the tile count
 	ld c, (hl)
 	inc hl
