@@ -1,11 +1,11 @@
 'use strict';
 
 define(["model", "model/onetomany", "q", "underscore",
-  "model/tileset", "model/map"],
-function(model, OneToMany, Q, _, TileSet, Map){
+  "model/tileset", "model/map", "model/actor"],
+function(model, OneToMany, Q, _, TileSet, Map, Actor){
   var Project = model("Project", {
     constructor: function() {
-      this.resources = new OneToMany(this, [TileSet, Map], 'projectId');
+      this.resources = new OneToMany(this, [TileSet, Map, Actor], 'projectId');
       this.resources.ofType = function(type){
         return this.where({entityName: type});
       }
