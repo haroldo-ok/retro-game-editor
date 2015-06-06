@@ -35,6 +35,12 @@ function($, _, BackBone, Handlebars, Project, dock, model, assembler,
           icon: 'cubes',
           label: 'New map...',
           entityName: 'Map'
+        },
+        {
+          action: 'new',
+          icon: 'user',
+          label: 'New actor...',
+          entityName: 'Actor'
         }
       ]);
     }
