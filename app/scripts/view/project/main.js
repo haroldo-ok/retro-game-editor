@@ -50,7 +50,8 @@ function($, _, BackBone, Handlebars, Project, dock, model, assembler,
 
   var editors = {
     TileSet: "internal-apps/tinysprite/tinysprite.html",
-    Map: "internal-apps/tiny-map-editor/index.html"
+    Map: "internal-apps/tiny-map-editor/index.html",
+    Actor: "internal-apps/actor/index.html"
   }
 
   var ProjectTree = Backbone.View.extend({

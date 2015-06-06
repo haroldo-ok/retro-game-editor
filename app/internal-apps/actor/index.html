@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Actor editor</title>
+    <link rel="stylesheet" href="../../../bower_components/bootstrap/dist/css/bootstrap.css">
+  </head>
+  <body>
+    <form id="main-form" style="max-width: 320px">
+      <div class="form-group">
+        <label for="tileSetId">Tileset</label>
+        <select class="form-control" id="tileSetId" placeholder="Select tileset">
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="behavior">Behavior</label>
+        <select class="form-control" id="behaviorId" placeholder="Select behavior">
+        </select>
+      </div>
+      <button type="button" id="save" class="btn btn-default">Save</button>
+    </form>
+
+    <script>
+      (function(){
+        var form = document.getElementById('main-form');
+
+        function formToJSON() {
+          var fields = {};
+          Array.prototype.forEach.call(form.elements, function(el){
+            fields[el.id] = el.value;
+          });
+          return fields;
+        }
+
+        document.getElementById('save').addEventListener('click', function(){
+          console.log(formToJSON());
+        });
+      })();
+    </script>
+  </body>
+</html>
