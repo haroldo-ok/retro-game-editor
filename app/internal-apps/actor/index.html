@@ -21,21 +21,51 @@
     </form>
 
     <script>
-      (function(){
-        var form = document.getElementById('main-form');
+      top.require(
+        ["underscore", "model", "model/project", "view/util/query-string"],
+        function(_, model, Project, queryString){
+          var actor, project;
 
-        function formToJSON() {
-          var fields = {};
-          Array.prototype.forEach.call(form.elements, function(el){
-            fields[el.id] = el.value;
+          var form = document.getElementById('main-form');
+          var tileSetSelect = document.getElementById('tileSetId');
+
+          function loadActor() {
+            var query = queryString.parse(location.search);
+            var Model = model.byName(query.entity);
+            actor = Model.objects.get(query.entityId);
+            project = Project.objects.get(actor.get('projectId'));
+          }
+
+          function populateTilesets() {
+            var value = tileSetSelect.value || actor.get('tileSetId');
+
+            tileSetSelect.innerHTML = project.resources.ofType('TileSet').map(function(tileSet){
+              return '<option value="' + tileSet.get('id') + '">' +
+                _.escape(tileSet.get('name') || '**unnamed**') +
+                '</option>';
+            }).join('');
+
+            tileSetSelect.value = value;
+          }
+
+          function formToJSON() {
+            var fields = {};
+            Array.prototype.forEach.call(form.elements, function(el){
+              fields[el.id] = el.value;
+            });
+            return fields;
+          }
+
+          document.getElementById('save').addEventListener('click', function(){
+            var json = formToJSON();
+            console.log(json);
+
+            actor.save(_.pick(json, 'tileSetId', 'behaviorId'));
           });
-          return fields;
-        }
 
-        document.getElementById('save').addEventListener('click', function(){
-          console.log(formToJSON());
+          loadActor();
+          populateTilesets();
         });
-      })();
     </script>
   </body>
 </html>
