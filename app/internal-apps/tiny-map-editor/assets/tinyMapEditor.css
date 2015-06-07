@@ -49,6 +49,16 @@ input[type=text] { width: 30px }
 #layers li { text-align: left }
 #layers li p { margin: 5px; padding: 5px; border: 1px solid #bbb }
 
+#actorList {
+  -webkit-column-count: 3; /* Chrome, Safari, Opera */
+  -moz-column-count: 3; /* Firefox */
+  column-count: 3;
+}
+#actorList canvas {
+  width: 32px;
+  height: 32px;
+}
+
 /*************************************** Output */
 output { display: block; margin: 0 auto; padding-right: 250px; text-align: center; z-index: 1 }
 textarea { width: 400px; height: 200px; margin: 0; font-family: monospace }

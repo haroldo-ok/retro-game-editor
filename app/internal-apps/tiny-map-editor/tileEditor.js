@@ -212,13 +212,20 @@ function($, model, Project, queryString){
           populateActorList: function() {
             var container = doc.getElementById('actorList');
             container.innerHTML = '';
-            
-            this.project.resources.ofType('Actor').forEach(function(actor){
-              var li = doc.createElement('li');
 
-              var label = doc.createElement('label');
+            this.project.resources.ofType('Actor').forEach(function(actor){
+              var li = doc.createElement('li'),
+                  canvas = doc.createElement('canvas'),
+                  label = doc.createElement('label');
+
               label.appendChild(doc.createTextNode(actor.get('name')));
 
+              var ctx = canvas.getContext('2d');
+              canvas.width = tileSize;
+              canvas.height = tileSize;
+              ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+              li.appendChild(canvas);
               li.appendChild(label);
               container.appendChild(li);
             });
