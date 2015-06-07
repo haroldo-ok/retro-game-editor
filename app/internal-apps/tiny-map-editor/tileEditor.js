@@ -209,6 +209,21 @@ function($, model, Project, queryString){
             this.updateTileset();
           },
 
+          populateActorList: function() {
+            var container = doc.getElementById('actorList');
+            container.innerHTML = '';
+            
+            this.project.resources.ofType('Actor').forEach(function(actor){
+              var li = doc.createElement('li');
+
+              var label = doc.createElement('label');
+              label.appendChild(doc.createTextNode(actor.get('name')));
+
+              li.appendChild(label);
+              container.appendChild(li);
+            });
+          },
+
           selectedTileSetId: function() {
             var select = doc.getElementById('tileSets');
             var selectedOption = select.selectedIndex < 0 ?
@@ -317,6 +332,7 @@ function($, model, Project, queryString){
 
               this.loadMap();
               this.populateTilesets();
+              this.populateActorList();
 
               //sprite.src = 'assets/tilemap_32a.png';
               map.canvas.width = width * tileSize;
