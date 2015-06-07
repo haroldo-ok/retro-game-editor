@@ -209,6 +209,33 @@ function($, model, Project, queryString){
             this.updateTileset();
           },
 
+          populateActorList: function() {
+            var that = this;
+
+            var container = doc.getElementById('actorList');
+            container.innerHTML = '';
+
+            this.project.resources.ofType('Actor').forEach(function(actor){
+              var li = doc.createElement('li'),
+                  canvas = doc.createElement('canvas'),
+                  label = doc.createElement('label');
+
+              label.appendChild(doc.createTextNode(actor.get('name')));
+
+              var tileSet = that.project.resources.get('TileSet', actor.get('tileSetId'));
+              that.renderTileset(canvas, tileSet, {maxTiles: 1, tilesPerLine: 1});
+
+              li.setAttribute('draggable', true);
+              li.addEventListener('dragstart', function(ev){
+                ev.dataTransfer.setData("text", ev.target.id);
+              });
+
+              li.appendChild(canvas);
+              li.appendChild(label);
+              container.appendChild(li);
+            });
+          },
+
           selectedTileSetId: function() {
             var select = doc.getElementById('tileSets');
             var selectedOption = select.selectedIndex < 0 ?
@@ -217,52 +244,69 @@ function($, model, Project, queryString){
             return selectedOption && selectedOption.value;
           },
 
+          renderTileset: function(canvas, tileSet, options) {
+            if (!tileSet) {
+              canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+              return;
+            }
+
+            var options = options || {},
+                tiles = tileSet.tilePixels(),
+                colorPalette = tileSet.palette(),
+                tileCount = tiles.length;
+
+            if (options.maxTiles) {
+              tileCount = Math.min(options.maxTiles, tileCount);
+            }
+
+            canvas.width = tileSize * (options.tilesPerLine || tilesPerLine);
+            canvas.height = tileSize * Math.ceil(tileCount / tilesPerLine);
+
+            var ctx = canvas.getContext('2d'),
+                imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+            // Draw the tiles on the canvas
+            var dX = 0,
+                dY = 0;
+            tiles.slice(0, tileCount).forEach(function(tile){
+              if (tile) {
+                // Draw tile on the canvas
+                for (var y = 0; y < tile.length; y++) {
+                  var line = tile[y],
+                      yOffs = (y + dY) * canvas.width;
+
+                  for (var x = 0; x < line.length; x++) {
+                    var colorIndex = line[x],
+                        rgb = colorPalette[colorIndex],
+                        offs = (x + dX + yOffs) * 4;
+
+                    imgData.data[offs] = rgb.r; // Red
+                    imgData.data[offs + 1] = rgb.g; // Green
+                    imgData.data[offs + 2] = rgb.b; // Blue
+                    imgData.data[offs + 3] = 255; // Alpha
+                  }
+                }
+              }
+
+              // Calculate position of next tile
+              dX += tileSize;
+              if (dX >= canvas.width) {
+                dX = 0;
+                dY += tileSize;
+              }
+            });
+
+            ctx.putImageData(imgData, 0, 0);
+          },
+
           updateTileset: function() {
             var tileSetId = this.selectedTileSetId();
             if (tileSetId) {
-              var tileSet = this.project.resources.get('TileSet', tileSetId),
-                  tiles = tileSet.tilePixels(),
-                  colorPalette = tileSet.palette();
+              var tileSet = this.project.resources.get('TileSet', tileSetId);
 
               var canvas = document.createElement('canvas');
-              canvas.width = tileSize * tilesPerLine;
-              canvas.height = tileSize * Math.ceil(tiles.length / tilesPerLine);
+              this.renderTileset(canvas, tileSet);
 
-              var ctx = canvas.getContext('2d');
-              var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-
-              // Draw the tiles on the canvas
-              var dX = 0,
-                  dY = 0;
-              tiles.forEach(function(tile){
-                if (tile) {
-                  // Draw tile on the canvas
-                  for (var y = 0; y < tile.length; y++) {
-                    var line = tile[y],
-                        yOffs = (y + dY) * canvas.width;
-
-                    for (var x = 0; x < line.length; x++) {
-                      var colorIndex = line[x],
-                          rgb = colorPalette[colorIndex],
-                          offs = (x + dX + yOffs) * 4;
-
-                      imgData.data[offs] = rgb.r; // Red
-                      imgData.data[offs + 1] = rgb.g; // Green
-                      imgData.data[offs + 2] = rgb.b; // Blue
-                      imgData.data[offs + 3] = 255; // Alpha
-                    }
-                  }
-                }
-
-                // Calculate position of next tile
-                dX += tileSize;
-                if (dX >= canvas.width) {
-                  dX = 0;
-                  dY += tileSize;
-                }
-              });
-
-              ctx.putImageData(imgData, 0, 0);
               sprite.src = canvas.toDataURL();
             }
           },
@@ -317,6 +361,7 @@ function($, model, Project, queryString){
 
               this.loadMap();
               this.populateTilesets();
+              this.populateActorList();
 
               //sprite.src = 'assets/tilemap_32a.png';
               map.canvas.width = width * tileSize;

@@ -13,6 +13,15 @@
 
     <menu>
         <ul>
+            <li id="tools">
+                <label>Tools</label>
+                <!--
+                <p><input id="erase" type="button" value="Tile Eraser" disabled="disabled" /></p>
+                <p><input id="clear" type="button" value="Clear Canvas" disabled="disabled" /></p>
+                -->
+                <br />
+                <p><input id="save" type="button" value="Save Map" /></p>
+            </li>
             <li id="options">
                 <label>Map Options</label>
                 <p><label>Tile size:</label><input type="text" value="16" maxlength="3" disabled /><span>px</span></p>
@@ -27,14 +36,10 @@
             <li id="selected">
                 <label>Selected Tile</label>
             </li>
-            <li id="tools">
-                <label>Tools</label>
-                <!--
-                <p><input id="erase" type="button" value="Tile Eraser" disabled="disabled" /></p>
-                <p><input id="clear" type="button" value="Clear Canvas" disabled="disabled" /></p>
-                -->
-                <br />
-                <p><input id="save" type="button" value="Save Map" /></p>
+            <li id="actors">
+                <label>Actors</label>
+                <ul id="actorList">
+                </ul>
             </li>
         </ul>
     </menu>
