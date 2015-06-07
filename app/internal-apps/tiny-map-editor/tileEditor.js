@@ -225,6 +225,11 @@ function($, model, Project, queryString){
               var tileSet = that.project.resources.get('TileSet', actor.get('tileSetId'));
               that.renderTileset(canvas, tileSet, {maxTiles: 1, tilesPerLine: 1});
 
+              li.setAttribute('draggable', true);
+              li.addEventListener('dragstart', function(ev){
+                ev.dataTransfer.setData("text", ev.target.id);
+              });
+
               li.appendChild(canvas);
               li.appendChild(label);
               container.appendChild(li);
