@@ -225,6 +225,8 @@ function($, model, Project, queryString){
               canvas.height = tileSize;
               ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+              var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
               li.appendChild(canvas);
               li.appendChild(label);
               container.appendChild(li);
@@ -239,52 +241,59 @@ function($, model, Project, queryString){
             return selectedOption && selectedOption.value;
           },
 
+          renderTileset: function(canvas, tileSet, maxTiles) {
+            var tiles = tileSet.tilePixels(),
+                colorPalette = tileSet.palette(),
+                tileCount = maxTiles || tiles.length;
+
+            canvas.width = tileSize * tilesPerLine;
+            canvas.height = tileSize * Math.ceil(tileCount / tilesPerLine);
+
+            var ctx = canvas.getContext('2d'),
+                imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+            // Draw the tiles on the canvas
+            var dX = 0,
+                dY = 0;
+            tiles.forEach(function(tile){
+              if (tile) {
+                // Draw tile on the canvas
+                for (var y = 0; y < tile.length; y++) {
+                  var line = tile[y],
+                      yOffs = (y + dY) * canvas.width;
+
+                  for (var x = 0; x < line.length; x++) {
+                    var colorIndex = line[x],
+                        rgb = colorPalette[colorIndex],
+                        offs = (x + dX + yOffs) * 4;
+
+                    imgData.data[offs] = rgb.r; // Red
+                    imgData.data[offs + 1] = rgb.g; // Green
+                    imgData.data[offs + 2] = rgb.b; // Blue
+                    imgData.data[offs + 3] = 255; // Alpha
+                  }
+                }
+              }
+
+              // Calculate position of next tile
+              dX += tileSize;
+              if (dX >= canvas.width) {
+                dX = 0;
+                dY += tileSize;
+              }
+            });
+
+            ctx.putImageData(imgData, 0, 0);
+          },
+
           updateTileset: function() {
             var tileSetId = this.selectedTileSetId();
             if (tileSetId) {
-              var tileSet = this.project.resources.get('TileSet', tileSetId),
-                  tiles = tileSet.tilePixels(),
-                  colorPalette = tileSet.palette();
+              var tileSet = this.project.resources.get('TileSet', tileSetId);
 
               var canvas = document.createElement('canvas');
-              canvas.width = tileSize * tilesPerLine;
-              canvas.height = tileSize * Math.ceil(tiles.length / tilesPerLine);
+              this.renderTileset(canvas, tileSet);
 
-              var ctx = canvas.getContext('2d');
-              var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-
-              // Draw the tiles on the canvas
-              var dX = 0,
-                  dY = 0;
-              tiles.forEach(function(tile){
-                if (tile) {
-                  // Draw tile on the canvas
-                  for (var y = 0; y < tile.length; y++) {
-                    var line = tile[y],
-                        yOffs = (y + dY) * canvas.width;
-
-                    for (var x = 0; x < line.length; x++) {
-                      var colorIndex = line[x],
-                          rgb = colorPalette[colorIndex],
-                          offs = (x + dX + yOffs) * 4;
-
-                      imgData.data[offs] = rgb.r; // Red
-                      imgData.data[offs + 1] = rgb.g; // Green
-                      imgData.data[offs + 2] = rgb.b; // Blue
-                      imgData.data[offs + 3] = 255; // Alpha
-                    }
-                  }
-                }
-
-                // Calculate position of next tile
-                dX += tileSize;
-                if (dX >= canvas.width) {
-                  dX = 0;
-                  dY += tileSize;
-                }
-              });
-
-              ctx.putImageData(imgData, 0, 0);
               sprite.src = canvas.toDataURL();
             }
           },
