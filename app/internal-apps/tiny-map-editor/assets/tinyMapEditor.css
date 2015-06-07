@@ -58,6 +58,12 @@ input[type=text] { width: 30px }
   width: 32px;
   height: 32px;
 }
+#actorList canvas,
+#actorList label {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
 
 /*************************************** Output */
 output { display: block; margin: 0 auto; padding-right: 250px; text-align: center; z-index: 1 }

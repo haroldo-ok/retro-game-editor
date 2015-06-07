@@ -210,6 +210,8 @@ function($, model, Project, queryString){
           },
 
           populateActorList: function() {
+            var that = this;
+
             var container = doc.getElementById('actorList');
             container.innerHTML = '';
 
@@ -220,12 +222,8 @@ function($, model, Project, queryString){
 
               label.appendChild(doc.createTextNode(actor.get('name')));
 
-              var ctx = canvas.getContext('2d');
-              canvas.width = tileSize;
-              canvas.height = tileSize;
-              ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-              var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+              var tileSet = that.project.resources.get('TileSet', actor.get('tileSetId'));
+              that.renderTileset(canvas, tileSet, {maxTiles: 1, tilesPerLine: 1});
 
               li.appendChild(canvas);
               li.appendChild(label);
@@ -241,12 +239,22 @@ function($, model, Project, queryString){
             return selectedOption && selectedOption.value;
           },
 
-          renderTileset: function(canvas, tileSet, maxTiles) {
-            var tiles = tileSet.tilePixels(),
-                colorPalette = tileSet.palette(),
-                tileCount = maxTiles || tiles.length;
+          renderTileset: function(canvas, tileSet, options) {
+            if (!tileSet) {
+              canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+              return;
+            }
 
-            canvas.width = tileSize * tilesPerLine;
+            var options = options || {},
+                tiles = tileSet.tilePixels(),
+                colorPalette = tileSet.palette(),
+                tileCount = tiles.length;
+
+            if (options.maxTiles) {
+              tileCount = Math.min(options.maxTiles, tileCount);
+            }
+
+            canvas.width = tileSize * (options.tilesPerLine || tilesPerLine);
             canvas.height = tileSize * Math.ceil(tileCount / tilesPerLine);
 
             var ctx = canvas.getContext('2d'),
@@ -255,7 +263,7 @@ function($, model, Project, queryString){
             // Draw the tiles on the canvas
             var dX = 0,
                 dY = 0;
-            tiles.forEach(function(tile){
+            tiles.slice(0, tileCount).forEach(function(tile){
               if (tile) {
                 // Draw tile on the canvas
                 for (var y = 0; y < tile.length; y++) {
