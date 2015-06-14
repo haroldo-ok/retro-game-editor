@@ -226,8 +226,9 @@ function($, model, Project, queryString){
               that.renderTileset(canvas, tileSet, {maxTiles: 1, tilesPerLine: 1});
 
               li.setAttribute('draggable', true);
+              li.setAttribute('data-rge-id', actor.get('id'));
               li.addEventListener('dragstart', function(ev){
-                ev.dataTransfer.setData("text", ev.target.id);
+                ev.dataTransfer.setData("actorId", ev.target.getAttribute('data-rge-id'));
               });
 
               li.appendChild(canvas);
@@ -349,6 +350,18 @@ function($, model, Project, queryString){
                document.getElementById('tileSets').addEventListener('change', function() {
                  _this.updateTileset();
                });
+
+              /**
+               * Drop actor event
+               */
+              map.canvas.addEventListener('dragover', function(ev){
+                ev.preventDefault();
+              });
+
+              map.canvas.addEventListener('drop', function(ev){
+                var actorId = ev.dataTransfer.getData("actorId");
+                console.warn(actorId);
+              });
           },
 
           init : function() {
