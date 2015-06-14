@@ -66,6 +66,25 @@ input[type=text] { width: 30px }
 }
 
 /*************************************** Output */
+.canvasContainer {
+  display: inline-block;
+  position: relative;
+  margin: 0;
+}
+
+.canvasContainer > .actor {
+  display: inline-block;
+  position: absolute;
+  margin: 0;
+}
+
+.canvasContainer > .actor > canvas {
+  width: 32px;
+  height: 32px;
+}
+
+
+/*************************************** Output */
 output { display: block; margin: 0 auto; padding-right: 250px; text-align: center; z-index: 1 }
 textarea { width: 400px; height: 200px; margin: 0; font-family: monospace }
 
