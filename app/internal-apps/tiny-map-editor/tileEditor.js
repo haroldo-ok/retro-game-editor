@@ -229,6 +229,7 @@ function($, model, Project, queryString){
               li.setAttribute('data-rge-id', actor.get('id'));
               li.addEventListener('dragstart', function(ev){
                 ev.dataTransfer.setData("actorId", ev.target.getAttribute('data-rge-id'));
+                ev.dataTransfer.setDragImage(canvas, 0, 0);
               });
 
               li.appendChild(canvas);
@@ -359,8 +360,26 @@ function($, model, Project, queryString){
               });
 
               map.canvas.addEventListener('drop', function(ev){
+                console.warn(ev);
                 var actorId = ev.dataTransfer.getData("actorId");
                 console.warn(actorId);
+                var actor = _this.project.resources.get('Actor', actorId);
+                console.warn(actor);
+                var tileSet = _this.project.resources.get('TileSet', actor.get('tileSetId'));
+                console.warn(tileSet);
+
+                var figure = doc.createElement('figure'),
+                    canvas = doc.createElement('canvas');
+
+                _this.renderTileset(canvas, tileSet, {maxTiles: 1, tilesPerLine: 1});
+
+                figure.setAttribute('class', 'actor');
+                figure.appendChild(canvas);
+
+                figure.style.left = ev.layerX + 'px';
+                figure.style.top = ev.layerY + 'px';
+
+                map.canvas.parentElement.appendChild(figure);
               });
           },
 
