@@ -27,6 +27,8 @@ function($, model, Project, queryString){
           build = doc.getElementById('build'),
           test = doc.getElementById('test'),
 
+          placedActorNextId = 1,
+
           $doc = $(doc);
 
       var app = {
@@ -229,6 +231,7 @@ function($, model, Project, queryString){
               li.setAttribute('data-rge-id', actor.get('id'));
               li.addEventListener('dragstart', function(ev){
                 ev.dataTransfer.setData("actorId", ev.target.getAttribute('data-rge-id'));
+                ev.dataTransfer.setData("isFromActorList", true);
                 ev.dataTransfer.setDragImage(canvas, 0, 0);
               });
 
@@ -360,24 +363,38 @@ function($, model, Project, queryString){
               });
 
               map.canvas.addEventListener('drop', function(ev){
-                console.warn(ev);
-                var actorId = ev.dataTransfer.getData("actorId");
-                console.warn(actorId);
-                var actor = _this.project.resources.get('Actor', actorId);
-                console.warn(actor);
-                var tileSet = _this.project.resources.get('TileSet', actor.get('tileSetId'));
-                console.warn(tileSet);
+                var actorId = ev.dataTransfer.getData("actorId"),
+                    isFromActorList = ev.dataTransfer.getData("isFromActorList");
+
+                if (!isFromActorList) {
+                  console.log(ev);
+                  var figure = doc.getElementById(ev.dataTransfer.getData("figureId"));
+                  figure.style.left = ev.layerX + 'px';
+                  figure.style.top = ev.layerY + 'px';
+                  return;
+                }
+
+                var actor = _this.project.resources.get('Actor', actorId),
+                    tileSet = _this.project.resources.get('TileSet', actor.get('tileSetId'));
 
                 var figure = doc.createElement('figure'),
                     canvas = doc.createElement('canvas');
 
                 _this.renderTileset(canvas, tileSet, {maxTiles: 1, tilesPerLine: 1});
 
+                figure.setAttribute('id', 'placed-actor-' + (placedActorNextId++));
                 figure.setAttribute('class', 'actor');
+                figure.setAttribute('data-rge-id', actorId);
                 figure.appendChild(canvas);
 
                 figure.style.left = ev.layerX + 'px';
                 figure.style.top = ev.layerY + 'px';
+
+                figure.setAttribute('draggable', true);
+                figure.addEventListener('dragstart', function(ev){
+                  ev.dataTransfer.setData("actorId", actorId);
+                  ev.dataTransfer.setData("figureId", figure.getAttribute('id'));
+                });
 
                 map.canvas.parentElement.appendChild(figure);
               });
