@@ -1,7 +1,7 @@
 'use strict';
 
-top.require(["jquery", "model", "model/project", "view/util/query-string"],
-function($, model, Project, queryString){
+top.require(["jquery", "underscore", "model", "model/project", "view/util/query-string"],
+function($, _, model, Project, queryString){
 
   var tinyMapEditor = (function() {
       var win = window,
@@ -125,7 +125,8 @@ function($, model, Project, queryString){
               if (e.target.id === 'save') {
                 this.mapEntity.save({
                   tileSetId: this.selectedTileSetId(),
-                  tiles: tiles
+                  tiles: tiles,
+                  actors: this.actorsToJSON()
                 });
               }
           },
@@ -145,6 +146,25 @@ function($, model, Project, queryString){
                   temp[i] = temp[i].indexOf(255);
               }
               return temp;
+          },
+
+          actorsToJSON: function() {
+            var actorElements = document.querySelectorAll('.canvasContainer > .actor');
+            console.log(actorElements);
+
+            function convertCoord(coord) {
+              return Math.floor(parseInt(coord) / mapZoom);
+            }
+
+            var list = _.map(actorElements, function(el){
+              return {
+                x: convertCoord(el.style.left),
+                y: convertCoord(el.style.top),
+                actorId: el.getAttribute('data-rge-id')
+              };
+            });
+            console.log(list);
+            return list;
           },
 
           outputJSON : function() {
