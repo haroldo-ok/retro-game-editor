@@ -4,6 +4,10 @@ An editor for making games for retro platforms with little to no programming kno
 
 *Work in progress*
 
+## Online demo
+
+http://rge.haroldo-ok.com/app/
+
 ## Tools used
 
 * [Jannone's Tiny Sprite](http://sourceforge.net/projects/tinysprite/): Nice web-based sprite editor, originally designed for MSX.
