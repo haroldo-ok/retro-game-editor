@@ -34,5 +34,8 @@
   "scripts": {
     "start": "node server.js",
     "postinstall": "node ./node_modules/bower/bin/bower install"
+  },
+  "engines": {
+	"node": "6.11.x"
   }
 }
